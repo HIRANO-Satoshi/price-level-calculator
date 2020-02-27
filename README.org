@@ -1,0 +1,8 @@
+- install
+    pipenv --python pypy3
+    pipenv shell
+    pipenv install
+    uvicorn main:app --reload
+- run
+  pipenv shell
+  uvicorn main:app --reload --port 8000

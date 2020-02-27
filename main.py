@@ -1,12 +1,24 @@
 from fastapi import FastAPI
-
+from starlette.middleware.cors import CORSMiddleware
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "*", # "http://localhost:8082",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+@app.get("/convert-from-luncho/")
+async def read_item(currency_code: str, luncho_value: float):
+    ppp = 1.0
+    if currency_code == 'USD':
+        ppp = 4.81
+    elif currency_code == 'JPY':
+        ppp = 530
+    elif currency_code == 'EURO':
+        ppp = 4.40
 
-
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+    return {"currency_value": luncho_value * ppp}
