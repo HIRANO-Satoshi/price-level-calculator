@@ -5,4 +5,7 @@
     uvicorn main:app --reload
 - run
   pipenv shell
-  uvicorn main:app --reload --port 8000
+  gunicorn --access-logfile - --error-logfile - -k uvicorn.workers.UvicornH11Worker main:app --reload
+
+  - これはreloadでエラーが出る
+    - uvicorn main:app --reload --port 8000

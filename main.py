@@ -1,6 +1,18 @@
+'''
+Luncho server
+
+@author HIRANO Satoshi
+@date  2020/02/28
+'''
+
+dummy: str
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -12,7 +24,7 @@ app.add_middleware(
 )
 
 @app.get("/convert-from-luncho/")
-async def read_item(currency_code: str, luncho_value: float):
+async def convert_from_luncho(currency_code: str, luncho_value: float):
     ppp = 1.0
     if currency_code == 'USD':
         ppp = 4.81
@@ -20,5 +32,7 @@ async def read_item(currency_code: str, luncho_value: float):
         ppp = 530
     elif currency_code == 'EURO':
         ppp = 4.40
+    elif currency_code == 'CNY':
+        ppp = 33.92
 
     return {"currency_value": luncho_value * ppp}
