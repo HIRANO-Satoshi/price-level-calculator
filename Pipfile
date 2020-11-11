@@ -5,11 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 mypy = "*"
+mypy-extensions = '*'
 
 [packages]
 fastapi = {extras = ["all"],version = "*"}
 gunicorn = "*"
 uvicorn = "*"
+mypy-extensions = "*"
 
 [requires]
 python_version = "3.7"
