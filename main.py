@@ -85,7 +85,6 @@ doller_per_sdr = 1.424900 # 1 SDR = $1.424900
 @app.get("/convert-from-luncho/")
 async def convert_from_luncho(country_code: str, luncho_value: float):
 
-    in_dollar: float = luncho_value * doller_per_sdr
 
     country_imf_ppp = imf_ppp[country_code]
     year: int = datetime.datetime.today().year
@@ -93,11 +92,25 @@ async def convert_from_luncho(country_code: str, luncho_value: float):
     currency_code: str = country_imf_ppp['currency_code']
     rate: float = exchange_rates[currency_code]
 
-    return {"dollar_value": in_dollar * ppp,
-            'local_currency_value': in_dollar * rate * ppp,
+    in_dollar: float = luncho_value * doller_per_sdr
+    local_currency_value = in_dollar * rate * ppp
+    dollar_value = local_currency_value / rate
+
+    return {"dollar_value": local_currency_value,
+            'local_currency_value': local_currency_value,
             'currency_code': currency_code,
+            'country_code': country_code,
+            'country_name': country_imf_ppp['country_name'],
             'currency_name': country_imf_ppp['currency_name']
     }
+
+@app.get("/convert-from-luncho-all/")
+async def convert_from_luncho(luncho_value: float):
+
+    lunchos = []
+    for country_imf_ppp in imf_ppp:
+        lunchos.append(convert_from_luncho(country_imf_ppp['country_code'], luncho_value))
+    return lunchos
 
 @app.get("/countries")
 async def countries():

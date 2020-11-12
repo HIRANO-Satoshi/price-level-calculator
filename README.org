@@ -7,10 +7,16 @@
   pipenv shell
   gunicorn --access-logfile - --error-logfile - -k uvicorn.workers.UvicornH11Worker main:app --reload
 
+- 注意
+  - pipenvでbad interpreterが出たら
+      brew install --force pipenv
+      brew link --overwrite pipenv
+
   - これはreloadでエラーが出る
-    - uvicorn main:app --reload --port 8000
+    uvicorn main:app --reload --port 8000
 
 ** Data
+
 - PPP from IFM World Economic Outlook (October 2020)
   - data/imf-dm-export-20201110.csv
   - Press "All Data" to get it at [[https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD][here]]
