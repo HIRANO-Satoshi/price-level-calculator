@@ -85,7 +85,6 @@ doller_per_sdr = 1.424900 # 1 SDR = $1.424900
 @app.get("/convert-from-luncho/")
 async def convert_from_luncho(country_code: str, luncho_value: float):
 
-
     country_imf_ppp = imf_ppp[country_code]
     year: int = datetime.datetime.today().year
     ppp: float = country_imf_ppp['year_ppp'][year]  # country's ppp of this year
@@ -105,7 +104,7 @@ async def convert_from_luncho(country_code: str, luncho_value: float):
     }
 
 @app.get("/convert-from-luncho-all/")
-async def convert_from_luncho(luncho_value: float):
+async def convert_from_luncho_all(luncho_value: float):
 
     lunchos = []
     for country_imf_ppp in imf_ppp:
