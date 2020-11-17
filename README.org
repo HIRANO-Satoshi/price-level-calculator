@@ -1,14 +1,15 @@
-- install
-    pipenv --python pypy3
-    pipenv shell
-    pipenv install
-    uvicorn main:app --reload
-- run
+** install
+  cd luncho-server
+  pipenv --python pypy3
+  pipenv shell
+  pipenv install
+  - if you got error on rust or cargo, install rust as instructed [[https://www.rust-lang.org/tools/install][here]] and try pipenv install again.
+
+** run
+  cd luncho-server
   pipenv shell
   gunicorn --access-logfile - --error-logfile - -k uvicorn.workers.UvicornH11Worker main:app --reload
 
-  - これはreloadでエラーが出る
-    - uvicorn main:app --reload --port 8000
 
 ** Data
 - PPP from IFM World Economic Outlook (October 2020)
