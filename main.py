@@ -31,9 +31,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+CountryCode = str
+CurrencyCode = str
+
 class Country(TypedDict):
     ppp: float                # PPP in local currency of currency_name
-    currency_code: str        # AFN  (ISO 3 letter currency code)
+    currency_code: CurrencyCode # AFN  (ISO 3 letter currency code)
     currency_name: str        # Afghani
     country_name: str           # Afghanistan
 
@@ -42,27 +45,26 @@ class Country(TypedDict):
 #   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
 #   {'ALB': {1980: 24.4, 1981: 24.5...
 class CountryMetadata(TypedDict):
-    code: str                 # AFG  (ISO 3 letter country code)
+    code: CountryCode                 # AFG  (ISO 3 letter country code)
     long_name: str            # Islamic State of Afghanistan
-    currency_code: str        # AFN  (ISO 3 letter currency code)
+    currency_code: CurrencyCode  # AFN  (ISO 3 letter currency code)
     currency_name: str        # Afghani
     table_name: str           # Afghanistan
     coverage: Optional[str]   # Urban and Rural, Urban only, Rural only
 
-country_metadata: Dict[str, CountryMetadata] = {}   # country_code, CountryMetadata
+country_metadata: Dict[CountryCode, CountryMetadata] = {}   # country_code, CountryMetadata
 
 # IMF PPP data
 #   {'AFG': {            1981: 17.4...
 #   {'ALB': {1980: 24.4, 1981: 24.5...
-
 class Country_IMF_PPP(TypedDict, total=False):
     year_ppp: Dict[int, float]  # { year: ppp }  Optional
     ppp: float                # PPP in local currency of currency_name
-    currency_code: str        # AFN  (ISO 3 letter currency code)
+    currency_code: CurrencyCode # AFN  (ISO 3 letter currency code)
     currency_name: str        # Afghani
     country_name: str           # Afghanistan
 
-imf_ppp: Dict[str, Country_IMF_PPP] = {}
+imf_ppp: Dict[CountryCode, Country_IMF_PPP] = {}  # ,
 
 class FixerExchangeRate(TypedDict):
     success: bool    # true if API success
@@ -83,17 +85,28 @@ doller_per_sdr = 1.424900 # 1 SDR = $1.424900
 
 
 @app.get("/convert-from-luncho/")
-async def convert_from_luncho(country_code: str, luncho_value: float):
+async def convert_from_luncho(country_code: CountryCode, luncho_value: float):
+
+    in_dollar: float = 0
+    local_currency_value: float = 0
+    dollar_value: float = 0
+    currency_code: Optional[CurrencyCode] = None
 
     country_imf_ppp = imf_ppp[country_code]
+    currency_code = country_imf_ppp['currency_code']
     year: int = datetime.datetime.today().year
-    ppp: float = country_imf_ppp['year_ppp'][year]  # country's ppp of this year
-    currency_code: str = country_imf_ppp['currency_code']
-    rate: float = exchange_rates[currency_code]
+    ppp: float = country_imf_ppp['year_ppp'].get(year, None)  # country's ppp of this year
+    if ppp:
+        rate: Optional[float] = exchange_rates.get(currency_code, None)
+        if rate is not None:
+            in_dollar = luncho_value * doller_per_sdr
+            local_currency_value = in_dollar * rate * ppp
+            dollar_value = local_currency_value / rate
+        else:
+            print('Exchange rate not found: ' + country_imf_ppp['country_name'] + ' ' + country_imf_ppp['currency_name'] + '(' + currency_code + ')')
+    else:
+        print('PPP not found: ' + country_imf_ppp['country_name'] + ' ' + country_imf_ppp['currency_name'] + '(' + currency_code + ')')
 
-    in_dollar: float = luncho_value * doller_per_sdr
-    local_currency_value = in_dollar * rate * ppp
-    dollar_value = local_currency_value / rate
 
     return {"dollar_value": local_currency_value,
             'local_currency_value': local_currency_value,
@@ -103,25 +116,25 @@ async def convert_from_luncho(country_code: str, luncho_value: float):
             'currency_name': country_imf_ppp['currency_name']
     }
 
-@app.get("/convert-from-luncho-all/")
-async def convert_from_luncho_all(luncho_value: float):
+@app.get("/convert-from-luncho-all")
+async def convert_from_luncho_all(luncho_value: float) -> List[Country_IMF_PPP]:
 
     lunchos = []
-    for country_imf_ppp in imf_ppp:
-        lunchos.append(convert_from_luncho(country_imf_ppp['country_code'], luncho_value))
+    for country_code in imf_ppp:  #type: CountryCode
+        lunchos.append(await convert_from_luncho(country_code, luncho_value))
     return lunchos
 
 @app.get("/countries")
-async def countries():
-    result: Country_IMF_PPP = copy.deepcopy(imf_ppp)
+async def countries() -> Country_IMF_PPP:
+    imf_ppp_copy: Country_IMF_PPP = copy.deepcopy(imf_ppp)
 
-    for code, data in result.items():
-        del result[code]['year_ppp']
-    return result
+    for country_code in imf_ppp_copy:  #type: CountryCode
+        del imf_ppp_copy[country_code]['year_ppp']
+    return imf_ppp_copy
 
 
 @app.get("/convert-from-luncho-dummy/")
-async def convert_from_luncho(currency_code: str, luncho_value: float):
+async def convert_from_luncho_dummy(currency_code: CurrencyCode, luncho_value: float) -> Dict[str, float]:
     ppp = 1.0
     if currency_code == 'USD':
         ppp = 4.81
@@ -134,7 +147,7 @@ async def convert_from_luncho(currency_code: str, luncho_value: float):
 
     return {"currency_value": luncho_value * ppp}
 
-def init_data():
+def init_data() -> None:
     global country_metadata, imf_ppp
 
     # CountryMetadata into country_metadata
@@ -225,7 +238,7 @@ def init_data():
         if fixer_exchange_rates['success']:
             pass  # XXX
         usd: float = fixer_exchange_rates['rates']['USD']  # USD per euro
-        for currecy_code, euro_value in fixer_exchange_rates['rates'].items():
+        for currecy_code, euro_value in fixer_exchange_rates['rates'].items():  #type: CurrencyCode, float
             exchange_rates[currecy_code] = euro_value / usd   # store in doller
         print(str(exchange_rates))
 
