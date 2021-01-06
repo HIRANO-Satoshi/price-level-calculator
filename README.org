@@ -1,9 +1,17 @@
 ** install
   cd luncho-server
-  pipenv --python pypy3
+  brew install pipenv
+  - pipenv --python 3.9
+   - または pipenv --python pypy3 ただし、ujsonで動かない
   pipenv shell
   pipenv install
+  - if you have error with orjson
+    - pipenv update
+
   - if you got error on rust or cargo, install rust as instructed [[https://www.rust-lang.org/tools/install][here]] and try pipenv install again.
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    - bash再起動でPATHにrustupを入れる
+    - rustup install nightly ; rustup default nightly
 
 ** run
   cd luncho-server

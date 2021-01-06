@@ -12,6 +12,8 @@ fastapi = {extras = ["all"],version = "*"}
 gunicorn = "*"
 uvicorn = "*"
 mypy-extensions = "*"
+#orjson does not support Pypy
+# orjson = {version = "*", sys_platform = "== 'ignore-it'"}
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
