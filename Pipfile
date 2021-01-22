@@ -13,7 +13,9 @@ gunicorn = "*"
 uvicorn = "*"
 mypy-extensions = "*"
 #orjson does not support Pypy
-# orjson = {version = "*", sys_platform = "== 'ignore-it'"}
+orjson = {version = "*", sys_platform = "== 'ignore-it'"}
+#ujson does not support Pypy
+ujson = {version = "*", sys_platform = "== 'ignore-it'"}
 
 [requires]
 python_version = "3.9"

@@ -85,7 +85,11 @@ Doller_Per_SDR = 1.424900 # 1 SDR = $1.424900
 
 
 @app.get("/convert-from-luncho/")
-async def convert_from_luncho(country_code: CountryCode, luncho_value: float):
+async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100):
+
+    if not country_code:
+        country_code = 'JPN'
+
 
     dollar_per_luncho: float = 0
     local_currency_value: float = 0
