@@ -1,0 +1,1383 @@
+/*----------------------------------------
+    Basic settings, utilitites
+------------------------------------------*/
+
+/* Font settings in Materialize 1.00 */
+/* XXX this must be removed when we move to Materialize 1.00 or newer. */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+}
+
+/* End font settings in Materialize 1.00 */
+
+body.fullbleed {
+    position: fixed;
+    margin: 0;
+    height: 100vh;  /* not work on iOS */
+    width: 100%;
+    overflow: hidden;  /* inhibit body scrolling */
+}
+/* always full height as a tool */
+/* don't work
+:root {
+  --ios-gap: 0px;
+}
+
+body.fullbleed {
+    margin: 0;
+    height: calc(100vh - var(--ios-gap));
+    overflow: hidden;
+}
+*/
+/* @supports (-webkit-overflow-scrolling: touch) { */
+/*     /\* CSS specific to iOS devices *\/ */
+
+/*     /\* always full height as a tool *\/ */
+/*     body.fullbleed {     */
+/*         margin: 0; */
+/*         height: calc(100vh - 32px); */
+/*         width: 100%; */
+/*         overflow: hidden;  /\* inhibit body scrolling *\/ */
+/*     } */
+/* } */
+
+/* @supports not (-webkit-overflow-scrolling: touch) { */
+/*     /\* CSS for other than iOS devices *\/  */
+/*     body.fullbleed {     */
+/*         margin: 0; */
+/*         height: 100vh;  /\* not work on iOS *\/ */
+/*         width: 100%; */
+/*         overflow: hidden;  /\* inhibit body scrolling *\/ */
+/*     } */
+/* } */
+
+div.fullbleed {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;  /* inhibit body scrolling */
+}
+
+.page-host {
+  /* position: absolute; */
+  /* left: 0; */
+  /* right: 0; */
+  /* top: 50px; */
+  /* bottom: 0; */
+  /* overflow-x: hidden; */
+  /* overflow-y: auto; */
+}
+
+section {
+  /* margin: 0 20px; */
+  /* left: 0; */
+  /* right: 0; */
+  /* /\* top: 50px; *\/ */
+  /* bottom: 0; */
+  /* overflow-x: hidden; */
+  /* overflow-y: auto; */
+}
+
+/* */
+/* .btn { */
+/*     line-height: 14px !important; */
+/* } */
+
+.vertical-layout {
+    height: 100%;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.horizontal-layout {
+    height: 100%;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.horizontal-layout-no-height {
+    /* height: 100%; */
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.flex {
+    -webkit-flex-grow: 1;
+    -ms-flex-grow: 1;
+    flex-grow: 1;
+    -webkit-flex-basis: auto;
+    flex-basis: auto;
+
+    /* -ms-flex: 1 1 0.000000001px; */
+    /* -webkit-flex: 1; */
+    /* flex: 1; */
+    /* -webkit-flex-basis: 0.000000001px; */
+    /* flex-basis: 0.000000001px; */
+}
+
+.no-flex {
+    flex: none;
+    -webkit-flex: none;
+    -ms-flex: none;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-nowrap {
+    flex-wrap: nowrap;
+}
+
+/* left (right in RTL) in a flexbox */
+.flex-start {
+    margin-right: auto;
+    margin-end: auto;
+}
+
+/* right (left in RTL) in a flexbox */
+.flex-end {
+    margin-left: auto;
+    margin-start: auto;
+}
+
+.flex-center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card-container-center {
+    justify-content: center;
+}
+
+.card-panel:hover:not(.active-card) {
+    background-color: #e0e0ff !important;
+}
+
+/* hoverable remove button for cald-panels */
+.card-panel .hover-icon {
+    display: none;
+}
+.card-panel:hover .hover-icon {
+    display: inline;
+}
+
+.active-card {
+    color: #ffffff !important;
+    background-color: #b0b0ff !important;
+}
+
+.vertical-center {
+    vertical-align: middle;
+}
+
+.vertical-center-block {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.horizontal-center-block {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.hv-center-block {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.ltr {
+    direction: ltr;
+}
+
+.scrollable {
+  overflow-x: auto !important;
+  /* overflow-y: scroll; */
+  /* overflow-y: hidden !important; */
+  overflow-y: auto !important;
+  /* overflow-y: scroll !important; */
+  /* height: 100vh; */
+  -webkit-overflow-scrolling: touch;
+}
+.scrollable-x {
+    overflow-x: auto !important;
+    /* overflow-y: hidden !important; */
+    -webkit-overflow-scrolling: touch;
+}
+.scrollable-y {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+.no-scroll {
+    overflow: hidden;
+}
+
+.full-height {
+    height: 100% !important;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.resizeable {
+    resize: vertical !important;
+}
+
+/* enlarge input font size
+   reduce space between line and character-counter
+*/
+.input-field .materialize-textarea {
+    font-size: 1.0em !important;
+    /* this uplifts char counter but validation msg
+       conflicts with the bottom line
+      margin-bottom: 0.1em !important; */
+}
+
+/* enlarge input font size
+   reduce space between line and character-counter
+*/
+.input-field input {
+    font-size: 1.0em !important;
+    /* margin-bottom: 0.5em !important; */
+}
+
+/* enlarge space below character-counter
+ */
+/* this breaks place of error message */
+/* .character-counter { */
+/*     margin-bottom: 1.6em !important; */
+/* } */
+
+.white-back {
+  background-color: #fff;
+}
+
+.fill-height {
+  height: 100%; /* 100vh??? */
+}
+
+/* .nav-wrapper { */
+/*     margin-bottom: 10em !important; */
+/* } */
+
+nav-bar + * .col.fill-height,
+nav-bar + *.col.fill-height {
+  padding-top: 63px;
+}
+
+.bottom-space {
+  padding-bottom: 0.4em !important;
+}
+
+.top-space {
+  padding-top: 0.4em !important;
+}
+
+.top-largespace {
+  padding-top: 0.8em !important;
+}
+
+.top-bottom-space {
+  padding-top: 0.4em !important;
+  padding-bottom: 0.4em !important;
+}
+
+.vspace {
+  height: 1.4em !important;
+}
+
+.large-vspace {
+  height: 2.8em !important;
+}
+
+.material-icons.smallsmall {
+    font-size: 1.5rem;
+}
+
+.small-text {
+    font-size: 85% !important;
+}
+
+.smallsmall-text {
+    font-size: 70% !important;
+}
+
+.large-text {
+    font-size: 110% !important;
+}
+
+.largelarge-text {
+    font-size: 125% !important;
+}
+
+.inline {
+    display: inline-block !important;
+}
+.buy-color {
+    color: #a0a0ff  !important;
+}
+.buy-background-color {
+    background-color: #a0a0ff  !important;
+}
+.sell-color {
+    color: #ffa0a0  !important;
+}
+.sell-background-color {
+    background-color: #ffa0a0  !important;
+}
+
+.list-view {
+}
+
+.list-header {
+    width: 100%;
+    margin: 0;
+    /* border: 1px solid #e0e0e0; */
+    /* border-radius: 0px; */
+    /* position: relative; */
+    /* border-bottom: 1px solid #e0e0e0; */
+    /* padding: 10px 20px; */
+    border-radius: 0  !important;  /* xxx why not work? */
+}
+
+.list-header .line {
+    min-height: 48px;
+    /* background-color:  #f2f2f2; */
+    font-size: 1.1em;
+    /* padding-top: 4px; */
+    /* padding-bottom: 4px; */
+    padding-left: 6px;
+    padding-right: 2px;
+}
+.list-header .search-panel {
+    background-color:  white;
+    /* padding: 4px 6px; */
+}
+.list-header .search-panel .comparator {
+    display: inline;
+    height: 2em  !important;
+    width: 3em;
+    padding: 0 6px !important;
+}
+.list-header .search-panel .compare-target {
+    display: inline;
+    height: 2em  !important;
+    width: 8em;
+    margin-bottom: 8px;
+}
+.list-counter {
+    /* min-height: 30px !important; */
+    height: 36px !important;
+    padding: 2px 7px  !important;
+    /* padding-left: 20px  !important; */
+    /* border-bottom: 1px solid #e0e0e0; */
+}
+.list-error {
+    min-height: 48px !important;
+    padding: 2px 7px  !important;
+    flex: 0 0 auto;
+}
+.list-icon {
+    padding-left: 4px;
+    padding-right: 12px;
+}
+.list-icon.disabled {
+    color: #a8a8a8;
+}
+button.list-item {
+    background-color: unset;
+    border: unset;
+    padding:unset;
+    text-align:unset;
+}
+.list-item .title {
+    font-size: 1.1rem;
+}
+
+/* .list-row:hover { */
+/*     background-color: #ddd; */
+/* } */
+
+.list-box {
+    border: 1px solid #e0e0e0;
+    /* height: 100%; */
+    /* overflow-y: scroll !important; */
+    /* resize: vertical !important; */
+}
+.project-list {
+  min-width: 220px;
+  margin: 0 2px;
+  /*     max-width: 400px;*/
+}
+.right-pane {
+    width: 1px;
+    /* 'width:1px;' with flex-grow 1 means defalt size is 1px. It forbid children to growing because of window width 100%
+       In Chrome 0px works well. In Safari however, 0px may not handling, 1px works well.*/
+}
+
+.entity-header {
+    height: auto;
+    /* margin-top: 4px; */
+    margin-bottom: 0px;
+    padding: 7px 0px;
+}
+.entity-header .title, .list-header .title {
+    font-size: 1.2rem;
+    padding: 0 12px;
+    font-color: black;
+    /* padding-left: 1em; */
+}
+.entity-header .button, .list-header .button, .YYcheck-button {
+    min-width: 32px !important;
+    font-size: 0.9rem;
+    padding: 0 8px  !important;
+    margin: 0 0  !important;
+    height: 100%   !important;
+}
+.entity-header-icon {
+    width: 24px;
+    margin: 0px 8px 0 0;
+}
+.header-button-icon {
+    font-size: 1.6rem !important;
+    /* padding-top: 6px; */
+}
+
+.org-list-item {
+    /* font-weight: bold; */
+    border-left: 4px solid #c06040 !important;
+}
+
+.my-list-item {
+    /* font-weight: bold; */
+    border-left: 4px solid #f09070 !important;
+}
+
+.other-list-item {
+    /* padding-left: 12px !important; */
+    /* font-weight: bold; */
+    border-left: 4px solid #ffffff !important;
+}
+
+.entity-body {
+    /* margin: 0.5rem 0 1rem 0; */
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    padding: 1rem 1rem;
+}
+
+.appbar-button {
+    padding: 0 17px 0 17px !important;
+    color: white;
+    white-space: nowrap;
+    /* width: 48px !important; */
+    /* font-size: 0.9em; */
+    /* text-align: center; */
+    /* height: 100%   !important; */
+}
+.appbar-login-button {
+    padding: 0 1rem !important;
+}
+@media only screen and (max-width: 500px) {
+    .appbar-button {
+        padding: 0 14px 0 14px !important;
+    }
+}
+
+.help-button {
+    width: 32px !important;
+    /* height: 32px !important; */
+    padding: 0 4px !important;
+    /* padding-right: 4px !important; */
+    /* padding-left: 4px !important; */
+}
+.no-sel-mark { /* no select mark */
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+
+.material-tooltip {
+    max-width: 240px;
+    text-align: start;
+}
+
+div.error-panel {
+  /* height: 60px; */
+  font-size: 1.2em;
+  color: #ff0000;
+  background-color: #f8f8f8;
+  /* padding-right: 16px; */
+  /* padding-left: 16px; */
+  padding: 10px 16px;
+  margin-bottom: 6px;
+}
+ul .usage {
+    padding-left: 1em !important;
+}
+/* ol .usage { */
+/*     padding-left: 1em !important; */
+/* } */
+/* ul.usage li  { */
+/*     margin: 0 !important; */
+/*     padding: 0 !important; */
+/* } */
+
+/* @media only screen and (max-height: 820px) { */
+/*   .hide-on-mid-height { */
+/*     display: none !important; */
+/*   } */
+/* } */
+
+/* hide app bar and bottom bar on iPhone X or smaller */
+@media only screen and (max-height: 820px) and (max-width: 601px) {
+  .hide-on-short-height {
+    display: none !important;
+  }
+}
+
+/* make non clickable tags such as div and tr clicable on iOS Safari */
+.ios-clickable {
+    cursor: pointer;
+}
+
+.logo-img {
+    object-fit: contain;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border-radius:4px;
+    vertical-align: text-bottom;
+    background: white;
+}
+
+/* rotate icon while loading */
+.loading {
+  animation: rotation 1.0s infinite linear;
+}
+.loading-icon {
+  animation: rotation 1.0s infinite linear;
+  color: #ee6e73;
+  /* color: ${primaryColor} */
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+/*----------------------------------------
+    Horizontal Nav
+------------------------------------------*/
+#horizontal-nav {
+  background: #a2a6b8;
+    /* background: #979797; */
+}
+
+#horizontal-nav ul li{
+    text-align: center;
+    min-width: 58px;
+}
+#horizontal-nav ul li a i{
+  height: 0px;
+  line-height: 45px;
+  font-size: 1.8rem;
+}
+#horizontal-nav ul li a{
+    padding: 0 4px;
+}
+#horizontal-nav ul li a span{
+  position: relative;
+  top: 12px;
+  font-size: 0.6em;
+}
+#horizontal-nav .dropdown-menu span i{
+  line-height: 65px;
+}
+.dropdown-horizontal-list li a{
+  min-width: 150px;
+  text-align: left;
+  font-size: 1.0rem;
+  padding: 10px;
+  font-weight: 400;
+}
+
+/*----------------------------------------
+    Vertical Nav
+------------------------------------------*/
+#vertical-nav {
+  color: #fff;
+  background: #a2a6b8;
+  /* background: #979eaa; */
+  width: 64px;
+}
+
+#vertical-nav a {
+  color: #fff;
+}
+
+nav .nav-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+#vertical-nav ul li{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+#vertical-nav ul li a{
+    width: 100%;
+    padding: 0 0;
+}
+#vertical-nav ul li a i{
+    justify-content: center;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+  height: 0px;
+  line-height: 45px;
+  font-size: 1.8rem;
+}
+#vertical-nav ul li a span{
+  position: relative;
+  top: 8px;
+  font-size: 0.6em;
+}
+
+.flash {
+  animation: flash 1s step-end infinite alternate;
+}
+
+@keyframes flash {
+    50% {
+        /* background-color: #44ff44; */
+        opacity: 0;
+    }
+}
+
+/*----------------------------------------
+    Materialize workaround
+------------------------------------------*/
+h4 {
+  font-size: 2rem !important;
+  line-height: 103% !important;
+  font-weight: 350 !important;
+}
+
+h5 {
+  font-size: 1.2rem !important;
+  line-height: 103% !important;
+}
+
+
+@media only screen and (max-width: 500px) {
+    nav .brand-logo {
+        font-size: 1.3rem !important;
+    }
+    nav .left-brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1rem !important;
+        width: 6rem;
+        white-space: nowrap;
+        overflow: hidden  !important;
+        text-overflow: clip !important;
+    }
+}
+@media only screen and (min-width: 501px) and (max-width: 600px) {
+    nav .brand-logo {
+        font-size: 1.3rem !important;
+    }
+    nav .left-brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.1rem !important;
+        width: 8rem;
+        white-space: nowrap;
+        overflow: hidden  !important;
+        text-overflow: clip !important;
+    }
+}
+@media only screen and (min-width: 601px) {
+    nav .brand-logo {
+        font-size: 1.7rem !important;
+    }
+    nav .left-brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.3rem !important;
+        white-space: nowrap;
+        width: 12rem;
+        overflow: hidden  !important;
+        text-overflow: clip !important;
+    }
+}
+[md-tabs] .waves-effect {
+    position: static;
+}
+
+.row {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px !important;
+}
+
+/* reduce padding around columns in a row */
+.row .col {
+  float: left;
+  box-sizing: border-box;
+  padding: 0 0.3rem !important;
+  min-height: 1px;
+}
+
+.btn, .btn-large,
+.btn-flat {
+  border: none;
+  border-radius: 2px;
+  display: inline-block;
+  /* height: 36px; */
+  min-height: 36px !important;
+  height: auto !important;
+  /*this causes labels too upper  */
+  /* line-height: normal !important; */
+  padding: 0 2rem;
+  /* text-transform: uppercase; */
+  text-transform: none !important;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-flat:focus {
+  background-color: #DFDFDF !important;
+}
+
+.segment-switch {
+    /* border: 1px solid #cccccc; */
+    /* border-radius: 5px; */
+    display: inline-block;
+}
+
+.segment-switch-right {
+    width: 14em;
+  border-top-right-radius: 4px !important ;
+  border-bottom-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  margin-left: 0 !important;
+}
+
+.segment-switch-left {
+    width: 14em;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  margin-right: -4px !important; /* remove gap between buttons */
+}
+
+.transparent-55 {
+  opacity: 0.55;
+}
+
+/* small and two lines button  for small screen.  */
+@media only screen and (max-width: 600px) {
+   .ZZZbtn, .ZZZbtn-large,
+   .ZZZbtn-flat {
+       /* padding: 0 0.5em !important; */
+       min-height: 36px !important;
+       height: auto !important;
+       /* line-height: 20px !important; */
+   }
+}
+
+/* .filler { */
+/*     flex-grow:1; */
+/*     text-align:center; */
+/* } */
+
+.collapsible {
+    margin-top: 0px !important;
+    /* padding-top: 4px !important; */
+}
+
+.collapsible-header {
+  /* background-color: #e8e8e8 !important; */
+  min-height: 44px;
+  padding: 0.2rem 0.6rem   !important;
+}
+
+.collapsible-header-sub {
+  font-size: 0.7em;
+}
+
+/* narrower padding */
+.collapsible-body {
+  padding: 0.8rem 1.8rem   !important;
+}
+
+.collection {
+      margin: 2px 0 0 0 !important;
+    /* margin-top: 2px  !important; */
+    padding-top: 0  !important;
+    height: 100%;
+    /* background-color:  #fafafa; */
+    border-radius: 0  !important;
+    overflow-y: auto !important;  /* this need for scroll */
+    /* resize: vertical !important; */
+}
+.YYYcollection.with-header .collection-header {
+  background-color:  #e0e0e0;
+  /* border-bottom: 1px solid #e0e0e0; */
+  /*     padding:  2px 20px; */
+  height: 44px;
+  font-size: 1.4em;
+}
+.collection.with-header .collection-item {
+  padding-left: 4px;
+  cursor: pointer; /* for iOS Safari */
+}
+.collection .collection-item {
+  background-color: transparent !important; /* for background color setting */
+  min-height: 44px !important;
+  line-height: 1.5rem;
+  /* padding: 10px 20px !important; */
+  margin: 0 0  !important;
+  padding: 8px 8px !important;
+  cursor: pointer; /* for iOS Safari */
+}
+.collection .collection-item:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.10) !important;
+}
+.collection .collection-item:last-child {
+  /* without this last item lacks bottom line */
+  border-bottom: 1px solid #e0e0e0  !important;
+}
+/* .collection .collection-item.avatar { */
+/*   min-height: 60px !important; */
+/*   padding-left: 72px !important; */
+/*   position: relative; */
+/* } */
+
+.table-header th {
+    padding: 3px 4px !important;
+  /* height: 30px  !important; *\/ */
+}
+tr  .table-row {
+    cursor: pointer; /* for iOS Safari */
+}
+.table-row td {
+    padding: 8px 4px !important;
+    /* height: 30px  !important; *\/ */
+}
+
+/* work around of checkbox/radio button issue
+   https://github.com/Dogfalo/materialize/issues/5488 */
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  left: -9999px;
+}
+
+/* Remove default checkbox */
+[type="checkbox"]:not(.browser-default):not(:checked),
+[type="checkbox"]:not(.browser-default):checked {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  left: -9999px;
+}
+.radio-space {
+    padding-right: 1.8em !important;
+    /* padding-left: 1.8em !important; */
+}
+
+/* show clear button in search box */
+/* input[type="search"] { */
+/*   -webkit-appearance: searchfield !important; */
+/*   margin-bottom: 4px !important; */
+/* } */
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button  !important;
+}
+
+/* .side-nav active color (it does not cover all due to materiazlize) <li> */
+.side-nav .collapsible-body > ul:not(.collapsible) > li.active, .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: #53B9D190 !important
+}
+
+/*----------------------------------------
+    Dialog
+------------------------------------------*/
+.small-dialog {
+    width: 300px;
+    /* margin-top: 100px; */
+    max-width: 400px;
+    min-height: 200px !important;
+    background-color: #fafafa;
+    border-radius: 2px;
+  -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+}
+
+.medium-dialog {
+    max-width: 500px;
+    width: 50vw !important;
+    min-height: 40vh !important;
+    max-height: 80vh !important;
+    background-color: #fafafa;
+    border-radius: 2px;
+  -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+}
+
+.help-dialog {
+    max-width: 700px;
+    width: 70vw !important;
+    min-height: 60vh !important;
+    max-height: 80vh !important;
+    background-color: #fafafa;
+    border-radius: 2px;
+  -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+}
+@media only screen and (max-width: 600px) {
+    .help-dialog {
+        max-width: 700px;
+        width: 85vw !important;
+        min-height: 60vh !important;
+        max-height: 80vh !important;
+        background-color: #fafafa;
+        border-radius: 2px;
+        -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.help-dialog h5 {
+    padding-top: 20px;
+}
+
+
+.large-dialog-fixed-height {
+    height: 80vh;
+}
+
+.large-dialog {
+    max-width: 700px;
+    width: 70vw !important;
+    min-height: 70vh;
+    max-height: 85vh;
+    background-color: #fff;
+    -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+}
+@media only screen and (max-width: 880px) {
+    .large-dialog {
+        max-width: 700px;
+        width: 100vw !important;
+        min-height: 70vh;
+        max-height: 95vh;
+        background-color: #fff;
+        -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.no-min-height {
+    min-height: auto !important;
+}
+
+.dialog-content {
+    /* min-height: 300px; */
+    /* height: auto !important; */
+    /* height: 300px; */
+
+    padding: 24px;
+    font-size: 1.1em;
+    overflow-y: auto;
+}
+
+.dialog-footer {
+  border-radius: 0 0 2px 2px;
+  background-color: #fafafa;
+  padding: 4px 6px;
+  width: 100%;
+  height: 48px;
+}
+
+
+.blur-filter {
+    filter: blur(10px);
+}
+
+/* make background dark */
+/* although .blur-filter is used mainly, we need this for dialog over dialog */
+ux-dialog-overlay.active {
+    background-color: black;
+    opacity: 0.2 !important;
+}
+
+ux-dialog-container {
+    overflow-y: hidden !important;
+    /* z-index: 99999 !important; */
+
+    /* backdrop-filter does not work browsers except Safari. so we use .blur-filter */
+    /* -webkit-backdrop-filter: blur(5px); */ /\* other than Safari *\/
+    /* backdrop-filter: blur(5px); */     /\* for Safari *\/
+
+    /* "centering"
+       In hf-base.ts-openModalDialog(), centerHorizontalOnly: true.
+       With centerHorizontalOnly: false, aurelia calculates top and set margin-top: px directolly.
+       It's bad for changing view size after showing dialog.
+     */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/*
+ Fix shift of dialogs to right
+ */
+ux-dialog-container>div {
+    padding-top: 30px !important;
+    padding-left: unset !important;
+    padding-bottom: unset !important;
+    padding-right: unset !important;
+}
+
+ux-dialog-container.top-right-dialog {
+    /* width: 360px; */
+     /* margin-top: 100px; */
+    /* height: 470px; */
+    right: 0;
+    left: auto;
+
+    background-color: #fafafa;
+    overflow-y: auto;
+    border-radius: 2px;
+  -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+}
+
+/*----------------------------------------
+    Dashboard
+------------------------------------------*/
+.dashboard-header {
+  /* background: #f2f2f2; */
+  height: 44px;
+    margin-bottom: 0px;
+  margin-bottom: 4px;
+  /* margin-top: 4px; */
+}
+.dashboard-header .title {
+  font-size: 1.2em;
+  padding-left: 1em;
+}
+.dashboard-menu {
+  /* font-size:28px; */
+}
+.dashboard-menu .icon {
+  padding-right: 8px;
+  font-size:30px;
+  color: #26a69a;   /* teal lighten-1 */
+  /* color: #00bfa5; */
+  /* blue lighten-2 */
+}
+
+.dashboard-menu .history-icon {
+  padding-right: 8px;
+  font-size:24px;
+  color: #4db6ac;   /* teal lighten-2 */
+  /* color: #00bfa5; */
+  /* blue lighten-2 */
+}
+
+.indent {
+  padding-left: 30px !important;
+}
+
+/* div .indent { */
+/*   padding-left: 3em; */
+/* } */
+
+.step-icon {
+  font-size: 30px !important;
+}
+div.request-input-dummy {
+  width: 60%;
+  max-width: 400px;
+  height: 120px;
+  font-size: 12px;
+  margin-left: 70px;
+  border: 0.5px solid #303030 !important;
+}
+
+/*----------------------------------------
+    Draggable, Sortable
+------------------------------------------*/
+.tilt-right {
+    transform: rotate(5deg);
+}
+.tilt-left {
+    transform: rotate(-5deg);
+}
+.draggable-icon {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 1.0em;
+    color: rgba(0, 0, 0, 0.4);
+}
+.draggable-cursor:not(.ui-state-disabled) {
+    cursor: grab;
+}
+.draggable-remove-button {
+    position: absolute;
+    top: 12px;
+    right: 4px;
+    cursor: default;
+}
+
+/*----------------------------------------
+    Leaflet
+------------------------------------------*/
+/* workaround for that Materialize hides checkboxes in layers control in Leaflet */
+[type="checkbox"].leaflet-control-layers-selector {
+    position: static !important;
+    left: 0px  !important;
+    opacity: 1  !important;
+}
+
+.leaflet-entities-pane {
+    opacity: 0.2 !important;
+}
+.leaflet-control-zoomslider {
+    /* height: 100px; */
+    /* padding-bottom: 40px; */
+}
+.leaflet-touch .leaflet-control-zoomslider {
+	box-shadow: none;
+	border: 2px solid rgba(0,0,0,0.2) !important;
+}
+
+.leaflet-centervertex-icon {
+    opacity: 0 !important;
+}
+
+.leaflet-marker-draggable:hover {
+    cursor: move;
+}
+
+.leaflet-div-icon:hover {
+    cursor: nesw-resize;
+}
+/* fix an issue that leaflet' controls appear over dialogs */
+.leaflet-right, .leaflet-left {
+    z-index: 820;
+}
+
+/* fix control over sidenav */
+.leaflet-top, .leaflet-bottom {
+    z-index: 820 !important;
+}
+
+
+/* Large handle of range circle */
+.leaflet-vertex-icon {
+    /* max-width: 40px; */
+    /* max-height: 10px; */
+    width: 20px  !important;
+    height: 20px  !important;
+    margin-left: -10px !important;
+    margin-top: -10px !important;
+    animation: handle-flash 1s step-end infinite alternate;
+}
+@keyframes handle-flash {
+    70% {
+        background-color: #44ff44;
+    }
+}
+
+.leaflet-popup {
+    max-width: 280px;
+}
+
+.leaflet-marker-draggable:hover {
+    cursor: move;
+}
+
+/* marker icon  */
+#open-req-box .hm-marker-icon {
+    box-shadow: 3px 3px 4px 1px rgba(30, 30, 30, 0.24)
+}
+
+/*----------------------------------------
+    D-address
+------------------------------------------*/
+.da-part {
+    /* width: 10em; */
+    max-width: 20em;
+}
+.slash-slash {
+    width: 1em;
+    margin-top: 25px;
+    /* padding-top: 1.9em !important; */
+    /* padding-right: 0  !important; */
+}
+.da-name-right input {
+    text-align: right;
+}
+
+
+/*----------------------------------------
+    Footer
+------------------------------------------*/
+footer.footer {
+  display: -webkit-inline-flex; /* Safari */
+  display: inline-flex;
+  -webkit-flex-direction: row; /* Safari */
+  flex-direction:         row;
+  height: 48px;
+  line-height: 48px;
+  padding-left: 10px;
+  vertical-align: middle;
+  line-height: normal;
+  color: white;
+  background: #c0c0c0;
+}
+
+/*----------------------------------------
+    Open lists
+------------------------------------------*/
+.open-map-box {
+    border: 1px solid #e0e0e0 !important;
+}
+
+.open-area-map {
+    min-width: 160px;
+}
+.open-item-list {
+    width: 240px;
+}
+.open-before-input {
+    margin-top: 1em;
+}
+.open-map-gap {
+    height: 1em;
+}
+.open-item-list a.new-item-button {
+    bottom: 10px;
+    width: 60px;
+    height: 60px;
+    z-index: 2;
+    background-color: #448aff !important;
+}
+.open-item-list i.header-button-icon {
+    font-size: 3rem !important;
+    padding-top: 9px;
+    color: white !important;
+}
+@media only screen and (max-width: 420px) {
+    .open-area-map {
+        width: 100vh;
+        height: 240px;
+    }
+    .open-item-list {
+        width: 100%;
+        height: 100%;
+    }
+    .open-before-input {
+        margin-top: 0;
+    }
+    .open-map-gap {
+        height: 0;
+    }
+    .open-item-list a.new-item-button {
+        bottom: -20px;
+        width: 50px;
+        height: 50px;
+    }
+    .open-item-list i.header-button-icon {
+        font-size: 2.5rem !important;
+        padding-top: 5px;
+    }
+}
+@media only screen and (max-width: 370px) {
+    .open-area-map {
+        width: 100vh;
+        height: 200px;
+    }
+}
+.open-item-closed {
+    background: rgba(140, 140, 140, 0.2);
+}
+.open-item-icon {
+    /* color: ${requestColor(entity, false, false)}; */
+    width: 24px;
+    padding: 0px 8px 0 0;
+}

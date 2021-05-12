@@ -1,0 +1,10 @@
+** Install required packages
+
+  cd luncho-web
+  yarn install
+
+** Run webpack devserver
+  au run --open
+
+** Open the web site
+  http://localhost:8082/

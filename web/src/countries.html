@@ -1,0 +1,36 @@
+<template>
+  <style>
+   input {
+     font-size: 160% !important;
+   }
+  </style>
+  <div class="container">
+    <h5>
+      Convert Luncho for all countries
+    </h5>
+    <div class="valign-wrapper">
+      <md-input label="Luncho " value.bind="lunchoValue" class="width-10em"></md-input>
+      <button md-button click.delegate="convertFromLunchos()">Calc</button>
+    </div>
+    <div class="vspace"></div>
+
+
+    <table id="all-table"  class="tablesorter">
+      <thead>
+        <tr>
+          <th>Country</th><th if.bind="showCountryCode">Code</th><th>Local Value</th><th>Currency</th><th if.bind="showCurrencyCode">Code</th><th>USD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="data of results">
+          <td>${data.country_name}</td>
+          <td if.bind="showCountryCode">${data.country_code}</td>
+          <td>${data.local_currency_value ? data.local_currency_value : '' | numberFormat: '0.00'}</td>
+          <td>${data.currency_name}</td>
+          <td if.bind="showCurrencyCode">${data.currency_code}</td>
+          <td>${data.dollar_value ? data.dollar_value : '' | numberFormat: '0.00'}</td> USD
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>

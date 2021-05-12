@@ -1,0 +1,53 @@
+<template>
+  <style>
+   .min-width {
+     white-space: nowrap;
+     width: 1px;
+   }
+   .select-wrapper {
+     width: 17em !important;
+   }
+  </style>
+  <div class="container">
+    <h5>
+      Convert Luncho for a country
+    </h5>
+
+    <!-- <div class="divider"></div> -->
+    <select md-select value.two-way="countryCode" class="country-select"
+            change.delegate="convertFromLuncho()">
+
+      <option model.bind="null" disabled>${"Select a country"}</option>
+      <option repeat.for="country_code of app.countries | keys" model.bind="country_code">${app.countries[country_code].country_name}</option>
+    </select>
+
+    <div class="vspace" style="padding-top: 2em;"></div>
+    <div class="row" style="font-size: 160%;">
+      <div class="col s12 m5 l4">
+        <span><input value.bind="lunchoValue"
+                     input.delegate="convertFromLuncho()"
+                     class=""
+
+                     style="width: 3em; font-size: 160%;">
+          Luncho
+        </span>
+      </div>
+      <div class="col s12 m7 l8" style="margin-top: 10px;">
+        = ${result.local_currency_value | numberFormat: '0.00'} ${result.currency_name}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m5 l4">
+      </div>
+      <div class="col s12 m7 l8">
+        = $${result.dollar_value | numberFormat: '0.00'} US Dollar
+      </div>
+    </div>
+
+
+    <div>1 Luncho = $${result.dollar_per_luncho | numberFormat: '0.00000'} US Dollar</div>
+    <div>1 ${result.currency_name} = $${result.exchange_rate | numberFormat: '0.00'} /US Dollar</div>
+
+    </div>
+  </div>
+</template>

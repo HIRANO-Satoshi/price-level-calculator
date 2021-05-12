@@ -6,35 +6,47 @@
 #*
 flycheck*
 TAGS
-/gen-cocoa/
-/gen-py/
-/gen-py-unmodified/
-/gen_ndb/n_*
-/gen_ndb/model_map.py
-/gen-js/
-/gen-nodejs/*.js
-/gen-nodejs-unmodified/
-/gen-nodejs-modified/
-/gen-nodejs/*.ts
-/hm-web-dist
-/env
-/pyenv
-/pypyenv
-/cockroach-data
+/server/pyenv
+/server/pypyenv
 flycheck*
 npm-debug.log
 *.profile
 *.icloud
-playground/thrift-test/gen-py/
-playground/thrift-test/gen-py-unmodified/
-playground/thrift-test/gen_ndb/n_*
-playground/thrift-test/gen_ndb/model_map.py
-playground/thrift-test/gen-js/
-playground/thrift-test/gen-nodejs
-playground/thrift-test/gen-nodejs-unmodified
-playground/thrift-test/gen-nodejs-modified
-playground/thrift-test/gen-nodejs
-playground/thrift-test/env
-playground/thrift-test/pypyenv
-playground/cockroach-benchmark/crenv
-/.mypy_cache
+.mypy_cache
+
+# You may want to customise this file depending on your Operating System
+# and the editor that you use.
+#
+# We recommend that you use a Global Gitignore for files that are not related
+# to the project. (https://help.github.com/articles/ignoring-files/#create-a-global-gitignore)
+
+# OS
+#
+# Ref: https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
+# Ref: https://github.com/github/gitignore/blob/master/Global/Windows.gitignore
+# Ref: https://github.com/github/gitignore/blob/master/Global/Linux.gitignore
+.DS_STORE
+Thumbs.db
+
+# Editors
+#
+# Ref: https://github.com/github/gitignore/blob/master/Global
+# Ref: https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
+# Ref: https://github.com/github/gitignore/blob/master/Global/VisualStudioCode.gitignore
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Dependencies
+/web/node_modules
+
+# Compiled files
+/web/scripts
+/web/src/environment.js
+/web/src/environment.ts
+
+/web/dist
+yarn-error.log

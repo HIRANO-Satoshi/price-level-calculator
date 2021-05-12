@@ -1,0 +1,71 @@
+<template>
+  <style>
+   .nav-item {
+     margin-right: 1em;
+   }
+   .nav-link.active {
+     border-bottom: 6px solid yellow;
+   }
+   .nav-tabs {
+     background-color: #ffa0a0a0;
+   }
+   .width-10em input {
+     width: 5em !important;
+   }
+  </style>
+  <require from="materialize-css/dist/css/materialize.css"></require>
+  <div class="tabs-in-navbar">
+    <md-navbar extended="true">
+      <ul class="hide-on-med-and-up left">
+        <li md-waves>
+          <a md-sidenav-collapse="ref.bind: sideNav;" md-button="flat: true;" md-waves>
+            <i class="material-icons white-text " style="padding-left: 2em !important;">menu</i>
+          </a>
+        </li>
+      </ul>
+      <a class="brand-logo center">
+        Luncho
+      </a>
+      <ul class="hide-on-small-only right">
+        <li md-waves><a route-href="route: about;">About</a></li>
+        <!-- <li md-waves><a>Help/Docs</a></li> -->
+      </ul>
+
+      <!-- tabs -->
+      <div slot="content" class="nav-wrapper nav-tabs">
+        <ul  class="z-depth-1">
+          <li repeat.for="row of router.navigation" class="">
+            <a href.bind="row.href" class="nav-link ${row.isActive ? 'active' : ''}">${row.title}</a>
+          </li>
+        </ul>
+      </div>
+    </md-navbar>
+  </div>
+
+  <div class="">
+    <H3 class="center">Luncho: Common Value Index</h3>
+    <h6 class="center container">
+      <p>With 100 Luncho, you can have simple lunch in every country.</p>
+    </h6>
+    <div class="vspace" ></div>
+    <!-- <h5 class="hide-on-small-only center">
+         <span repeat.for="row of router.navigation" class="nav-item">
+         <a href.bind="row.href" class="nav-link ${row.isActive ? 'active' : ''}">${row.title}</a>
+         </span>
+         </h5>
+         <div class="vspace" ></div> -->
+    <div class="vspace" ></div>
+    <div class="vspace" ></div>
+
+    <router-view>
+    </router-view>
+  </div>
+
+  <md-sidenav view-model.ref="sideNav" fixed.bind="show" edge="left">
+    <ul>
+      <li md-waves><a route-href="route: about;">About</a></li>
+      <!-- <li md-waves><a>Help/Docs</a></li> -->
+    </ul>
+  </md-sidenav>
+
+</template>
