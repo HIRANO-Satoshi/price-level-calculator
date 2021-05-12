@@ -1,0 +1,13 @@
+# requirements.txt for pypy3
+#
+# HIRANO Satoshi
+# 2021/05/12
+
+# packages
+fastapi
+gunicorn
+uvicorn
+requests
+mypy-extensions
+#orjson does not support Pypy
+#ujson does not support Pypy

@@ -1,4 +1,27 @@
-** install
+
+** Manual install
+  cd luncho-server
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  bash再起動でPATHにrustupを入れる
+  rustup install nightly ; rustup default nightly
+  brew install pypy3
+  install-packages.sh
+    or
+    pip -r requirements-pypy.txt install
+** run
+  start-gunicorn.sh
+
+** Docker
+- build
+   docker compose build --progress plain
+- run
+   docker run luncho-server_app
+- ps for containerID
+   docker ps
+- kill
+   docker kill containerID
+
+** Manual install (obsolete pipenv version)
   cd luncho-server
   brew install pipenv
   - pipenv --python 3.9
@@ -13,7 +36,7 @@
     - bash再起動でPATHにrustupを入れる
     - rustup install nightly ; rustup default nightly
 
-** run
+- run
   cd luncho-server
   pipenv shell
   gunicorn --access-logfile - --error-logfile - -k uvicorn.workers.UvicornH11Worker main:app --reload --timeout 600
@@ -25,6 +48,7 @@
 
   - これはreloadでエラーが出る
     uvicorn main:app --reload --port 8000
+
 
 ** Data
 

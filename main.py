@@ -9,6 +9,7 @@ import copy
 import csv
 import json
 import pdb
+import logging
 import re
 import datetime
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
@@ -17,6 +18,8 @@ from mypy_extensions import TypedDict
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from src import exchange_rate
+from src.types import Currency, CurrencyCode, C1000, Country, CountryCode
 
 app = FastAPI()
 
@@ -30,16 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-CountryCode = str
-CurrencyCode = str
-
-class Country(TypedDict):
-    ppp: float                # PPP in local currency of currency_name
-    currency_code: CurrencyCode # AFN  (ISO 3 letter currency code)
-    currency_name: str        # Afghani
-    country_name: str           # Afghanistan
-
 
 # ICP country metadata
 #   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
@@ -66,16 +59,6 @@ class IMF_PPP_Country(TypedDict, total=False):
 
 IMF_PPP_All: Dict[CountryCode, IMF_PPP_Country] = {}  # ,
 
-class FixerExchangeRate(TypedDict):
-    success: bool    # true if API success
-    timestamp: int   # 1605081845
-    base: str        # always "EUR"
-    date: str        #"2020-11-11",
-    rates: Dict[str, float]   # "AED": 4.337445
-
-Fixer_Exchange_Rates: FixerExchangeRate = {}
-Exchange_Rates: Dict[str, float] = {}
-
 
 
 SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
@@ -94,7 +77,7 @@ async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: f
     dollar_per_luncho: float = 0
     local_currency_value: float = 0
     dollar_value: float = 0
-    exchange_rate: Optional[float] = 0
+    exchange_rate_per_USD: Optional[float] = 0
     currency_code: Optional[CurrencyCode] = None
 
     IMF_PPP_this_country = IMF_PPP_All[country_code]
@@ -102,12 +85,12 @@ async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: f
     year: int = datetime.datetime.today().year
     ppp: float = IMF_PPP_this_country['year_ppp'].get(year, None)  # country's ppp of this year
     if ppp:
-        exchange_rate = Exchange_Rates.get(currency_code, None)
-        if exchange_rate is not None:
+        exchange_rate_per_USD = exchange_rate.exchange_rate_per_USD(currency_code)
+        if exchange_rate_per_USD is not None:
             #breakpoint()
             dollar_per_luncho = Doller_Per_SDR * SDR_Per_Luncho
             local_currency_value = dollar_per_luncho * ppp * luncho_value
-            dollar_value = local_currency_value / exchange_rate
+            dollar_value = local_currency_value / exchange_rate_per_USD
         else:
             print('Exchange rate not found: ' + IMF_PPP_this_country['country_name'] + ' ' + IMF_PPP_this_country['currency_name'] + '(' + currency_code + ')')
     else:
@@ -122,7 +105,7 @@ async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: f
             'currency_name': IMF_PPP_this_country['currency_name'],
             'ppp': ppp,
             'dollar_per_luncho': dollar_per_luncho,
-            'exchange_rate': exchange_rate
+            'exchange_rate': exchange_rate_per_USD
     }
 
 @app.get("/convert-from-luncho-all")
@@ -184,7 +167,7 @@ def init_data() -> None:
                 data['coverage'] = coverage
 
             Country_Metadata[data['code']] = dict(data)
-        print(str(Country_Metadata))
+        #print(str(Country_Metadata))
 
     # build IMF_PPP_All: IMF_PPP_Country Implied PPP conversion rate (National currency per international dollar)
     mapping = {
@@ -239,17 +222,9 @@ def init_data() -> None:
                                       'country_name': Country_Metadata[country_code]['table_name']
             }
 
-        print(str(IMF_PPP_All))
+        #print(str(IMF_PPP_All))
 
-    with open('data/fixer-exchange-2020-11-11.json', newline='') as fixer_file:
-        global Fixer_Exchange_Rates, Exchange_Rates
-        Fixer_Exchange_Rates  = json.load(fixer_file)
-        if Fixer_Exchange_Rates['success']:
-            pass  # XXX
-        usd: float = Fixer_Exchange_Rates['rates']['USD']  # USD per euro
-        for currecy_code, euro_value in Fixer_Exchange_Rates['rates'].items():  #type: CurrencyCode, float
-            Exchange_Rates[currecy_code] = euro_value / usd   # store in doller
-        print(str(Exchange_Rates))
+    exchange_rate.load_exchange_rates()
 
 # initialize
 init_data()

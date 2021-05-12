@@ -17,5 +17,5 @@ orjson = {version = "*", sys_platform = "== 'ignore-it'"}
 #ujson does not support Pypy
 ujson = {version = "*", sys_platform = "== 'ignore-it'"}
 
-[requires]
-python_version = "3.9"
+#[requires]
+#python_version = "3.9"

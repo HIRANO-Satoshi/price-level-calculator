@@ -1,0 +1,12 @@
+# requirements.txt for Python with mypy for development.
+#
+
+# packages
+mypy
+fastapi
+gunicorn
+uvicorn
+requests
+mypy-extensions
+#orjson does not support Pypy
+#ujson does not support Pypy
