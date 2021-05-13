@@ -8,7 +8,7 @@
 
 import logging
 from typing import Type, Optional, List, Dict #, Tuple, Union, Any, Generator, cast
-from mypy_extensions import TypedDict
+from typing_extensions import TypedDict
 from fastapi import FastAPI, HTTPException
 
 def error(value: any, msg: str) -> None:

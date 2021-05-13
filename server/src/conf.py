@@ -1,8 +1,8 @@
 '''
- Configuration of the Luncho server
+  Configuration of the Luncho server
 
- Author: HIRANO Satoshi
- Date: 2021/05/12
+  Author: HIRANO Satoshi
+  Date: 2021/05/12
 '''
 
 def Header_To_Fetch(lang: str) -> str:

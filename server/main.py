@@ -1,27 +1,33 @@
+#!/usr/local/bin/pypy3
 '''
-Luncho server
+  Luncho server
 
-@author HIRANO Satoshi
-@date  2020/02/28
+  @author HIRANO Satoshi
+  @date  2020/02/28
 '''
 
-import copy
-import csv
+#import pdb
+#import logging
+import sys
 import json
-import pdb
-import logging
-import re
-import datetime
-from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
-from mypy_extensions import TypedDict
-
+#from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 
 from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+from fastapi.staticfiles import StaticFiles
+from fastapi_utils.openapi import simplify_operation_ids
 from starlette.middleware.cors import CORSMiddleware
-from src import exchange_rate
-from src.types import Currency, CurrencyCode, C1000, Country, CountryCode
 
-app = FastAPI()
+
+app = FastAPI(
+    title="Luncho server converts between local currency and Universal Luncho index for the economic inequality problem",
+    description="With 100 Luncho, you can have simple lunch in every country.",
+    version="0.0.1"
+)
+
+#pylint: disable=wrong-import-position
+from src import api       # initialize routes
+from src import ppp_data
 
 # CORS
 app.add_middleware(
@@ -34,197 +40,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ICP country metadata
-#   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
-#   {'ALB': {1980: 24.4, 1981: 24.5...
-class CountryMetadataType(TypedDict):
-    code: CountryCode                 # AFG  (ISO 3 letter country code)
-    long_name: str            # Islamic State of Afghanistan
-    currency_code: CurrencyCode  # AFN  (ISO 3 letter currency code)
-    currency_name: str        # Afghani
-    table_name: str           # Afghanistan
-    coverage: Optional[str]   # Urban and Rural, Urban only, Rural only
+# use method names in OpenAPI operationIds to generate methods with the method names
+simplify_operation_ids(app)
 
-Country_Metadata: Dict[CountryCode, CountryMetadataType] = {}   # country_code, CountryMetadataType
+# static files in static dir
+#app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# IMF PPP data
-#   {'AFG': {            1981: 17.4...
-#   {'ALB': {1980: 24.4, 1981: 24.5...
-class IMF_PPP_Country(TypedDict, total=False):
-    year_ppp: Dict[int, float]  # { year: ppp }  Optional
-    ppp: float                # PPP in local currency of currency_name
-    currency_code: CurrencyCode # AFN  (ISO 3 letter currency code)
-    currency_name: str        # Afghani
-    country_name: str           # Afghanistan
+if __name__ == "__main__":
+    # command line
+    if len(sys.argv) == 2 and sys.argv[1] == 'gen':
+        print(api.gen_openapi_schema())
+else:
 
-IMF_PPP_All: Dict[CountryCode, IMF_PPP_Country] = {}  # ,
-
-
-
-SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
-Doller_Per_SDR = 1.424900 # 1 SDR = $1.424900
-
-
-
-
-@app.get("/convert-from-luncho/")
-async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100):
-
-    if not country_code:
-        country_code = 'JPN'
-
-
-    dollar_per_luncho: float = 0
-    local_currency_value: float = 0
-    dollar_value: float = 0
-    exchange_rate_per_USD: Optional[float] = 0
-    currency_code: Optional[CurrencyCode] = None
-
-    IMF_PPP_this_country = IMF_PPP_All[country_code]
-    currency_code = IMF_PPP_this_country['currency_code']
-    year: int = datetime.datetime.today().year
-    ppp: float = IMF_PPP_this_country['year_ppp'].get(year, None)  # country's ppp of this year
-    if ppp:
-        exchange_rate_per_USD = exchange_rate.exchange_rate_per_USD(currency_code)
-        if exchange_rate_per_USD is not None:
-            #breakpoint()
-            dollar_per_luncho = Doller_Per_SDR * SDR_Per_Luncho
-            local_currency_value = dollar_per_luncho * ppp * luncho_value
-            dollar_value = local_currency_value / exchange_rate_per_USD
-        else:
-            print('Exchange rate not found: ' + IMF_PPP_this_country['country_name'] + ' ' + IMF_PPP_this_country['currency_name'] + '(' + currency_code + ')')
-    else:
-        print('PPP not found: ' + IMF_PPP_this_country['country_name'] + ' ' + IMF_PPP_this_country['currency_name'] + '(' + currency_code + ')')
-
-
-    return {"dollar_value": dollar_value,
-            'local_currency_value': local_currency_value,
-            'currency_code': currency_code,
-            'country_code': country_code,
-            'country_name': IMF_PPP_this_country['country_name'],
-            'currency_name': IMF_PPP_this_country['currency_name'],
-            'ppp': ppp,
-            'dollar_per_luncho': dollar_per_luncho,
-            'exchange_rate': exchange_rate_per_USD
-    }
-
-@app.get("/convert-from-luncho-all")
-async def convert_from_luncho_all(luncho_value: float) -> List[IMF_PPP_Country]:
-
-    lunchos = []
-    for country_code in IMF_PPP_All:  #type: CountryCode
-        lunchos.append(await convert_from_luncho(country_code, luncho_value))
-    return lunchos
-
-@app.get("/countries")
-async def countries() -> IMF_PPP_Country:
-    IMF_PPP_All_copy: Dict[CountryCode, IMF_PPP_Country] = copy.deepcopy(IMF_PPP_All)
-
-    for country_code in IMF_PPP_All_copy:  #type: CountryCode
-        del IMF_PPP_All_copy[country_code]['year_ppp']
-    return IMF_PPP_All_copy
-
-
-@app.get("/convert-from-luncho-dummy/")
-async def convert_from_luncho_dummy(currency_code: CurrencyCode, luncho_value: float) -> Dict[str, float]:
-    ppp = 1.0
-    if currency_code == 'USD':
-        ppp = 4.81
-    elif currency_code == 'JPY':
-        ppp = 530
-    elif currency_code == 'EURO':
-        ppp = 4.40
-    elif currency_code == 'CNY':
-        ppp = 33.92
-
-    return {"currency_value": luncho_value * ppp}
-
-def init_data() -> None:
-    global Country_Metadata, IMF_PPP_All
-
-    # CountryMetadataType into Country_Metadata
-    with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:
-        metadata_reader  = csv.DictReader(metadata_file)
-        for data in metadata_reader:
-            data['code'] = data['Code']
-            del data['Code']
-            data['long_name'] = data['Long Name']
-            del data['Long Name']
-            # decompose Currency Unit           AFN: Afghani (2011)
-            currency_unit: Optional[str] = data['Currency Unit']
-            data['currency_code'] = currency_unit[0:3]
-            data['currency_name'] = re.sub(' \(.*?\)', '', currency_unit[5:])
-            del data['Currency Unit']
-
-            data['table_name'] = data['Table Name']
-            if data['table_name'] == 'Taiwan, China':
-                data['table_name'] = 'Taiwan'
-            del data['Table Name']
-            # coverage
-            coverage: Optional[str] = data.get('Household consumption price survey: Geographical coverage')
-            del data['Household consumption price survey: Geographical coverage']
-            if coverage:
-                data['coverage'] = coverage
-
-            Country_Metadata[data['code']] = dict(data)
-        #print(str(Country_Metadata))
-
-    # build IMF_PPP_All: IMF_PPP_Country Implied PPP conversion rate (National currency per international dollar)
-    mapping = {
-        "China, People's Republic of": 'China',
-        "Congo, Dem. Rep. of the": 'Congo, Dem. Rep.',
-        "Congo, Republic of ": 'Congo, Rep.',
-        "Egypt": 'Egypt, Arab Rep.',
-        "Hong Kong SAR": 'Hong Kong SAR, China',
-        "Iran": 'Iran, Islamic Rep.',
-        "Korea, Republic of": 'Korea, Rep.',
-        "Lao P.D.R.": 'Lao PDR',
-        "Macao SAR": 'Macao SAR, China',
-        "Micronesia, Fed. States of": "Micronesia, Fed. Sts.",
-        "North Macedonia ": "North Macedonia",
-        "Saint Kitts and Nevis": "St. Kitts and Nevis",
-        "Saint Lucia": "St. Lucia",
-        "Saint Vincent and the Grenadines": "St. Vincent and the Grenadines",
-        "South Sudan, Republic of": "South Sudan",
-        "Syria": "Syrian Arab Republic",
-        "São Tomé and Príncipe": "São Tomé and Principe",
-        "Taiwan Province of China": "Taiwan",
-        "Venezuela": "Venezuela, RB",
-        "Yemen": "Yemen, Rep.",
-
-    }
-    with open('data/imf-dm-export-20201110.csv', newline='', encoding="utf_8_sig") as imf_file:
-        imf_reader  = csv.DictReader(imf_file)
-        for data in imf_reader:
-            table_name: str = data.get('Implied PPP conversion rate (National currency per international dollar)')
-            if not table_name or not data.get('2020'):
-                continue
-            table_name = mapping.get(table_name, table_name)
-            #pdb.set_trace()
-            country_code: Optional[str] = None
-            for code, metadata in Country_Metadata.items(): #type: str, CountryMetadataType
-                # print('code=' + code)
-                # print('metadata = ' + str(metadata))
-                if metadata['table_name'] == table_name:
-                    country_code = code
-            assert country_code, 'country code for ' + table_name
-            ppps = {}
-            for year in range(1980, 2100):
-                ppp = data.get(str(year))
-                if ppp is None or ppp == 'no data':
-                    continue
-                ppps[year] = float(ppp)
-            # print(str(ppps))
-            IMF_PPP_All[country_code] = { 'year_ppp': ppps,
-                                      #'ppp': ppps[datetime.datetime.today().year],
-                                      'currency_code': Country_Metadata[country_code]['currency_code'],
-                                      'currency_name': Country_Metadata[country_code]['currency_name'],
-                                      'country_name': Country_Metadata[country_code]['table_name']
-            }
-
-        #print(str(IMF_PPP_All))
-
-    exchange_rate.load_exchange_rates()
-
-# initialize
-init_data()
+    # initialize Lunch server
+    ppp_data.init()

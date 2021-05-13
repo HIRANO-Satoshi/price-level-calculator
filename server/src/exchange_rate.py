@@ -1,16 +1,14 @@
 '''
-Exchange rates
+  Exchange rates
 
-Created on 2021/05/09
+  Created on 2021/05/09
 
-Author: HIRANO Satoshi
-
-Copyright Peace and Passion
+  Author: HIRANO Satoshi
 '''
 
 import json
 from typing import Type, Optional, List, Dict #, Tuple, Union, Any, Generator, cast
-from mypy_extensions import TypedDict
+from typing_extensions import TypedDict
 import requests
 
 from src.utils import error

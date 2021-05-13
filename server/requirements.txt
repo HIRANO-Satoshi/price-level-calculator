@@ -2,8 +2,10 @@
 #
 
 # packages
+aiofiles
 mypy
 fastapi
+fastapi-utils
 gunicorn
 uvicorn
 requests
