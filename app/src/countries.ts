@@ -25,7 +25,7 @@ export class Countries {
     }
 
     convertFromLunchos() {
-        this.api.convertFromLunchoAll({lunchoValue: Number(this.lunchoValue)})
+        this.api.lunchos({lunchoValue: Number(this.lunchoValue)})
             .then((results: LunchoResult[]) => {
                 this.results = results;
                 this.sorterInit();

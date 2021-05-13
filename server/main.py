@@ -19,11 +19,17 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 
-
+tags_metadata = [
+    {
+        "name": "Luncho",
+        "description": "Luncho calculation APIs.",
+    },
+]
 app = FastAPI(
     title="Luncho server converts between local currency and Universal Luncho index for the economic inequality problem",
     description="With 100 Luncho, you can have simple lunch in every country.",
-    version="0.0.1"
+    version="0.0.1",
+    openapi_tags=tags_metadata
 )
 
 #pylint: disable=wrong-import-position
@@ -67,7 +73,7 @@ if __name__ == "__main__":
             print(conf.Openapi_Schema_File + ' was generated.', file=sys.stderr)
 
             #  'typescript-aurelia' is always generated for the Aurelia app
-            os.system('npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g typescript-aurelia -o ../app/src/gen-openapi -api --additional-properties=supportsES6=true,modelPropertyNaming=original,' + (opt if opt else ''))
+            os.system('npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g typescript-aurelia -o ../app/src/gen-openapi -api --additional-properties=supportsES6=true,modelPropertyNaming=original')
 
             # gen client libraries using openAPI generator
             for typ, opt in conf.Gen_Openapi.items():  #type: str, Optional[str]

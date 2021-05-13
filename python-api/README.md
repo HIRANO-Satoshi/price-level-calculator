@@ -65,15 +65,13 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = default_api.DefaultApi(api_client)
-    country_code = "JPN" # str |  (optional) (default to "JPN")
-luncho_value = 100 # float |  (optional) (default to 100)
-
+    
     try:
-        # Convert From Luncho
-        api_response = api_instance.convert_from_luncho(country_code=country_code, luncho_value=luncho_value)
+        # Countries
+        api_response = api_instance.countries()
         pprint(api_response)
     except openapi_client.ApiException as e:
-        print("Exception when calling DefaultApi->convert_from_luncho: %s\n" % e)
+        print("Exception when calling DefaultApi->countries: %s\n" % e)
 ```
 
 ## Documentation for API Endpoints
@@ -82,11 +80,10 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**convert_from_luncho**](docs/DefaultApi.md#convert_from_luncho) | **GET** /convert-from-luncho/ | Convert From Luncho
-*DefaultApi* | [**convert_from_luncho_all**](docs/DefaultApi.md#convert_from_luncho_all) | **GET** /convert-from-luncho-all | Convert From Luncho All
-*DefaultApi* | [**convert_from_luncho_dummy**](docs/DefaultApi.md#convert_from_luncho_dummy) | **GET** /convert-from-luncho-dummy/ | Convert From Luncho Dummy
 *DefaultApi* | [**countries**](docs/DefaultApi.md#countries) | **GET** /countries | Countries
+*DefaultApi* | [**lunchos**](docs/DefaultApi.md#lunchos) | **GET** /lunchos | Lunchos
 *DefaultApi* | [**test**](docs/DefaultApi.md#test) | **GET** /test/ | Test
+*LunchoApi* | [**luncho**](docs/LunchoApi.md#luncho) | **GET** /luncho | Luncho
 
 
 ## Documentation For Models

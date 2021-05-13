@@ -13,6 +13,7 @@
 export { Api } from './Api';
 export { AuthStorage } from './AuthStorage';
 export { DefaultApi } from './DefaultApi';
+export { LunchoApi } from './LunchoApi';
 export {
   HTTPValidationError,
   IMFPPPCountry,

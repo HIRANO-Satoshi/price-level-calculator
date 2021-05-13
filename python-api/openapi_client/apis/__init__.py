@@ -15,3 +15,4 @@
 
 # Import APIs into API package:
 from openapi_client.api.default_api import DefaultApi
+from openapi_client.api.luncho_api import LunchoApi

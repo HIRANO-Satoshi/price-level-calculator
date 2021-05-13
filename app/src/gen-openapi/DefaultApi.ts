@@ -20,32 +20,16 @@ import {
 } from './models';
 
 /**
- * convertFromLuncho - parameters interface
- */
-export interface IConvertFromLunchoParams {
-  countryCode?: string;
-  lunchoValue?: number;
-}
-
-/**
- * convertFromLunchoAll - parameters interface
- */
-export interface IConvertFromLunchoAllParams {
-  lunchoValue: number;
-}
-
-/**
- * convertFromLunchoDummy - parameters interface
- */
-export interface IConvertFromLunchoDummyParams {
-  currencyCode: string;
-  lunchoValue: number;
-}
-
-/**
  * countries - parameters interface
  */
 export interface ICountriesParams {
+}
+
+/**
+ * lunchos - parameters interface
+ */
+export interface ILunchosParams {
+  lunchoValue: number;
 }
 
 /**
@@ -73,101 +57,8 @@ export class DefaultApi extends Api {
   }
 
   /**
-   * Convert From Luncho
-   * @param params.countryCode 
-   * @param params.lunchoValue 
-   */
-  async convertFromLuncho(params: IConvertFromLunchoParams): Promise<LunchoResult> {
-    // Verify required parameters are set
-
-    // Create URL to call
-    const url = `${this.basePath}/convert-from-luncho/`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
-      // Set query parameters
-      .withParams({ 
-        'country_code': params['countryCode'],
-        'luncho_value': params['lunchoValue'],
-      })
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
-  }
-
-  /**
-   * Convert From Luncho All
-   * @param params.lunchoValue 
-   */
-  async convertFromLunchoAll(params: IConvertFromLunchoAllParams): Promise<Array<LunchoResult>> {
-    // Verify required parameters are set
-    this.ensureParamIsSet('convertFromLunchoAll', params, 'lunchoValue');
-
-    // Create URL to call
-    const url = `${this.basePath}/convert-from-luncho-all`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
-      // Set query parameters
-      .withParams({ 
-        'luncho_value': params['lunchoValue'],
-      })
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
-  }
-
-  /**
-   * Convert From Luncho Dummy
-   * @param params.currencyCode 
-   * @param params.lunchoValue 
-   */
-  async convertFromLunchoDummy(params: IConvertFromLunchoDummyParams): Promise<any> {
-    // Verify required parameters are set
-    this.ensureParamIsSet('convertFromLunchoDummy', params, 'currencyCode');
-    this.ensureParamIsSet('convertFromLunchoDummy', params, 'lunchoValue');
-
-    // Create URL to call
-    const url = `${this.basePath}/convert-from-luncho-dummy/`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
-      // Set query parameters
-      .withParams({ 
-        'currency_code': params['currencyCode'],
-        'luncho_value': params['lunchoValue'],
-      })
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
-  }
-
-  /**
    * Countries
+   * Returns country data for all countries.
    */
   async countries(): Promise<{ [key: string]: IMFPPPCountry; }> {
     // Verify required parameters are set
@@ -178,6 +69,36 @@ export class DefaultApi extends Api {
     const response = await this.httpClient.createRequest(url)
       // Set HTTP method
       .asGet()
+
+      // Send the request
+      .send();
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw new Error(response.content);
+    }
+
+    // Extract the content
+    return response.content;
+  }
+
+  /**
+   * Lunchos
+   * @param params.lunchoValue 
+   */
+  async lunchos(params: ILunchosParams): Promise<Array<LunchoResult>> {
+    // Verify required parameters are set
+    this.ensureParamIsSet('lunchos', params, 'lunchoValue');
+
+    // Create URL to call
+    const url = `${this.basePath}/lunchos`;
+
+    const response = await this.httpClient.createRequest(url)
+      // Set HTTP method
+      .asGet()
+      // Set query parameters
+      .withParams({ 
+        'luncho_value': params['lunchoValue'],
+      })
 
       // Send the request
       .send();

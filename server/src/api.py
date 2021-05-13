@@ -27,8 +27,8 @@ Doller_Per_SDR = 1.424900 # 1 SDR = $1.424900
 async def test(country_code: CountryCode = 'JPN', luncho_value: float = 100) -> List[str]:
     return ['a']
 
-@app.get("/convert-from-luncho/", response_model=LunchoResult)
-async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100) -> LunchoResult:
+@app.get("/luncho", response_model=LunchoResult, tags=['Luncho'])
+async def luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100) -> LunchoResult:
 
     if not country_code:
         country_code = 'JPN'
@@ -68,17 +68,21 @@ async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: f
             'exchange_rate': exchange_rate_per_USD
     }
 
-@app.get("/convert-from-luncho-all", response_model=List[LunchoResult])
-async def convert_from_luncho_all(luncho_value: float) -> List[LunchoResult]:
 
-    lunchos: List[LunchoResult] = []
+@app.get("/lunchos", response_model=List[LunchoResult])
+async def lunchos(luncho_value: float) -> List[LunchoResult]:
+
+    lunchoResults: List[LunchoResult] = []
     for country_code in IMF_PPP_All:  #type: CountryCode
-        lunchos.append(await convert_from_luncho(country_code, luncho_value))
-    return lunchos
+        lunchoResults.append(await luncho(country_code, luncho_value))
+    return lunchoResults
 
 
 @app.get("/countries", response_model=Dict[CountryCode, IMF_PPP_Country])
 async def countries() -> Dict[CountryCode, IMF_PPP_Country]:
+    '''
+      Returns country data for all countries.
+    '''
     IMF_PPP_All_copy: Dict[CountryCode, IMF_PPP_Country] = copy.deepcopy(IMF_PPP_All)
 
     for country_code in IMF_PPP_All_copy:  #type: CountryCode
@@ -89,20 +93,6 @@ async def countries() -> Dict[CountryCode, IMF_PPP_Country]:
     return IMF_PPP_All_copy
 
 
-
-@app.get("/convert-from-luncho-dummy/")
-async def convert_from_luncho_dummy(currency_code: CurrencyCode, luncho_value: float) -> Dict[str, float]:
-    ppp = 1.0
-    if currency_code == 'USD':
-        ppp = 4.81
-    elif currency_code == 'JPY':
-        ppp = 530
-    elif currency_code == 'EURO':
-        ppp = 4.40
-    elif currency_code == 'CNY':
-        ppp = 33.92
-
-    return {"currency_value": luncho_value * ppp}
 
 
 def gen_openapi_schema() -> Dict:

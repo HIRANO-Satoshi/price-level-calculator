@@ -14,15 +14,12 @@ export class Single {
     lunchoValue: number = 100;
     result: LunchoResult;
 
-    constructor() {
-    }
-
     attached() {
         this.convertFromLuncho();
     }
 
     convertFromLuncho() {
-        this.api.convertFromLuncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
+        this.api.luncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
             .then((result: LunchoResult) => {
                 this.result = result;
                 this.countryCode = result.country_code;

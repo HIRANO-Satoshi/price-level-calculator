@@ -5,12 +5,14 @@ README.md
 docs/DefaultApi.md
 docs/HTTPValidationError.md
 docs/IMFPPPCountry.md
+docs/LunchoApi.md
 docs/LunchoResult.md
 docs/ValidationError.md
 git_push.sh
 openapi_client/__init__.py
 openapi_client/api/__init__.py
 openapi_client/api/default_api.py
+openapi_client/api/luncho_api.py
 openapi_client/api_client.py
 openapi_client/apis/__init__.py
 openapi_client/configuration.py
@@ -28,4 +30,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_luncho_api.py
 tox.ini

@@ -762,10 +762,10 @@ class Endpoint(object):
         Example:
 
         api_instance = DefaultApi()
-        api_instance.convert_from_luncho  # this is an instance of the class Endpoint
-        api_instance.convert_from_luncho()  # this invokes api_instance.convert_from_luncho.__call__()
+        api_instance.countries  # this is an instance of the class Endpoint
+        api_instance.countries()  # this invokes api_instance.countries.__call__()
         which then invokes the callable functions stored in that endpoint at
-        api_instance.convert_from_luncho.callable or self.callable in this class
+        api_instance.countries.callable or self.callable in this class
 
         """
         return self.callable(self, *args, **kwargs)
