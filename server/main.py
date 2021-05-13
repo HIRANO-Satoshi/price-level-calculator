@@ -60,15 +60,18 @@ if __name__ == "__main__":
             pass
 
         lib_paths: List[str] = [typ + '-api' for typ, opt in conf.Gen_Openapi.items()]
-        if schema != old_schema or not all([os.path.exists(path) for path in lib_paths]):
+        if schema != old_schema or not all([os.path.exists(path) for path in lib_paths]): #XXX always true?
             # generate schema file
             with open(conf.Openapi_Schema_File, 'w') as outfile:
                 outfile.write(schema)
             print(conf.Openapi_Schema_File + ' was generated.', file=sys.stderr)
 
+            #  'typescript-aurelia' is always generated for the Aurelia app
+            os.system('npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g typescript-aurelia -o ../app/src/gen-openapi -api --additional-properties=supportsES6=true,modelPropertyNaming=original,' + (opt if opt else ''))
+
             # gen client libraries using openAPI generator
             for typ, opt in conf.Gen_Openapi.items():  #type: str, Optional[str]
-                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../' + typ + '-api --additional-properties=modelPropertyNaming=original,' + (opt if opt else '')
+                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../' + typ + '-api --additional-properties=supportsES6=true,modelPropertyNaming=original,' + (opt if opt else '')
                 print(cmd, file=sys.stderr, flush=True)
                 os.system(cmd)
     else:
