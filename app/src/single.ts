@@ -4,27 +4,35 @@ import { HttpClient } from 'aurelia-fetch-client';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
 import { App } from './app';
-import { Luncho, LunchoResult} from './luncho';
+import { DefaultApi, LunchoResult } from './gen-openapi';
 
 @autoinject
 export class Single {
-    app = App.app;
+    app: App = App.app;
+    api: DefaultApi = App.app.api;
     countryCode: string = 'JPN';
     lunchoValue: number = 100;
     result: LunchoResult;
 
-    // constructor() {
-    // }
+    constructor() {
+    }
 
     attached() {
         this.convertFromLuncho();
     }
 
     convertFromLuncho() {
-        this.app.luncho.convertFromLuncho(this.countryCode, Number(this.lunchoValue))
+        this.api.convertFromLuncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
             .then((result: LunchoResult) => {
                 this.result = result;
                 this.countryCode = result.country_code;
             });
     }
+    // convertFromLuncho() {
+    //     this.app.luncho.convertFromLuncho(this.countryCode, Number(this.lunchoValue))
+    //         .then((result: LunchoResult) => {
+    //             this.result = result;
+    //             this.countryCode = result.country_code;
+    //         });
+    // }
 }

@@ -4,11 +4,12 @@ import { HttpClient } from 'aurelia-fetch-client';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
 import { App } from './app';
-import { Luncho, LunchoResult} from './luncho';
+import { DefaultApi, LunchoResult } from './gen-openapi';
 
 @autoinject
 export class Countries {
-    app = App.app;
+    app: App = App.app;
+    api: DefaultApi = App.app.api;
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
     results: LunchoResult[];
@@ -24,7 +25,7 @@ export class Countries {
     }
 
     convertFromLunchos() {
-        this.app.luncho.convertFromLunchos(Number(this.lunchoValue))
+        this.api.convertFromLunchoAll({lunchoValue: Number(this.lunchoValue)})
             .then((results: LunchoResult[]) => {
                 this.results = results;
                 this.sorterInit();

@@ -7,12 +7,17 @@
 '''
 
 import json
+import time
+import sys
+import logging
+from threading import Thread
 from typing import Type, Optional, List, Dict #, Tuple, Union, Any, Generator, cast
 from typing_extensions import TypedDict
 import requests
 
 from src.utils import error
-from src import conf
+import conf
+import keys
 from src.types import Currency, CurrencyCode, C1000
 
 class FixerExchangeRate(TypedDict):
@@ -52,10 +57,11 @@ def exchange_rate_per_USD(currencyCode: CurrencyCode) -> Optional[float]:
 # load exchange rates from fixer
 def load_exchange_rates():
     global Fixer_Exchange_Rates, Exchange_Rates
-    url: str = 'http://data.fixer.io/api/latest?access_key=12f3a3071f20a9972e381d1a8e03b818'
+    url: str = ''.join(('http://data.fixer.io/api/latest?access_key=', keys.Fixer_Access_Key))
 
     response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
     assert response.ok   #XXX Can we retry?
+    logging.info('fetched exchange rate')
 
     Fixer_Exchange_Rates = json.loads(response.text)
     assert Fixer_Exchange_Rates['base'] == 'EUR'  # always EUR with free plan
@@ -64,10 +70,16 @@ def load_exchange_rates():
     for currecy_code, euro_value in Fixer_Exchange_Rates['rates'].items():  #type: CurrencyCode, float
         Exchange_Rates[currecy_code] = euro_value / usd   # store in USD
 
-def cron_task():
-    # 1000/month with free plan
-    #XXX
+def cron():
+    while True:
+        time.sleep(60*60)      # every one hour
+        load_exchange_rates()
+
+
+def init():
+    # load exchange rates at startup and every one hour
     load_exchange_rates()
 
-# load exchange rates at startup
-load_exchange_rates()
+    # # start cron task
+    thread: Thread = Thread(target=cron)
+    thread.start()

@@ -1,10 +1,11 @@
 import { autoinject, observable, TaskQueue, Aurelia } from 'aurelia-framework';
 import { Router, RouteConfig, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
-import { HttpClient } from 'aurelia-fetch-client';
+import { DefaultApi } from './gen-openapi';
+// import { HttpClient } from 'aurelia-fetch-client';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
-import { Luncho, LunchoResult} from './luncho';
+// import { Luncho, LunchoResult} from './luncho';
 
 @autoinject
 export class App {
@@ -13,16 +14,22 @@ export class App {
     public static app: App;
     show = false;
     countries: any;
-    luncho: Luncho;
+    // luncho: Luncho;
+    public taskQueue: TaskQueue;
+    public api: DefaultApi;
 
-    constructor(taskQueue: TaskQueue, router: Router) {
-        this.luncho = new Luncho(taskQueue);
+
+    constructor(taskQueue: TaskQueue, router: Router, api: DefaultApi) {
+        this.taskQueue = taskQueue;
+        this.api = api;
+        this.api.basePath = 'http://localhost:8000'
+        // this.luncho = new Luncho(taskQueue);
         App.app = this;
         this.router = router;
     }
 
     activate() {
-        this.luncho.getCountries()
+        this.api.countries()
             .then((countries) => {
                 this.countries = countries;
         });

@@ -1,0 +1,3 @@
+** Place your Fixer access key in keys.py.
+
+   Fixer_Access_Key = '12f3a3071f20a9972e381d1a8e03b818'

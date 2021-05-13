@@ -28,7 +28,8 @@
           <td>${data.local_currency_value ? data.local_currency_value : '' | numberFormat: '0.00'}</td>
           <td>${data.currency_name}</td>
           <td if.bind="showCurrencyCode">${data.currency_code}</td>
-          <td>${data.dollar_value ? data.dollar_value : '' | numberFormat: '0.00'}</td> USD
+          <td if.bind="data.dollar_value"> ${data.dollar_value | numberFormat: '0.00'}</td>
+          <td else></td>
         </tr>
       </tbody>
     </table>

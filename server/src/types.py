@@ -34,19 +34,19 @@ class Currency():
         self.code = code
         self.unit = unit
 
-class IMF_PPP_Country_Base(TypedDict, total=False):
+class IMF_PPP_Country(TypedDict, total=False):
     ''' IMF PPP data
            {'AFG': {            1981: 17.4...
            {'ALB': {1980: 24.4, 1981: 24.5...
     '''
 
-    year_ppp: Dict[int, float]  # { year: ppp }  Optional
-    ppp: float                # PPP in local currency of currency_name
+    year_ppp: Optional[Dict[int, float]]  # { year: ppp }  Optional
+    #ppp: float                # PPP in local currency of currency_name
     currency_code: CurrencyCode # AFN  (ISO 3 letter currency code)
     currency_name: str        # Afghani
     country_name: str           # Afghanistan
 
-IMF_PPP_Country = create_model_from_typeddict(IMF_PPP_Country_Base)
+IMF_PPP_Country_dummy = create_model_from_typeddict(IMF_PPP_Country)
 
 class LunchoResult(BaseModel):
     dollar_value: float
@@ -55,6 +55,6 @@ class LunchoResult(BaseModel):
     country_code: CountryCode
     country_name: str
     currency_name: str
-    ppp: float
+    ppp: Optional[float]
     dollar_per_luncho: float
-    exchange_rate: float
+    exchange_rate: Optional[float]

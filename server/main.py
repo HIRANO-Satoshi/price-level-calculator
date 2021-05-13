@@ -8,14 +8,15 @@
 
 #import pdb
 #import logging
+import os
 import sys
 import json
-#from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
+import logging
+from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
-from fastapi_utils.openapi import simplify_operation_ids
 from starlette.middleware.cors import CORSMiddleware
 
 
@@ -26,8 +27,10 @@ app = FastAPI(
 )
 
 #pylint: disable=wrong-import-position
+import conf
 from src import api       # initialize routes
 from src import ppp_data
+from src import exchange_rate
 
 # CORS
 app.add_middleware(
@@ -40,17 +43,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# use method names in OpenAPI operationIds to generate methods with the method names
-simplify_operation_ids(app)
-
 # static files in static dir
 #app.mount("/static", StaticFiles(directory="static"), name="static")
 
 if __name__ == "__main__":
     # command line
     if len(sys.argv) == 2 and sys.argv[1] == 'gen':
-        print(api.gen_openapi_schema())
-else:
+        # gen client library using openAPI generator if schema file is old.
 
-    # initialize Lunch server
+        schema: str = json.dumps(api.gen_openapi_schema())
+        old_schema: str = ''
+        try:
+            with open(conf.Openapi_Schema_File, 'r') as infile:
+                old_schema = infile.read()
+        except:
+            pass
+
+        lib_paths: List[str] = [typ + '-api' for typ, opt in conf.Gen_Openapi.items()]
+        if schema != old_schema or not all([os.path.exists(path) for path in lib_paths]):
+            # generate schema file
+            with open(conf.Openapi_Schema_File, 'w') as outfile:
+                outfile.write(schema)
+            print(conf.Openapi_Schema_File + ' was generated.', file=sys.stderr)
+
+            # gen client libraries using openAPI generator
+            for typ, opt in conf.Gen_Openapi.items():  #type: str, Optional[str]
+                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../' + typ + '-api --additional-properties=modelPropertyNaming=original,' + (opt if opt else '')
+                print(cmd, file=sys.stderr, flush=True)
+                os.system(cmd)
+    else:
+        print('To start Luncho server, just run start-gunicorn.py ', file=sys.stderr)
+        print('pypy3 main.py gen    generate client library using openAPI generator', file=sys.stderr)
+
+def init():
+    ''' Called from gunicorn_config.py '''
+
+    # load exchange rates at startup and every one hour
+    logging.info('main.init()')
+    exchange_rate.init()
     ppp_data.init()

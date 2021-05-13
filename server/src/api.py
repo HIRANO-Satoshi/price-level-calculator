@@ -12,6 +12,7 @@ import logging
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 
 from fastapi.openapi.utils import get_openapi
+from fastapi_utils.openapi import simplify_operation_ids
 
 from main import app
 from src import exchange_rate
@@ -67,37 +68,24 @@ async def convert_from_luncho(country_code: CountryCode = 'JPN', luncho_value: f
             'exchange_rate': exchange_rate_per_USD
     }
 
-def gen_openapi_schema() -> Dict:
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi(
-        title="Custom title",
-        version="2.5.0",
-        description="This is a very custom OpenAPI schema",
-        routes=app.routes,
-    )
-    # openapi_schema["info"]["x-logo"] = {
-    #     "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
-    # }
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
+@app.get("/convert-from-luncho-all", response_model=List[LunchoResult])
+async def convert_from_luncho_all(luncho_value: float) -> List[LunchoResult]:
 
-
-@app.get("/convert-from-luncho-all")
-async def convert_from_luncho_all(luncho_value: float) -> List[IMF_PPP_Country]:
-
-    lunchos = []
+    lunchos: List[LunchoResult] = []
     for country_code in IMF_PPP_All:  #type: CountryCode
         lunchos.append(await convert_from_luncho(country_code, luncho_value))
     return lunchos
 
 
-@app.get("/countries")
+@app.get("/countries", response_model=Dict[CountryCode, IMF_PPP_Country])
 async def countries() -> Dict[CountryCode, IMF_PPP_Country]:
     IMF_PPP_All_copy: Dict[CountryCode, IMF_PPP_Country] = copy.deepcopy(IMF_PPP_All)
 
     for country_code in IMF_PPP_All_copy:  #type: CountryCode
         del IMF_PPP_All_copy[country_code]['year_ppp']
+        # if not IMF_PPP_All_copy[country_code]['ppp']:
+        #     del IMF_PPP_All_copy[country_code]
+        #     print('deleted ' + country_code)
     return IMF_PPP_All_copy
 
 
@@ -115,3 +103,23 @@ async def convert_from_luncho_dummy(currency_code: CurrencyCode, luncho_value: f
         ppp = 33.92
 
     return {"currency_value": luncho_value * ppp}
+
+
+def gen_openapi_schema() -> Dict:
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="Custom title",
+        version="2.5.0",
+        description="This is a very custom OpenAPI schema",
+        routes=app.routes,
+    )
+    # openapi_schema["info"]["x-logo"] = {
+    #     "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    # }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+# use method names in OpenAPI operationIds to generate methods with the method names
+simplify_operation_ids(app)

@@ -1,0 +1,11 @@
+.gitignore
+Api.ts
+AuthStorage.ts
+DefaultApi.ts
+README.md
+git_push.sh
+index.ts
+models.ts
+package.json
+tsconfig.json
+tslint.json

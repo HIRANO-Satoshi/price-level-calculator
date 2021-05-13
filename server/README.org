@@ -5,11 +5,11 @@
   bash再起動でPATHにrustupを入れる
   rustup install nightly ; rustup default nightly
   brew install pypy3
-  install-packages.sh
+  bin/install-packages.sh
     or
     pip -r requirements-pypy.txt install
 ** run
-  start-gunicorn.sh
+  bin/start-gunicorn.sh
 
 ** Docker
 - build

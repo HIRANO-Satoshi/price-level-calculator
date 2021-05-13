@@ -25,6 +25,6 @@ RUN pip install --upgrade pip && \
     pip install virtualenv
 
 #RUN virtualenv --python pypy3 pypyenv
-RUN /app/install-packages.sh
+RUN /app/bin/install-packages.sh
 
-ENTRYPOINT /app/start-gunicorn.sh
+ENTRYPOINT /app/bin/start-gunicorn.sh
