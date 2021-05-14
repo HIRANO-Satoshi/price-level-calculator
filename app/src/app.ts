@@ -1,7 +1,7 @@
 import { autoinject, observable, TaskQueue, Aurelia } from 'aurelia-framework';
 import { Router, RouteConfig, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
-import { DefaultApi } from './gen-openapi';
+import { LunchoApi } from './gen-openapi';
 // import { HttpClient } from 'aurelia-fetch-client';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
@@ -16,10 +16,10 @@ export class App {
     countries: any;
     // luncho: Luncho;
     public taskQueue: TaskQueue;
-    public api: DefaultApi;
+    public api: LunchoApi;
 
 
-    constructor(taskQueue: TaskQueue, router: Router, api: DefaultApi) {
+    constructor(taskQueue: TaskQueue, router: Router, api: LunchoApi) {
         this.taskQueue = taskQueue;
         this.api = api;
         this.api.basePath = 'http://localhost:8000'

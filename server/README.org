@@ -1,73 +1,62 @@
+* Luncho Server
 
-** Manual install
-  cd luncho-server
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  bash再起動でPATHにrustupを入れる
-  rustup install nightly ; rustup default nightly
-  brew install pypy3
-  bin/install-packages.sh
-    or
-    pip -r requirements-pypy.txt install
-** run
-  bin/start-gunicorn.sh
+** What it is?
 
-** Docker
-- build
-   docker compose build --progress plain
-- run
-   docker run luncho-server_app
-- ps for containerID
-   docker ps
-- kill
-   docker kill containerID
+  - The Luncho server provides API so that your web site can show both Luncho price and local prices.
+  - The Luncho server provides OpenAPI so tha you can generate client libraries.
 
-** Manual install (obsolete pipenv version)
-  cd luncho-server
-  brew install pipenv
-  - pipenv --python 3.9
-   - または pipenv --python pypy3 ただし、ujsonで動かない
-  pipenv shell
-  pipenv install
-  - if you have error with orjson
-    - pipenv update
+** Requirements
 
-  - if you got error on rust or cargo, install rust as instructed [[https://www.rust-lang.org/tools/install][here]] and try pipenv install again.
-    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    - bash再起動でPATHにrustupを入れる
-    - rustup install nightly ; rustup default nightly
+  - An access key of Fixer to get exchange rate.
+  - Follow the Installation section to install the required packages.
+  - Pypy3 (Python compiler)
+  - FastAPI (Web framework)
 
-- run
-  cd luncho-server
-  pipenv shell
-  gunicorn --access-logfile - --error-logfile - -k uvicorn.workers.UvicornH11Worker main:app --reload --timeout 600
+** Installation
 
-- 注意
-  - pipenvでbad interpreterが出たら
-      brew install --force pipenv
-      brew link --overwrite pipenv
+*** Create an account on Fixer to get exchange rate
+  - Place your Fixer access key in keys.py.
 
-  - これはreloadでエラーが出る
-    uvicorn main:app --reload --port 8000
+    Fixer_Access_Key = 'XXXXXXXX'
 
+*** Local installation
+  - [[https://www.pypy.org/download.html][Install pypy3]]
+   - (Mac) brew install pypy3
+  - Install Rust that is required to run pip
+   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   - (restart bash to add rustup to PATH)
+   - rustup install nightly ; rustup default nightly
+  - Run install script
+   - bin/install-packages.sh
+  - You have pypyenv dir that includes site-packages.
 
-** Data
+*** Generate client library
+  - pypy3 main.py gen
 
-- PPP from IFM World Economic Outlook (October 2020)
-  - data/imf-dm-export-20201110.csv
-  - Press "All Data" to get it at [[https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD][here]]
-  - 194 countries and regions
-  - Country name is defined as "Table Name" in the following ICP-2017 metadata
+*** Run a local Luncho server
+  - bin/start-gunicorn.sh
 
-- ICP-2017 metadata
-  - data/Data_Extract_From_ICP_2017_Metadata.csv
-  - Extracted the following metadata from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
-  - Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage
-  - Examples
+*** Docker installation
 
-     AFG,Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
-     ALB,Republic of Albania,ALL: Lek,Albania,Urban only
-     DZA,People's Democratic Republic of Algeria,DZD: Algerian Dinar,Algeria,Urban and Rural
+  - build
+     docker compose build --progress plain
+  - run
+     docker run luncho-server_app
+  - ps for containerID
+     docker ps
+  - kill
+     docker kill containerID
 
-- ICP-2017 Purchasing power parity (PPP) (US$ = 1)
-  - Extracted the following from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
-    - Actual Individual Consumption (AIC) per capita
+** Author
+
+Dr HIRANO Satoshi, AIST
+
+** MIT License
+
+Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

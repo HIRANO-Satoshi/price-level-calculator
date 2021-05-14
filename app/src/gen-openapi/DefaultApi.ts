@@ -15,22 +15,8 @@ import { HttpClient } from 'aurelia-http-client';
 import { Api } from './Api';
 import { AuthStorage } from './AuthStorage';
 import {
-  IMFPPPCountry,
   LunchoResult,
 } from './models';
-
-/**
- * countries - parameters interface
- */
-export interface ICountriesParams {
-}
-
-/**
- * lunchos - parameters interface
- */
-export interface ILunchosParams {
-  lunchoValue: number;
-}
 
 /**
  * test - parameters interface
@@ -54,61 +40,6 @@ export class DefaultApi extends Api {
    */
   constructor(httpClient: HttpClient, authStorage: AuthStorage) {
     super(httpClient, authStorage);
-  }
-
-  /**
-   * Countries
-   * Returns country data for all countries.
-   */
-  async countries(): Promise<{ [key: string]: IMFPPPCountry; }> {
-    // Verify required parameters are set
-
-    // Create URL to call
-    const url = `${this.basePath}/countries`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
-  }
-
-  /**
-   * Lunchos
-   * @param params.lunchoValue 
-   */
-  async lunchos(params: ILunchosParams): Promise<Array<LunchoResult>> {
-    // Verify required parameters are set
-    this.ensureParamIsSet('lunchos', params, 'lunchoValue');
-
-    // Create URL to call
-    const url = `${this.basePath}/lunchos`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
-      // Set query parameters
-      .withParams({ 
-        'luncho_value': params['lunchoValue'],
-      })
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
   }
 
   /**

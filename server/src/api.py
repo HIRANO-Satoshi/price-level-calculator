@@ -69,7 +69,7 @@ async def luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100) -
     }
 
 
-@app.get("/lunchos", response_model=List[LunchoResult])
+@app.get("/lunchos", response_model=List[LunchoResult], tags=['Luncho'])
 async def lunchos(luncho_value: float) -> List[LunchoResult]:
 
     lunchoResults: List[LunchoResult] = []
@@ -78,7 +78,7 @@ async def lunchos(luncho_value: float) -> List[LunchoResult]:
     return lunchoResults
 
 
-@app.get("/countries", response_model=Dict[CountryCode, IMF_PPP_Country])
+@app.get("/countries", response_model=Dict[CountryCode, IMF_PPP_Country], tags=['Luncho'])
 async def countries() -> Dict[CountryCode, IMF_PPP_Country]:
     '''
       Returns country data for all countries.

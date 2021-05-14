@@ -4,12 +4,12 @@ import { HttpClient } from 'aurelia-fetch-client';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
 import { App } from './app';
-import { DefaultApi, LunchoResult } from './gen-openapi';
+import { LunchoApi, LunchoResult } from './gen-openapi';
 
 @autoinject
 export class Countries {
     app: App = App.app;
-    api: DefaultApi = App.app.api;
+    api: LunchoApi = App.app.api;
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
     results: LunchoResult[];
