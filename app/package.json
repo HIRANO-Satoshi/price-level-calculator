@@ -1,6 +1,6 @@
 {
-  "name": "luncho-web",
-  "description": "An Aurelia client application.",
+  "name": "luncho-app",
+  "description": "A Luncho app",
   "version": "0.1.0",
   "repository": {
     "type": "???",

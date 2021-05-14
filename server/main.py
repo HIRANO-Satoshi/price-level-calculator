@@ -19,17 +19,17 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 
-tags_metadata = [
-    {
-        "name": "Luncho",
-        "description": "Luncho calculation APIs.",
-    },
-]
 app = FastAPI(
     title="Luncho server converts between local currency and Universal Luncho index for the economic inequality problem",
     description="With 100 Luncho, you can have simple lunch in every country.",
     version="0.0.1",
-    openapi_tags=tags_metadata
+    openapi_tags=[
+        {
+            "name": "Luncho",
+            "description": "Luncho calculation APIs.",
+        },
+        # admin API
+    ]
 )
 
 #pylint: disable=wrong-import-position
@@ -72,12 +72,12 @@ if __name__ == "__main__":
                 outfile.write(schema)
             print(conf.Openapi_Schema_File + ' was generated.', file=sys.stderr)
 
-            #  'typescript-aurelia' is always generated for the Aurelia app
-            os.system('npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g typescript-aurelia -o ../app/src/gen-openapi -api --additional-properties=supportsES6=true,modelPropertyNaming=original')
+            # #  'typescript-aurelia' is always generated for the Aurelia app
+            # os.system('npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g typescript-aurelia -o ../app/src/gen-openapi --additional-properties=supportsES6=true,modelPropertyNaming=original')
 
             # gen client libraries using openAPI generator
             for typ, opt in conf.Gen_Openapi.items():  #type: str, Optional[str]
-                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../' + typ + '-api --additional-properties=supportsES6=true,modelPropertyNaming=original,' + (opt if opt else '')
+                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../client-libs/luncho-' + typ + ' --package-name luncho-' + typ + ' "--additional-properties=modelPropertyNaming=original,' + (opt if opt else '') + '"'
                 print(cmd, file=sys.stderr, flush=True)
                 os.system(cmd)
     else:

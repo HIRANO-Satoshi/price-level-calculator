@@ -1,35 +1,33 @@
-import { autoinject, observable, TaskQueue, Aurelia } from 'aurelia-framework';
-import { Router, RouteConfig } from 'aurelia-router'
-import { HttpClient } from 'aurelia-fetch-client';
-import 'tablesorter';
-import 'tablesorter/dist/css/theme.materialize.min.css';
+import { autoinject } from 'aurelia-framework';
 import { App } from './app';
-import { LunchoApi, LunchoResult } from './gen-openapi';
+import { LunchoFast } from 'luncho-typescript-aurelia-fast/luncho-fast';
+import { LunchoResult } from 'luncho-typescript-aurelia/models';
+// import { LunchoApi } from 'luncho-typescript-aurelia/LunchoApi';
+//import { LunchoApi, LunchoResult } from 'luncho-typescript-aurelia';
+//import { LunchoApi, LunchoResult } from './gen-openapi';
 
 @autoinject
 export class Single {
-    app: App = App.app;
-    api: LunchoApi = App.app.api;
+    app: App;
+    lunchoFast: LunchoFast;
     countryCode: string = 'JPN';
     lunchoValue: number = 100;
     result: LunchoResult;
+
+    constructor(app: App, lunchoFast: LunchoFast) {
+        this.lunchoFast = lunchoFast;
+        this.app = app;
+    }
 
     attached() {
         this.convertFromLuncho();
     }
 
-    convertFromLuncho() {
-        this.api.luncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
+    async convertFromLuncho() {
+        this.lunchoFast.luncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
             .then((result: LunchoResult) => {
                 this.result = result;
                 this.countryCode = result.country_code;
             });
     }
-    // convertFromLuncho() {
-    //     this.app.luncho.convertFromLuncho(this.countryCode, Number(this.lunchoValue))
-    //         .then((result: LunchoResult) => {
-    //             this.result = result;
-    //             this.countryCode = result.country_code;
-    //         });
-    // }
 }

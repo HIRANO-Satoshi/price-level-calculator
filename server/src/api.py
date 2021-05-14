@@ -20,12 +20,6 @@ from src.ppp_data import IMF_PPP_All
 from src.types import Currency, CurrencyCode, C1000, Country, CountryCode, LunchoResult, IMF_PPP_Country
 
 SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
-Doller_Per_SDR = 1.424900 # 1 SDR = $1.424900
-
-
-@app.get("/test/", response_model=LunchoResult)
-async def test(country_code: CountryCode = 'JPN', luncho_value: float = 100) -> List[str]:
-    return ['a']
 
 @app.get("/luncho", response_model=LunchoResult, tags=['Luncho'])
 async def luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100) -> LunchoResult:
@@ -48,7 +42,7 @@ async def luncho(country_code: CountryCode = 'JPN', luncho_value: float = 100) -
         exchange_rate_per_USD = exchange_rate.exchange_rate_per_USD(currency_code)
         if exchange_rate_per_USD is not None:
             #breakpoint()
-            dollar_per_luncho = Doller_Per_SDR * SDR_Per_Luncho
+            dollar_per_luncho = exchange_rate.Dollar_Per_SDR * SDR_Per_Luncho
             local_currency_value = dollar_per_luncho * ppp * luncho_value
             dollar_value = local_currency_value / exchange_rate_per_USD
         else:

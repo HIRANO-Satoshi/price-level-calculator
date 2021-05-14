@@ -1,46 +1,43 @@
-import { autoinject, observable, TaskQueue, Aurelia } from 'aurelia-framework';
-import { Router, RouteConfig } from 'aurelia-router'
-import { HttpClient } from 'aurelia-fetch-client';
+import { autoinject, TaskQueue } from 'aurelia-framework';
+import { App } from './app';
+import { LunchoFast } from 'luncho-typescript-aurelia-fast/luncho-fast';
+import { LunchoResult } from 'luncho-typescript-aurelia/models';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
-import { App } from './app';
-import { LunchoApi, LunchoResult } from './gen-openapi';
 
 @autoinject
 export class Countries {
-    app: App = App.app;
-    api: LunchoApi = App.app.api;
+    app: App;
+    lunchoFast: LunchoFast
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
     results: LunchoResult[];
     showCurrencyCode = false;
     showCountryCode = false;
 
-    constructor(taskQueue: TaskQueue) {
+    constructor(app: App, taskQueue: TaskQueue, lunchoFast: LunchoFast) {
+        this.app = app;
         this.taskQueue = taskQueue;
+        this.lunchoFast = lunchoFast;
     }
 
     attached() {
-        this.convertFromLunchos();
+        this.lunchosForCountries();
     }
 
-    convertFromLunchos() {
-        this.api.lunchos({lunchoValue: Number(this.lunchoValue)})
+    async lunchosForCountries() {
+        this.lunchoFast.lunchos({lunchoValue: Number(this.lunchoValue)})
             .then((results: LunchoResult[]) => {
                 this.results = results;
-                this.sorterInit();
-            });
-    }
 
-    sorterInit() {
-        this.taskQueue.queueTask(() => {
-            // attached() {
-            const tmp: any = $("#all-table");
-            //tmp.tablesorter();
-            tmp.tablesorter({
-                theme : 'materialize',
-                sortListY: [[0,0],[1,0]],
+                // run sorter
+                this.taskQueue.queueTask(() => {
+                    const tmp: any = $("#all-table");
+                    tmp.tablesorter({
+                        theme : 'materialize',
+                        sortListY: [[0,0],[1,0]],
+                    });
+                });
             });
-        });
     }
 }

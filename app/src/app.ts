@@ -1,7 +1,8 @@
-import { autoinject, observable, TaskQueue, Aurelia } from 'aurelia-framework';
-import { Router, RouteConfig, RouterConfiguration } from 'aurelia-router'
+import { autoinject, TaskQueue } from 'aurelia-framework';
+import { Router, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
-import { LunchoApi } from './gen-openapi';
+import { LunchoFast } from 'luncho-typescript-aurelia-fast/luncho-fast';
+//import { LunchoApi } from './gen-openapi';
 // import { HttpClient } from 'aurelia-fetch-client';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
@@ -16,20 +17,20 @@ export class App {
     countries: any;
     // luncho: Luncho;
     public taskQueue: TaskQueue;
-    public api: LunchoApi;
+    lunchoFast: LunchoFast;
 
 
-    constructor(taskQueue: TaskQueue, router: Router, api: LunchoApi) {
+    constructor(taskQueue: TaskQueue, router: Router, lunchoFast: LunchoFast) {
         this.taskQueue = taskQueue;
-        this.api = api;
-        this.api.basePath = 'http://localhost:8000'
+        this.lunchoFast = lunchoFast;
+        this.lunchoFast.basePath = 'http://localhost:8000'
         // this.luncho = new Luncho(taskQueue);
         App.app = this;
         this.router = router;
     }
 
     activate() {
-        this.api.countries()
+        this.lunchoFast.countries()
             .then((countries) => {
                 this.countries = countries;
         });

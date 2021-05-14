@@ -13,8 +13,10 @@ from typing import List, Dict, Tuple, Union, Any, Optional
 #
 #  'typescript-aurelia' is always generated as well.
 Gen_Openapi: Dict[str, str] = {
-    #'python': '',
-    #'typescript-fetch': 'supportsES6=true',
+    'python': '',
+    #'typescript-aurelia': 'supportsES6=true,npmName=luncho',
+    'typescript-aurelia': 'supportsES6=true,npmName=luncho-typescript-aurelia',
+    'typescript-fetch': 'supportsES6=true,npmName=luncho-typescript-fetch',
 }
 
 Openapi_Schema_File = 'data/openapi_schema.json'

@@ -32,6 +32,12 @@ Fixer_Exchange_Rates: FixerExchangeRate = {}
 # exchange rates based on USD
 Exchange_Rates: Dict[CurrencyCode, float] = {}  # { currencyCode: rate }
 
+# Dollar/SDR
+Dollar_Per_SDR: float = 0   # filled in load_exchange_rates()  1 SDR = $1.4...
+
+# time of the last load of exchange rates
+last_load: float = 0
+
 def convert(source: Currency, currencyCode: CurrencyCode) -> Currency:
     if source.currencyCode == currencyCode:
         return source
@@ -54,9 +60,14 @@ def exchange_rate_per_USD(currencyCode: CurrencyCode) -> Optional[float]:
 
     return Exchange_Rates.get(currencyCode, None)
 
-# load exchange rates from fixer
 def load_exchange_rates():
-    global Fixer_Exchange_Rates, Exchange_Rates
+    ''' load exchange rates and SDR from fixer. '''
+
+    global Fixer_Exchange_Rates, Exchange_Rates, last_load
+
+    if last_load + (20*60*1000) > time.time():  # don't load again for 20 min
+        return
+
     url: str = ''.join(('http://data.fixer.io/api/latest?access_key=', keys.Fixer_Access_Key))
 
     response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
@@ -69,6 +80,11 @@ def load_exchange_rates():
     usd: float = Fixer_Exchange_Rates['rates']['USD']  # USD per euro
     for currecy_code, euro_value in Fixer_Exchange_Rates['rates'].items():  #type: CurrencyCode, float
         Exchange_Rates[currecy_code] = euro_value / usd   # store in USD
+        if currecy_code == 'XDR':
+            global Dollar_Per_SDR
+            Dollar_Per_SDR = 1 / Exchange_Rates[currecy_code]
+            logging.info('Dollar/SDR = ' + str(Dollar_Per_SDR))
+    last_load = time.time()
 
 def cron():
     while True:
