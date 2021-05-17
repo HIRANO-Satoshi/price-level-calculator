@@ -9,17 +9,19 @@ import csv
 import re
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 from typing_extensions import TypedDict
+import pycountry
 
 from src import exchange_rate
 from src.types import Currency, CurrencyCode, C1000, Country, CountryCode, LunchoData, IMF_PPP_Country
+from src.utils import error
 
-IMF_PPP_All: Dict[CountryCode, IMF_PPP_Country] = {}  # ,
+IMF_PPP_Map: Dict[CountryCode, IMF_PPP_Country] = {}  # ,
 
 # ICP country metadata
 #   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
 #   {'ALB': {1980: 24.4, 1981: 24.5...
 class CountryMetadataType(TypedDict):
-    code: CountryCode                 # AFG  (ISO 3 letter country code)
+    code: CountryCode                 # AF  (ISO 2 letter country code)
     long_name: str            # Islamic State of Afghanistan
     currency_code: CurrencyCode  # AFN  (ISO 3 letter currency code)
     currency_name: str        # Afghani
@@ -28,15 +30,39 @@ class CountryMetadataType(TypedDict):
 
 Country_Metadata: Dict[CountryCode, CountryMetadataType] = {}   # country_code, CountryMetadataType
 
+kosovo = any
+kosovo.alpha_2 = "XK"
+kosovo.alpha_3 = "KSV"
+kosovo.name = "Kosovo"
+kosovo.numeric = "383"
+kosovo.official_name = "Kosovo"
+
 def init() -> None:
-    global Country_Metadata, IMF_PPP_All
+    global Country_Metadata, IMF_PPP_Map
 
     # CountryMetadataType into Country_Metadata
     with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:
         metadata_reader  = csv.DictReader(metadata_file)
+        country_data: Any
         for data in metadata_reader:
-            data['code'] = data['Code']
+            country_code3 = data['Code']     # ISO 3 letter code
             del data['Code']
+            if country_code3 == 'BON': # bonaire, but not found in IMF PPP data
+                country_code3 = 'BES';
+            if country_code3 == 'KSV': # Kosovo is not found in pycountry but in IMF PPP data
+                country_data = kosovo
+            else:
+                country_data: Any = pycountry.countries.get(alpha_3=country_code3)
+                if not country_data:
+                    print("No location information on IP address: " + country_code3)
+                    #error(country_code3, "No location information on IP address")
+                    continue
+            try:
+                a = country_data.alpha_2
+            except:
+                import pdb; pdb.set_trace()
+            country_code = data['country_code'] = country_data.alpha_2
+
             data['long_name'] = data['Long Name']
             del data['Long Name']
             # decompose Currency Unit           AFN: Afghani (2011)
@@ -46,8 +72,6 @@ def init() -> None:
             del data['Currency Unit']
 
             data['table_name'] = data['Table Name']
-            if data['table_name'] == 'Taiwan, China':
-                data['table_name'] = 'Taiwan'
             del data['Table Name']
             # coverage
             coverage: Optional[str] = data.get('Household consumption price survey: Geographical coverage')
@@ -55,10 +79,10 @@ def init() -> None:
             if coverage:
                 data['coverage'] = coverage
 
-            Country_Metadata[data['code']] = dict(data)
+            Country_Metadata[country_code] = dict(data)
         #print(str(Country_Metadata))
 
-    # build IMF_PPP_All: IMF_PPP_Country Implied PPP conversion rate (National currency per international dollar)
+    # build IMF_PPP_Map: IMF_PPP_Country Implied PPP conversion rate (National currency per international dollar)
     mapping = {
         "China, People's Republic of": 'China',
         "Congo, Dem. Rep. of the": 'Congo, Dem. Rep.',
@@ -77,8 +101,9 @@ def init() -> None:
         "South Sudan, Republic of": "South Sudan",
         "Syria": "Syrian Arab Republic",
         "São Tomé and Príncipe": "São Tomé and Principe",
-        "Taiwan Province of China": "Taiwan",
+        "Taiwan Province of China": "Taiwan, China",
         "Venezuela": "Venezuela, RB",
+        "Bonaire": "Bonaire, Sint Eustatius and Saba",
         "Yemen": "Yemen, Rep.",
 
     }
@@ -104,13 +129,13 @@ def init() -> None:
                     continue
                 ppps[year] = float(ppp)
             # print(str(ppps))
-            IMF_PPP_All[country_code] = { 'year_ppp': ppps,
+            IMF_PPP_Map[country_code] = { 'year_ppp': ppps,
                                       #'ppp': ppps[datetime.datetime.today().year],
                                       'currency_code': Country_Metadata[country_code]['currency_code'],
                                       'currency_name': Country_Metadata[country_code]['currency_name'],
                                       'country_name': Country_Metadata[country_code]['table_name']
             }
 
-        #print(str(IMF_PPP_All))
+        #print(str(IMF_PPP_Map))
 
     exchange_rate.load_exchange_rates()

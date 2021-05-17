@@ -45,31 +45,5 @@ export class Countries {
                 // sortList: [[0,0],[1,0]],
             });
         });
-
-    //     lunchoDataMap.forEach((_lunchoData: LunchoData, countryCode: CountryCode) => {
-    //         this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode)
-    //             .then((value: number) => {
-    //                 this.local_currency_values.set(countryCode, value);
-    //                 this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode)
-    //                     .then((value: number) => {
-    //                         this.dollar_values.set(countryCode, value);
-    //                     });
-    //             });
-    //     });
-
-    //     this.luncho.lunchos({lunchoValue: Number(this.lunchoValue)})
-    //         .then((results: LunchoData[]) => {
-    //             this.results = results;
-
-    //             // run sorter
-    //             this.taskQueue.queueTask(() => {
-    //                 const tmp: any = $("#all-table");
-    //                 tmp.tablesorter({
-    //                     theme : 'materialize',
-    //                     sortListY: [[0,0],[1,0]],
-    //                 });
-    //             });
-    //         });
-        // }
     }
 }

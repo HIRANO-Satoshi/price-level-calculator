@@ -9,6 +9,7 @@ fastapi-utils
 gunicorn
 uvicorn
 requests
+pycountry
 mypy-extensions
 #orjson does not support Pypy
 #ujson does not support Pypy

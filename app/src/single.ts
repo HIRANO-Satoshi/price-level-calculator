@@ -10,7 +10,7 @@ import { LunchoData } from 'luncho-typescript-aurelia/models';
 export class Single {
     app: App;
     luncho: Luncho;
-    countryCode: string = 'JPN';
+    countryCode: string = 'JP';
     lunchoValue: number = 100;
     lunchoData: LunchoData;
     local_currency_value: number;

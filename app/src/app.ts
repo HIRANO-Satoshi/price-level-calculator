@@ -2,8 +2,6 @@ import { autoinject, TaskQueue } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
 import { Luncho } from 'luncho-typescript-aurelia/luncho';
-import 'tablesorter';
-import 'tablesorter/dist/css/theme.materialize.min.css';
 
 @autoinject
 export class App {
@@ -19,7 +17,6 @@ export class App {
         this.taskQueue = taskQueue;
         this.luncho = luncho;
         this.luncho.basePath = 'http://localhost:8000'
-        // this.luncho = new Luncho(taskQueue);
         App.app = this;
         this.router = router;
     }
@@ -27,12 +24,6 @@ export class App {
     async activate() {
         await this.luncho.getLunchoDatas();
     }
-
-    // attached() {
-    //     this.countryCode = 'JP';
-    //     //super.attached();
-    // }
-
 
     toggleSideNav() {
         this.show = !this.show;
