@@ -21,10 +21,6 @@ export class App {
         this.router = router;
     }
 
-    async activate() {
-        await this.luncho.getLunchoDatas();
-    }
-
     toggleSideNav() {
         this.show = !this.show;
     }
@@ -49,5 +45,4 @@ export class App {
 
         config.fallbackRoute('/');
     }
-
 }

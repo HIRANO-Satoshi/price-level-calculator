@@ -19,123 +19,74 @@ from fastapi_utils.openapi import simplify_operation_ids
 from main import app
 from src import exchange_rate
 from src.utils import error
-from src.ppp_data import Countries
-from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
+from src.ppp_data import Countries, CountryCode_Names
+from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country, SDR_Per_Luncho
 
-SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
 
 @app.get("/luncho-data", response_model=LunchoData, tags=['Luncho'])
 async def lunchoData(
-        # client provided country code in ISO-3166-1-2 formant like 'JP'
-        country_code: Optional[CountryCode] = None,
 
-        # ISO-3166-1-2 'client_region' by Google Cloud load balancer (Optional)
-        client_region: Optional[CountryCode] = Header(None),
-
-        # ISO 3166-1-2 'CloudFront-Viewer-Country' by AWS CloudFront HTTP headers  (Optional)
-        cloudfront_viewer_country: Optional[CountryCode] = Header(None)
-
-        # # IP address via load balancer
-        # x_forwarded_for: Optional[str] = Header(None),
-
-        # # IP addres
-        # remote_addr: Optional[str] = Header(None)
+        country_code: Optional[CountryCode] = None, # client provided country code in ISO-3166-1-2 formant like 'JP'
 ) -> LunchoData:
+
+        # # ISO-3166-1-2 'client_region' by Google Cloud load balancer (Optional)
+        # client_region: Optional[CountryCode] = Header(None),
+
+        # # ISO 3166-1-2 'CloudFront-Viewer-Country' by AWS CloudFront HTTP headers  (Optional)
+        # cloudfront_viewer_country: Optional[CountryCode] = Header(None)
     '''
       Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.
-      If the countryCode is not specified, estimate it from IP address.
-
+      Data size is about 400 bytes.
     '''
 
-    #pdb.set_trace()
-    currency_code: Optional[CurrencyCode] = None
-    dollar_per_luncho: float = 0
-    exchange_rate_per_USD: Optional[float] = 0
-    dollar_per_luncho = exchange_rate.Dollar_Per_SDR * SDR_Per_Luncho
-    year: int = datetime.datetime.today().year
-    #local_currency_value: float = 0
-    #dollar_value: float = 0
+    #country_code: Optional[CountryCode] = country_code or client_region or cloudFront_viewer_country or None
 
-    country_code = country_code or client_region or cloudFront_viewer_country or None
-
-    country = Countries.get(country_code, None)
+    country: Optional[Country] = Countries.get(country_code, None)
     if not country:
         error(country_code, 'Invalid country code')
+        # never come here
 
-    currency_code = country['currency_code']
-    ppp: float = country['year_ppp'].get(year, None)  # country's ppp of this year
-    if ppp:
-        exchange_rate_per_USD = exchange_rate.exchange_rate_per_USD(currency_code)
-        if exchange_rate_per_USD is not None:
-            pass
-            #local_currency_value = dollar_per_luncho * ppp * luncho_value
-            #dollar_value = local_currency_value / exchange_rate_per_USD
-        else:
-            print('Exchange rate not found: ' + country['country_name'] + ' ' + country['currency_name'] + '(' + currency_code + ')')
-    else:
-        print('PPP not found: ' + country['country_name'] + ' ' + country['currency_name'] + '(' + currency_code + ')')
+    # fill time dependent properties, though its a global data,
+    # because all requests share the same data.
+    country['ppp'] = country['year_ppp'].get(datetime.datetime.today().year, None)  # country's ppp of this year
+    country['exchange_rate'] = exchange_rate.exchange_rate_per_USD(country['currency_code'])
+    country['dollar_per_luncho'] = exchange_rate.Dollar_Per_SDR * SDR_Per_Luncho
+
+    return country
 
 
-    return {
-        'country_code': country_code,
-        'country_name': country['country_name'],
-        'continent_code': country['continent_code'],
-        'currency_code': currency_code,
-        'currency_name': country['currency_name'],
-        'exchange_rate': exchange_rate_per_USD,
-        'ppp': ppp,
-        'dollar_per_luncho': dollar_per_luncho,
-        #'local_currency_value': local_currency_value
-        #"dollar_value": dollar_value,
-    }
-
-
-@app.get("/luncho-datas", response_model=List[LunchoData], tags=['Luncho'])
-async def lunchoDatas() -> List[LunchoData]:
+@app.get("/countries", response_model=Dict[CountryCode, str], tags=['Luncho'])
+async def countries() -> Dict[CountryCode, str]:
     '''
-      Returns A list of LunchoDatas for all supported countries.
+      Returns a dict of supported country codes and names so that you can show
+    a dropdown list of countries. Data size is about 3.5KB.
+       E.g. {'JP': 'Japan', 'US': 'United States'...}.
+    '''
+    return CountryCode_Names
+
+
+@app.get("/luncho-datas", response_model=Dict[CountryCode, LunchoData], tags=['Luncho'])
+async def lunchoDatas() -> Dict[CountryCode, LunchoData]:
+    '''
+      Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
     '''
 
-    lunchoDatas: List[LunchoData] = []
+    lunchoDatas: Dict[LunchoData] = {}
     for country_code in Countries:  #type: CountryCode
-        lunchoDatas.append(await lunchoData(country_code))
+        lunchoDatas[country_code] = await lunchoData(country_code)
     return lunchoDatas
-
-
-@app.get("/country-codes", response_model=List[CountryCode], tags=['Luncho'])
-async def countryCodes() -> List[CountryCode]:
-    '''
-      Returns a list of supported country codes.
-    '''
-    return [country_code for coutry_data in Countries]
-
-
-# @app.get("/country-PPPs", response_model=Dict[CountryCode, Country], tags=['Luncho'])
-# async def countryPPPs() -> Dict[CountryCode, Country]:
-#     '''
-#       Returns country data for all countries.
-#     '''
-#     Countries_copy: Dict[CountryCode, Country] = copy.deepcopy(Countries)
-
-#     for country_code in Countries_copy:  #type: CountryCode
-#         del Countries_copy[country_code]['year_ppp']
-#     return Countries_copy
-
-
-
-# @app.get("/countryCode", response_model=CountryCode, tags=['Luncho'])
-# async def countryCode() -> CountryCode:
-#     ''' Returns country code for the current IP address. '''
 
 
 
 def gen_openapi_schema() -> Dict:
+    ''' Callback for generating OpenAPI schema. '''
+
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="Custom title",
-        version="2.5.0",
-        description="This is a very custom OpenAPI schema",
+        title="Client library for Luncho API. ",
+        version="0.0.1",
+        description="Use luncho.ts and luncho.py rather than LunchoAPI.ts and others.",
         routes=app.routes,
     )
     # openapi_schema["info"]["x-logo"] = {

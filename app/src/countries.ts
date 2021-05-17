@@ -1,6 +1,6 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { App } from './app';
-import { Luncho, CountryCode } from 'luncho-typescript-aurelia/luncho';
+import { Luncho } from 'luncho-typescript-aurelia/luncho';
 import { LunchoData } from 'luncho-typescript-aurelia/models';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
@@ -11,9 +11,6 @@ export class Countries {
     luncho: Luncho
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
-    local_currency_values: Map<CountryCode, number>
-    dollar_values: Map<CountryCode, number>;
-    lunchoDataMap: Map<string, LunchoData>;
     showCurrencyCode = false;
     showCountryCode = false;
     continents = {
@@ -35,13 +32,11 @@ export class Countries {
     }
 
     async lunchosForCountries() {
-        this.local_currency_values = new Map();
-        this.dollar_values = new Map();
-        this.lunchoDataMap = await this.luncho.getLunchoDatas();
-        for (var [countryCode, lunchoData] of this.lunchoDataMap) {
+        await this.luncho.lunchoDatas();
+        for (var countryCode of Object.keys(this.luncho.lunchoDataMap)) {
             // destructive, but don't care
-            lunchoData['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
-            lunchoData['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataMap[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataMap[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
         }
 
         // run sorter

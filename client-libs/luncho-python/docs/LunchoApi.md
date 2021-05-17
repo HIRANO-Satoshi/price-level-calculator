@@ -4,17 +4,17 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**country_codes**](LunchoApi.md#country_codes) | **GET** /country-codes | Countrycodes
+[**countries**](LunchoApi.md#countries) | **GET** /countries | Countries
 [**luncho_data**](LunchoApi.md#luncho_data) | **GET** /luncho-data | Lunchodata
 [**luncho_datas**](LunchoApi.md#luncho_datas) | **GET** /luncho-datas | Lunchodatas
 
 
-# **country_codes**
-> [str] country_codes()
+# **countries**
+> {str: (str,)} countries()
 
-Countrycodes
+Countries
 
-Returns a list of supported country codes.
+  Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.
 
 ### Example
 
@@ -37,11 +37,11 @@ with luncho-python.ApiClient() as api_client:
 
     # example, this endpoint has no required or optional parameters
     try:
-        # Countrycodes
-        api_response = api_instance.country_codes()
+        # Countries
+        api_response = api_instance.countries()
         pprint(api_response)
     except luncho-python.ApiException as e:
-        print("Exception when calling LunchoApi->country_codes: %s\n" % e)
+        print("Exception when calling LunchoApi->countries: %s\n" % e)
 ```
 
 
@@ -50,7 +50,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**[str]**
+**{str: (str,)}**
 
 ### Authorization
 
@@ -74,7 +74,7 @@ No authorization required
 
 Lunchodata
 
-Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. If the countryCode is not specified, estimate it from IP address.
+Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. Data size is about 400 bytes.
 
 ### Example
 
@@ -97,14 +97,12 @@ with luncho-python.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = luncho_api.LunchoApi(api_client)
     country_code = "country_code_example" # str |  (optional)
-    client_region = "client-region_example" # str |  (optional)
-    cloudfront_viewer_country = "cloudfront-viewer-country_example" # str |  (optional)
 
     # example passing only required values which don't have defaults set
     # and optional values
     try:
         # Lunchodata
-        api_response = api_instance.luncho_data(country_code=country_code, client_region=client_region, cloudfront_viewer_country=cloudfront_viewer_country)
+        api_response = api_instance.luncho_data(country_code=country_code)
         pprint(api_response)
     except luncho-python.ApiException as e:
         print("Exception when calling LunchoApi->luncho_data: %s\n" % e)
@@ -116,8 +114,6 @@ with luncho-python.ApiClient() as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **country_code** | **str**|  | [optional]
- **client_region** | **str**|  | [optional]
- **cloudfront_viewer_country** | **str**|  | [optional]
 
 ### Return type
 
@@ -142,11 +138,11 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **luncho_datas**
-> [LunchoData] luncho_datas()
+> {str: (LunchoData,)} luncho_datas()
 
 Lunchodatas
 
-Returns A list of LunchoDatas for all supported countries.
+Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
 
 ### Example
 
@@ -183,7 +179,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**[LunchoData]**](LunchoData.md)
+[**{str: (LunchoData,)}**](LunchoData.md)
 
 ### Authorization
 

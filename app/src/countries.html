@@ -9,8 +9,10 @@
       Convert Luncho for all countries
     </h5>
     <div class="valign-wrapper">
-      <md-input label="Luncho " value.bind="lunchoValue" class="width-10em"></md-input>
-      <button md-button click.delegate="lunchosForCountries()">Calc</button>
+      <md-input label="Luncho " value.bind="lunchoValue"
+                input.delegate="lunchosForCountries()"
+                class="width-10em"></md-input>
+      <!-- <button md-button click.delegate="lunchosForCountries()">Calc</button> -->
     </div>
     <div class="vspace"></div>
 
@@ -22,16 +24,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr repeat.for="[country_code, lunchoData] of lunchoDataMap">
-          <td>${lunchoData.country_name}</td>
+        <tr repeat.for="country_code of luncho.lunchoDataMap | keys">
+          <td>${luncho.lunchoDataMap[country_code].country_name}</td>
           <td if.bind="showCountryCode">${country_code}</td>
-          <td>${continents[lunchoData.continent_code]}</td>
-          <td>${lunchoData.local_currency_value ? lunchoData.local_currency_value : '' | numberFormat: '0.00'} ${lunchoData.currency_name}</td>
+          <td>${continents[luncho.lunchoDataMap[country_code].continent_code]}</td>
+          <td>${luncho.lunchoDataMap[country_code].local_currency_value ? luncho.lunchoDataMap[country_code].local_currency_value : '' | numberFormat: '0.00'} ${luncho.lunchoDataMap[country_code].currency_name}</td>
           <!-- <td>${local_currency_values[country_code] | numberFormat: '0.00'}</td> -->
           <!-- <td>${local_currency_values[country_code] ? local_currency_values[country_code] : '' | numberFormat: '0.00'}</td> -->
 
           <td if.bind="showCurrencyCode">${currency_code}</td>
-          <td if.bind="lunchoData.dollar_value"> $${lunchoData.dollar_value | numberFormat: '0.00'}</td>
+          <td if.bind="luncho.lunchoDataMap[country_code].dollar_value"> $${luncho.lunchoDataMap[country_code].dollar_value | numberFormat: '0.00'}</td>
           <!-- <td if.bind="dollar_values[country_code]"> ${dollar_values[country_code] | numberFormat: '0.00'}</td> -->
           <td else></td>
         </tr>

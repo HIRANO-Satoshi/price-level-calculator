@@ -13,10 +13,11 @@ import pycountry
 import pycountry_convert
 
 from src import exchange_rate
-from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
+from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country, SDR_Per_Luncho
 from src.utils import error
 
-Countries: Dict[CountryCode, Country] = {}  # ,
+Countries: Dict[CountryCode, Country] = {}      # A map of country data
+CountryCode_Names: Dict[CountryCode, str] = {}  # A map of country code and name
 
 # ICP country metadata
 #   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
@@ -39,9 +40,9 @@ kosovo.numeric = "383"
 kosovo.official_name = "Kosovo"
 
 def init() -> None:
-    global Country_Metadata, Countries
+    global Country_Metadata, Countries, CountryCode_Names
 
-    # CountryMetadataType into Country_Metadata
+    # read country metadata to build Country_Metadata map
     with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:
         metadata_reader  = csv.DictReader(metadata_file)
         country_data: Any
@@ -83,7 +84,6 @@ def init() -> None:
             Country_Metadata[country_code] = dict(data)
         #print(str(Country_Metadata))
 
-    # build Countries: Country Implied PPP conversion rate (National currency per international dollar)
     mapping = {
         "China, People's Republic of": 'China',
         "Congo, Dem. Rep. of the": 'Congo, Dem. Rep.',
@@ -108,8 +108,11 @@ def init() -> None:
         "Yemen": "Yemen, Rep.",
 
     }
+
+    # build Countries map from Implied PPP conversion rates (National currency per international dollar)
     with open('data/imf-dm-export-20201110.csv', newline='', encoding="utf_8_sig") as imf_file:
         imf_reader  = csv.DictReader(imf_file)
+
         for data in imf_reader:
             table_name: str = data.get('Implied PPP conversion rate (National currency per international dollar)')
             if not table_name or not data.get('2020'):
@@ -129,19 +132,22 @@ def init() -> None:
                 if ppp is None or ppp == 'no data':
                     continue
                 ppps[year] = float(ppp)
+
             if country_code == 'TL': # Timor-Leste is in asia.
                 continent_code = 'AS'
             else:
                 continent_code: Any = pycountry_convert.country_alpha2_to_continent_code(country_code)
             # print(str(ppps))
+
+            # because ppp and dollar_per_luncho varies depending time, we fill them when API is called.
             Countries[country_code] = { 'year_ppp': ppps,
-                                        #'ppp': ppps[datetime.datetime.today().year],
+                                        'country_code': country_code,
                                         'currency_code': Country_Metadata[country_code]['currency_code'],
                                         'continent_code': continent_code,
                                         'currency_name': Country_Metadata[country_code]['currency_name'],
                                         'country_name': Country_Metadata[country_code]['table_name']
                                        }
+            CountryCode_Names[country_code] = Country_Metadata[country_code]['table_name']
 
         #print(str(Countries))
-
-    exchange_rate.load_exchange_rates()
+        #print(CountryCode_Names)

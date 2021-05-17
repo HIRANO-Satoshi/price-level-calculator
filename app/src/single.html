@@ -18,10 +18,17 @@
             change.delegate="convertFromLuncho()">
 
       <option model.bind="null" disabled>${"Select a country"}</option>
-      <option repeat.for="[country_code, lunchoData] of luncho.lunchoDataMap" model.bind="country_code">
-        ${lunchoData.country_name}</option>
+      <option repeat.for="country_code of luncho.countryMap | keys" model.bind="country_code">
+        ${luncho.countryMap[country_code]}</option>
     </select>
+    <!-- <select md-select value.two-way="countryCode" class="country-select"
+         change.delegate="convertFromLuncho()">
 
+         <option model.bind="null" disabled>${"Select a country"}</option>
+         <option repeat.for="[country_code, lunchoData] of luncho.lunchoDataMap" model.bind="country_code">
+         ${lunchoData.country_name}</option>
+         </select>
+    -->
     <div class="vspace" style="padding-top: 2em;"></div>
     <div class="row" style="font-size: 160%;">
       <div class="col s12 m5 l4">
