@@ -16,6 +16,6 @@ export { LunchoApi } from './LunchoApi';
 export {
   HTTPValidationError,
   IMFPPPCountry,
-  LunchoResult,
+  LunchoData,
   ValidationError,
 } from './models';

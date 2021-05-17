@@ -52,7 +52,7 @@ from pprint import pprint
 from luncho-python.api import luncho_api
 from luncho-python.model.http_validation_error import HTTPValidationError
 from luncho-python.model.imfppp_country import IMFPPPCountry
-from luncho-python.model.luncho_result import LunchoResult
+from luncho-python.model.luncho_data import LunchoData
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = luncho-python.Configuration(
@@ -67,11 +67,11 @@ with luncho-python.ApiClient(configuration) as api_client:
     api_instance = luncho_api.LunchoApi(api_client)
     
     try:
-        # Countries
-        api_response = api_instance.countries()
+        # Countrycodes
+        api_response = api_instance.country_codes()
         pprint(api_response)
     except luncho-python.ApiException as e:
-        print("Exception when calling LunchoApi->countries: %s\n" % e)
+        print("Exception when calling LunchoApi->country_codes: %s\n" % e)
 ```
 
 ## Documentation for API Endpoints
@@ -80,16 +80,17 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*LunchoApi* | [**countries**](docs/LunchoApi.md#countries) | **GET** /countries | Countries
-*LunchoApi* | [**luncho**](docs/LunchoApi.md#luncho) | **GET** /luncho | Luncho
-*LunchoApi* | [**lunchos**](docs/LunchoApi.md#lunchos) | **GET** /lunchos | Lunchos
+*LunchoApi* | [**country_codes**](docs/LunchoApi.md#country_codes) | **GET** /country-codes | Countrycodes
+*LunchoApi* | [**country_ppps**](docs/LunchoApi.md#country_ppps) | **GET** /country-PPPs | Countryppps
+*LunchoApi* | [**luncho_data**](docs/LunchoApi.md#luncho_data) | **GET** /luncho-data | Lunchodata
+*LunchoApi* | [**luncho_datas**](docs/LunchoApi.md#luncho_datas) | **GET** /luncho-datas | Lunchodatas
 
 
 ## Documentation For Models
 
  - [HTTPValidationError](docs/HTTPValidationError.md)
  - [IMFPPPCountry](docs/IMFPPPCountry.md)
- - [LunchoResult](docs/LunchoResult.md)
+ - [LunchoData](docs/LunchoData.md)
  - [ValidationError](docs/ValidationError.md)
 
 

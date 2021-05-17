@@ -1,4 +1,4 @@
 export * from './HTTPValidationError';
 export * from './IMFPPPCountry';
-export * from './LunchoResult';
+export * from './LunchoData';
 export * from './ValidationError';

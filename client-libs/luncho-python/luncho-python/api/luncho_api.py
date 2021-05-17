@@ -23,7 +23,7 @@ from luncho-python.model_utils import (  # noqa: F401
 )
 from luncho-python.model.http_validation_error import HTTPValidationError
 from luncho-python.model.imfppp_country import IMFPPPCountry
-from luncho-python.model.luncho_result import LunchoResult
+from luncho-python.model.luncho_data import LunchoData
 
 
 class LunchoApi(object):
@@ -38,17 +38,122 @@ class LunchoApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-        def __countries(
+        def __country_codes(
             self,
             **kwargs
         ):
-            """Countries  # noqa: E501
+            """Countrycodes  # noqa: E501
+
+            Returns a list of supported country codes.  # noqa: E501
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.country_codes(async_req=True)
+            >>> result = thread.get()
+
+
+            Keyword Args:
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                [str]
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            return self.call_with_http_info(**kwargs)
+
+        self.country_codes = _Endpoint(
+            settings={
+                'response_type': ([str],),
+                'auth': [],
+                'endpoint_path': '/country-codes',
+                'operation_id': 'country_codes',
+                'http_method': 'GET',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                ],
+                'required': [],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                },
+                'attribute_map': {
+                },
+                'location_map': {
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'application/json'
+                ],
+                'content_type': [],
+            },
+            api_client=api_client,
+            callable=__country_codes
+        )
+
+        def __country_ppps(
+            self,
+            **kwargs
+        ):
+            """Countryppps  # noqa: E501
 
             Returns country data for all countries.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
-            >>> thread = api.countries(async_req=True)
+            >>> thread = api.country_ppps(async_req=True)
             >>> result = thread.get()
 
 
@@ -99,12 +204,12 @@ class LunchoApi(object):
             kwargs['_host_index'] = kwargs.get('_host_index')
             return self.call_with_http_info(**kwargs)
 
-        self.countries = _Endpoint(
+        self.country_ppps = _Endpoint(
             settings={
                 'response_type': ({str: (IMFPPPCountry,)},),
                 'auth': [],
-                'endpoint_path': '/countries',
-                'operation_id': 'countries',
+                'endpoint_path': '/country-PPPs',
+                'operation_id': 'country_ppps',
                 'http_method': 'GET',
                 'servers': None,
             },
@@ -140,25 +245,27 @@ class LunchoApi(object):
                 'content_type': [],
             },
             api_client=api_client,
-            callable=__countries
+            callable=__country_ppps
         )
 
-        def __luncho(
+        def __luncho_data(
             self,
             **kwargs
         ):
-            """Luncho  # noqa: E501
+            """Lunchodata  # noqa: E501
 
+            Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. If the countryCode is not specified, estimate it from IP address.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
-            >>> thread = api.luncho(async_req=True)
+            >>> thread = api.luncho_data(async_req=True)
             >>> result = thread.get()
 
 
             Keyword Args:
-                country_code (str): [optional] if omitted the server will use the default value of "JPN"
-                luncho_value (float): [optional] if omitted the server will use the default value of 100
+                country_code (str): [optional]
+                client_region (str): [optional]
+                cloudfront_viewer_country (str): [optional]
                 _return_http_data_only (bool): response data without head status
                     code and headers. Default is True.
                 _preload_content (bool): if False, the urllib3.HTTPResponse object
@@ -180,7 +287,7 @@ class LunchoApi(object):
                 async_req (bool): execute request asynchronously
 
             Returns:
-                LunchoResult
+                LunchoData
                     If the method is called asynchronously, returns the request
                     thread.
             """
@@ -205,19 +312,20 @@ class LunchoApi(object):
             kwargs['_host_index'] = kwargs.get('_host_index')
             return self.call_with_http_info(**kwargs)
 
-        self.luncho = _Endpoint(
+        self.luncho_data = _Endpoint(
             settings={
-                'response_type': (LunchoResult,),
+                'response_type': (LunchoData,),
                 'auth': [],
-                'endpoint_path': '/luncho',
-                'operation_id': 'luncho',
+                'endpoint_path': '/luncho-data',
+                'operation_id': 'luncho_data',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
                     'country_code',
-                    'luncho_value',
+                    'client_region',
+                    'cloudfront_viewer_country',
                 ],
                 'required': [],
                 'nullable': [
@@ -235,16 +343,20 @@ class LunchoApi(object):
                 'openapi_types': {
                     'country_code':
                         (str,),
-                    'luncho_value':
-                        (float,),
+                    'client_region':
+                        (str,),
+                    'cloudfront_viewer_country':
+                        (str,),
                 },
                 'attribute_map': {
                     'country_code': 'country_code',
-                    'luncho_value': 'luncho_value',
+                    'client_region': 'client-region',
+                    'cloudfront_viewer_country': 'cloudfront-viewer-country',
                 },
                 'location_map': {
                     'country_code': 'query',
-                    'luncho_value': 'query',
+                    'client_region': 'header',
+                    'cloudfront_viewer_country': 'header',
                 },
                 'collection_format_map': {
                 }
@@ -256,24 +368,22 @@ class LunchoApi(object):
                 'content_type': [],
             },
             api_client=api_client,
-            callable=__luncho
+            callable=__luncho_data
         )
 
-        def __lunchos(
+        def __luncho_datas(
             self,
-            luncho_value,
             **kwargs
         ):
-            """Lunchos  # noqa: E501
+            """Lunchodatas  # noqa: E501
 
+            Returns A list of LunchoDatas for all supported countries.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
-            >>> thread = api.lunchos(luncho_value, async_req=True)
+            >>> thread = api.luncho_datas(async_req=True)
             >>> result = thread.get()
 
-            Args:
-                luncho_value (float):
 
             Keyword Args:
                 _return_http_data_only (bool): response data without head status
@@ -297,7 +407,7 @@ class LunchoApi(object):
                 async_req (bool): execute request asynchronously
 
             Returns:
-                [LunchoResult]
+                [LunchoData]
                     If the method is called asynchronously, returns the request
                     thread.
             """
@@ -320,26 +430,21 @@ class LunchoApi(object):
                 '_check_return_type', True
             )
             kwargs['_host_index'] = kwargs.get('_host_index')
-            kwargs['luncho_value'] = \
-                luncho_value
             return self.call_with_http_info(**kwargs)
 
-        self.lunchos = _Endpoint(
+        self.luncho_datas = _Endpoint(
             settings={
-                'response_type': ([LunchoResult],),
+                'response_type': ([LunchoData],),
                 'auth': [],
-                'endpoint_path': '/lunchos',
-                'operation_id': 'lunchos',
+                'endpoint_path': '/luncho-datas',
+                'operation_id': 'luncho_datas',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'luncho_value',
                 ],
-                'required': [
-                    'luncho_value',
-                ],
+                'required': [],
                 'nullable': [
                 ],
                 'enum': [
@@ -353,14 +458,10 @@ class LunchoApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'luncho_value':
-                        (float,),
                 },
                 'attribute_map': {
-                    'luncho_value': 'luncho_value',
                 },
                 'location_map': {
-                    'luncho_value': 'query',
                 },
                 'collection_format_map': {
                 }
@@ -372,5 +473,5 @@ class LunchoApi(object):
                 'content_type': [],
             },
             api_client=api_client,
-            callable=__lunchos
+            callable=__luncho_datas
         )

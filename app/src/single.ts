@@ -1,21 +1,23 @@
 import { autoinject } from 'aurelia-framework';
 import { App } from './app';
-import { LunchoFast } from 'luncho-typescript-aurelia-fast/luncho-fast';
-import { LunchoResult } from 'luncho-typescript-aurelia/models';
+import { Luncho } from 'luncho-typescript-aurelia/luncho';
+import { LunchoData } from 'luncho-typescript-aurelia/models';
 // import { LunchoApi } from 'luncho-typescript-aurelia/LunchoApi';
-//import { LunchoApi, LunchoResult } from 'luncho-typescript-aurelia';
-//import { LunchoApi, LunchoResult } from './gen-openapi';
+//import { LunchoApi, LunchoData } from 'luncho-typescript-aurelia';
+//import { LunchoApi, LunchoData } from './gen-openapi';
 
 @autoinject
 export class Single {
     app: App;
-    lunchoFast: LunchoFast;
+    luncho: Luncho;
     countryCode: string = 'JPN';
     lunchoValue: number = 100;
-    result: LunchoResult;
+    lunchoData: LunchoData;
+    local_currency_value: number;
+    dollar_value: number;
 
-    constructor(app: App, lunchoFast: LunchoFast) {
-        this.lunchoFast = lunchoFast;
+    constructor(app: App, luncho: Luncho) {
+        this.luncho = luncho;
         this.app = app;
     }
 
@@ -24,10 +26,13 @@ export class Single {
     }
 
     async convertFromLuncho() {
-        this.lunchoFast.luncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
-            .then((result: LunchoResult) => {
-                this.result = result;
-                this.countryCode = result.country_code;
-            });
+        this.lunchoData = await this.luncho.getLunchoData(this.countryCode);
+        this.local_currency_value = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, this.countryCode);
+        this.dollar_value = await this.luncho.USDollarFromLuncho(this.lunchoValue, this.countryCode);
+
+        // this.luncho.localCurrencyFromLuncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
+        //     .then((result: LunchoData) => {
+        //         this.result = result;
+        //     });
     }
 }

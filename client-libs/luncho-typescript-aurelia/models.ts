@@ -24,16 +24,17 @@ export interface IMFPPPCountry {
 }
 
 
-export interface LunchoResult {
-  dollar_value: number;
-  local_currency_value: number;
-  currency_code: string;
+/**
+ * Data needed to convert between Luncho and local currency. 
+ */
+export interface LunchoData {
   country_code: string;
   country_name: string;
+  currency_code: string;
   currency_name: string;
+  exchange_rate?: number;
   ppp?: number;
   dollar_per_luncho: number;
-  exchange_rate?: number;
 }
 
 

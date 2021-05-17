@@ -11,7 +11,7 @@ from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, Cla
 from typing_extensions import TypedDict
 
 from src import exchange_rate
-from src.types import Currency, CurrencyCode, C1000, Country, CountryCode, LunchoResult, IMF_PPP_Country
+from src.types import Currency, CurrencyCode, C1000, Country, CountryCode, LunchoData, IMF_PPP_Country
 
 IMF_PPP_All: Dict[CountryCode, IMF_PPP_Country] = {}  # ,
 

@@ -7,7 +7,7 @@ src/apis/index.ts
 src/index.ts
 src/models/HTTPValidationError.ts
 src/models/IMFPPPCountry.ts
-src/models/LunchoResult.ts
+src/models/LunchoData.ts
 src/models/ValidationError.ts
 src/models/index.ts
 src/runtime.ts

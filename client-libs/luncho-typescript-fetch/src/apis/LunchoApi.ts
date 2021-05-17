@@ -21,18 +21,15 @@ import {
     IMFPPPCountry,
     IMFPPPCountryFromJSON,
     IMFPPPCountryToJSON,
-    LunchoResult,
-    LunchoResultFromJSON,
-    LunchoResultToJSON,
+    LunchoData,
+    LunchoDataFromJSON,
+    LunchoDataToJSON,
 } from '../models';
 
-export interface LunchoRequest {
+export interface LunchoDataRequest {
     countryCode?: string;
-    lunchoValue?: number;
-}
-
-export interface LunchosRequest {
-    lunchoValue: number;
+    clientRegion?: string;
+    cloudfrontViewerCountry?: string;
 }
 
 /**
@@ -41,16 +38,44 @@ export interface LunchosRequest {
 export class LunchoApi extends runtime.BaseAPI {
 
     /**
-     * Returns country data for all countries.
-     * Countries
+     * Returns a list of supported country codes.
+     * Countrycodes
      */
-    async countriesRaw(): Promise<runtime.ApiResponse<{ [key: string]: IMFPPPCountry; }>> {
+    async countryCodesRaw(): Promise<runtime.ApiResponse<Array<string>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/countries`,
+            path: `/country-codes`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Returns a list of supported country codes.
+     * Countrycodes
+     */
+    async countryCodes(): Promise<Array<string>> {
+        const response = await this.countryCodesRaw();
+        return await response.value();
+    }
+
+    /**
+     * Returns country data for all countries.
+     * Countryppps
+     */
+    async countryPPPsRaw(): Promise<runtime.ApiResponse<{ [key: string]: IMFPPPCountry; }>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/country-PPPs`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -61,78 +86,78 @@ export class LunchoApi extends runtime.BaseAPI {
 
     /**
      * Returns country data for all countries.
-     * Countries
+     * Countryppps
      */
-    async countries(): Promise<{ [key: string]: IMFPPPCountry; }> {
-        const response = await this.countriesRaw();
+    async countryPPPs(): Promise<{ [key: string]: IMFPPPCountry; }> {
+        const response = await this.countryPPPsRaw();
         return await response.value();
     }
 
     /**
-     * Luncho
+     * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. If the countryCode is not specified, estimate it from IP address.
+     * Lunchodata
      */
-    async lunchoRaw(requestParameters: LunchoRequest): Promise<runtime.ApiResponse<LunchoResult>> {
+    async lunchoDataRaw(requestParameters: LunchoDataRequest): Promise<runtime.ApiResponse<LunchoData>> {
         const queryParameters: any = {};
 
         if (requestParameters.countryCode !== undefined) {
             queryParameters['country_code'] = requestParameters.countryCode;
         }
 
-        if (requestParameters.lunchoValue !== undefined) {
-            queryParameters['luncho_value'] = requestParameters.lunchoValue;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (requestParameters.clientRegion !== undefined && requestParameters.clientRegion !== null) {
+            headerParameters['client-region'] = String(requestParameters.clientRegion);
+        }
+
+        if (requestParameters.cloudfrontViewerCountry !== undefined && requestParameters.cloudfrontViewerCountry !== null) {
+            headerParameters['cloudfront-viewer-country'] = String(requestParameters.cloudfrontViewerCountry);
+        }
+
         const response = await this.request({
-            path: `/luncho`,
+            path: `/luncho-data`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => LunchoResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => LunchoDataFromJSON(jsonValue));
     }
 
     /**
-     * Luncho
+     * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. If the countryCode is not specified, estimate it from IP address.
+     * Lunchodata
      */
-    async luncho(requestParameters: LunchoRequest): Promise<LunchoResult> {
-        const response = await this.lunchoRaw(requestParameters);
+    async lunchoData(requestParameters: LunchoDataRequest): Promise<LunchoData> {
+        const response = await this.lunchoDataRaw(requestParameters);
         return await response.value();
     }
 
     /**
-     * Lunchos
+     * Returns A list of LunchoDatas for all supported countries.
+     * Lunchodatas
      */
-    async lunchosRaw(requestParameters: LunchosRequest): Promise<runtime.ApiResponse<Array<LunchoResult>>> {
-        if (requestParameters.lunchoValue === null || requestParameters.lunchoValue === undefined) {
-            throw new runtime.RequiredError('lunchoValue','Required parameter requestParameters.lunchoValue was null or undefined when calling lunchos.');
-        }
-
+    async lunchoDatasRaw(): Promise<runtime.ApiResponse<Array<LunchoData>>> {
         const queryParameters: any = {};
-
-        if (requestParameters.lunchoValue !== undefined) {
-            queryParameters['luncho_value'] = requestParameters.lunchoValue;
-        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/lunchos`,
+            path: `/luncho-datas`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LunchoResultFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LunchoDataFromJSON));
     }
 
     /**
-     * Lunchos
+     * Returns A list of LunchoDatas for all supported countries.
+     * Lunchodatas
      */
-    async lunchos(requestParameters: LunchosRequest): Promise<Array<LunchoResult>> {
-        const response = await this.lunchosRaw(requestParameters);
+    async lunchoDatas(): Promise<Array<LunchoData>> {
+        const response = await this.lunchoDatasRaw();
         return await response.value();
     }
 

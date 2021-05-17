@@ -11,5 +11,5 @@
 
 from luncho-python.model.http_validation_error import HTTPValidationError
 from luncho-python.model.imfppp_country import IMFPPPCountry
-from luncho-python.model.luncho_result import LunchoResult
+from luncho-python.model.luncho_data import LunchoData
 from luncho-python.model.validation_error import ValidationError

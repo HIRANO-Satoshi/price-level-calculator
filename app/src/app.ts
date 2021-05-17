@@ -1,12 +1,9 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
-import { LunchoFast } from 'luncho-typescript-aurelia-fast/luncho-fast';
-//import { LunchoApi } from './gen-openapi';
-// import { HttpClient } from 'aurelia-fetch-client';
+import { Luncho } from 'luncho-typescript-aurelia/luncho';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
-// import { Luncho, LunchoResult} from './luncho';
 
 @autoinject
 export class App {
@@ -14,30 +11,25 @@ export class App {
     public router: Router;
     public static app: App;
     show = false;
-    countries: any;
-    // luncho: Luncho;
     public taskQueue: TaskQueue;
-    lunchoFast: LunchoFast;
+    luncho: Luncho;
 
 
-    constructor(taskQueue: TaskQueue, router: Router, lunchoFast: LunchoFast) {
+    constructor(taskQueue: TaskQueue, router: Router, luncho: Luncho) {
         this.taskQueue = taskQueue;
-        this.lunchoFast = lunchoFast;
-        this.lunchoFast.basePath = 'http://localhost:8000'
+        this.luncho = luncho;
+        this.luncho.basePath = 'http://localhost:8000'
         // this.luncho = new Luncho(taskQueue);
         App.app = this;
         this.router = router;
     }
 
-    activate() {
-        this.lunchoFast.countries()
-            .then((countries) => {
-                this.countries = countries;
-        });
+    async activate() {
+        await this.luncho.getLunchoDatas();
     }
 
     // attached() {
-    //     this.countryCode = 'JPN';
+    //     this.countryCode = 'JP';
     //     //super.attached();
     // }
 

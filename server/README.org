@@ -39,6 +39,19 @@
 
     -
 
+*** Obtaining country codes with IP geolocation
+
+  - When a client does not pass a country code, the Luncho server can estimate a country code from
+    IP address if one of the following conditions met.
+
+  1. If you run the Luncho server on GCP using Cloud load balancer, [[https://cloud.google.com/load-balancing/docs/custom-headers][set up Cloud load balancer to
+     pass 'client_region']] in request header for the Luncho server. The Luncho server detects the existence
+     of 'client_region' in the request header.
+
+  2. If you run the Luncho server on AWS, set up [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-cloudfront-headers.html][set up AWS CloudFront to pass
+     'CloudFront-Viewer-Country']] in request header for the Luncho server. The Luncho server detects
+     the existence of 'cloudfront_viewer_country' in the request header.
+
 
 *** Run a local Luncho server
   - bin/start-gunicorn.sh

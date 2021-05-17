@@ -16,28 +16,34 @@ import { Api } from './Api';
 import { AuthStorage } from './AuthStorage';
 import {
   IMFPPPCountry,
-  LunchoResult,
+  LunchoData,
 } from './models';
 
 /**
- * countries - parameters interface
+ * countryCodes - parameters interface
  */
-export interface ICountriesParams {
+export interface ICountryCodesParams {
 }
 
 /**
- * luncho - parameters interface
+ * countryPPPs - parameters interface
  */
-export interface ILunchoParams {
+export interface ICountryPPPsParams {
+}
+
+/**
+ * lunchoData - parameters interface
+ */
+export interface ILunchoDataParams {
   countryCode?: string;
-  lunchoValue?: number;
+  clientRegion?: string;
+  cloudfrontViewerCountry?: string;
 }
 
 /**
- * lunchos - parameters interface
+ * lunchoDatas - parameters interface
  */
-export interface ILunchosParams {
-  lunchoValue: number;
+export interface ILunchoDatasParams {
 }
 
 /**
@@ -57,14 +63,14 @@ export class LunchoApi extends Api {
   }
 
   /**
-   * Countries
-   * Returns country data for all countries.
+   * Countrycodes
+   * Returns a list of supported country codes.
    */
-  async countries(): Promise<{ [key: string]: IMFPPPCountry; }> {
+  async countryCodes(): Promise<Array<string>> {
     // Verify required parameters are set
 
     // Create URL to call
-    const url = `${this.basePath}/countries`;
+    const url = `${this.basePath}/country-codes`;
 
     const response = await this.httpClient.createRequest(url)
       // Set HTTP method
@@ -82,15 +88,42 @@ export class LunchoApi extends Api {
   }
 
   /**
-   * Luncho
-   * @param params.countryCode 
-   * @param params.lunchoValue 
+   * Countryppps
+   * Returns country data for all countries.
    */
-  async luncho(params: ILunchoParams): Promise<LunchoResult> {
+  async countryPPPs(): Promise<{ [key: string]: IMFPPPCountry; }> {
     // Verify required parameters are set
 
     // Create URL to call
-    const url = `${this.basePath}/luncho`;
+    const url = `${this.basePath}/country-PPPs`;
+
+    const response = await this.httpClient.createRequest(url)
+      // Set HTTP method
+      .asGet()
+
+      // Send the request
+      .send();
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw new Error(response.content);
+    }
+
+    // Extract the content
+    return response.content;
+  }
+
+  /**
+   * Lunchodata
+   * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. If the countryCode is not specified, estimate it from IP address.
+   * @param params.countryCode 
+   * @param params.clientRegion 
+   * @param params.cloudfrontViewerCountry 
+   */
+  async lunchoData(params: ILunchoDataParams): Promise<LunchoData> {
+    // Verify required parameters are set
+
+    // Create URL to call
+    const url = `${this.basePath}/luncho-data`;
 
     const response = await this.httpClient.createRequest(url)
       // Set HTTP method
@@ -98,9 +131,8 @@ export class LunchoApi extends Api {
       // Set query parameters
       .withParams({ 
         'country_code': params['countryCode'],
-        'luncho_value': params['lunchoValue'],
       })
-
+      .withHeader('client-region', params['clientRegion'])      .withHeader('cloudfront-viewer-country', params['cloudfrontViewerCountry'])
       // Send the request
       .send();
 
@@ -113,23 +145,18 @@ export class LunchoApi extends Api {
   }
 
   /**
-   * Lunchos
-   * @param params.lunchoValue 
+   * Lunchodatas
+   * Returns A list of LunchoDatas for all supported countries.
    */
-  async lunchos(params: ILunchosParams): Promise<Array<LunchoResult>> {
+  async lunchoDatas(): Promise<Array<LunchoData>> {
     // Verify required parameters are set
-    this.ensureParamIsSet('lunchos', params, 'lunchoValue');
 
     // Create URL to call
-    const url = `${this.basePath}/lunchos`;
+    const url = `${this.basePath}/luncho-datas`;
 
     const response = await this.httpClient.createRequest(url)
       // Set HTTP method
       .asGet()
-      // Set query parameters
-      .withParams({ 
-        'luncho_value': params['lunchoValue'],
-      })
 
       // Send the request
       .send();

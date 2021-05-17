@@ -10,14 +10,14 @@ from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, Cla
 from typing_extensions import TypedDict
 from pydantic import BaseModel, create_model_from_typeddict
 
+CountryCode = str               # ISO 3166-1 2 letter code. E.g. 'JP'
+CurrencyCode = str              # ISO 4217   3 letter currency code. E.g. 'AFN'
 C1000 = 1000
-CountryCode = str
-CurrencyCode = str
 
 class Country(TypedDict):
-    ppp: float                # PPP in local currency of currency_name
-    currency_code: CurrencyCode # AFN  (ISO 3 letter currency code)
-    currency_name: str        # Afghani
+    ppp: float                  # PPP in local currency of currency_name
+    currency_code: CurrencyCode # AFN  (ISO 4217 3 letter currency code)
+    currency_name: str          # Afghani
     country_name: str           # Afghanistan
 
 
@@ -48,13 +48,17 @@ class IMF_PPP_Country(TypedDict, total=False):
 
 IMF_PPP_Country_dummy = create_model_from_typeddict(IMF_PPP_Country)
 
-class LunchoResult(BaseModel):
-    dollar_value: float
-    local_currency_value: float
-    currency_code: CurrencyCode
+class LunchoData(BaseModel):
+    ''' Data needed to convert between Luncho and local currency. '''
+
     country_code: CountryCode
     country_name: str
+
+    currency_code: CurrencyCode
     currency_name: str
+    exchange_rate: Optional[float]
+
     ppp: Optional[float]
     dollar_per_luncho: float
-    exchange_rate: Optional[float]
+    #dollar_value: float
+    #local_currency_value: float
