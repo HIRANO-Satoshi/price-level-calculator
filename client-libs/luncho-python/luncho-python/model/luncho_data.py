@@ -74,6 +74,7 @@ class LunchoData(ModelNormal):
         return {
             'country_code': (str,),  # noqa: E501
             'country_name': (str,),  # noqa: E501
+            'continent_code': (str,),  # noqa: E501
             'currency_code': (str,),  # noqa: E501
             'currency_name': (str,),  # noqa: E501
             'dollar_per_luncho': (float,),  # noqa: E501
@@ -89,6 +90,7 @@ class LunchoData(ModelNormal):
     attribute_map = {
         'country_code': 'country_code',  # noqa: E501
         'country_name': 'country_name',  # noqa: E501
+        'continent_code': 'continent_code',  # noqa: E501
         'currency_code': 'currency_code',  # noqa: E501
         'currency_name': 'currency_name',  # noqa: E501
         'dollar_per_luncho': 'dollar_per_luncho',  # noqa: E501
@@ -108,12 +110,13 @@ class LunchoData(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, country_code, country_name, currency_code, currency_name, dollar_per_luncho, *args, **kwargs):  # noqa: E501
+    def __init__(self, country_code, country_name, continent_code, currency_code, currency_name, dollar_per_luncho, *args, **kwargs):  # noqa: E501
         """LunchoData - a model defined in OpenAPI
 
         Args:
             country_code (str):
             country_name (str):
+            continent_code (str):
             currency_code (str):
             currency_name (str):
             dollar_per_luncho (float):
@@ -178,6 +181,7 @@ class LunchoData(ModelNormal):
 
         self.country_code = country_code
         self.country_name = country_name
+        self.continent_code = continent_code
         self.currency_code = currency_code
         self.currency_name = currency_name
         self.dollar_per_luncho = dollar_per_luncho

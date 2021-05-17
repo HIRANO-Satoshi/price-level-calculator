@@ -19,8 +19,8 @@ from fastapi_utils.openapi import simplify_operation_ids
 from main import app
 from src import exchange_rate
 from src.utils import error
-from src.ppp_data import IMF_PPP_Map
-from src.types import Currency, CurrencyCode, C1000, Country, CountryCode, LunchoData, IMF_PPP_Country
+from src.ppp_data import Countries
+from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
 
 SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
 
@@ -58,12 +58,12 @@ async def lunchoData(
 
     country_code = country_code or client_region or cloudFront_viewer_country or None
 
-    IMF_PPP_this_country = IMF_PPP_Map.get(country_code, None)
-    if not IMF_PPP_this_country:
+    country = Countries.get(country_code, None)
+    if not country:
         error(country_code, 'Invalid country code')
 
-    currency_code = IMF_PPP_this_country['currency_code']
-    ppp: float = IMF_PPP_this_country['year_ppp'].get(year, None)  # country's ppp of this year
+    currency_code = country['currency_code']
+    ppp: float = country['year_ppp'].get(year, None)  # country's ppp of this year
     if ppp:
         exchange_rate_per_USD = exchange_rate.exchange_rate_per_USD(currency_code)
         if exchange_rate_per_USD is not None:
@@ -71,16 +71,17 @@ async def lunchoData(
             #local_currency_value = dollar_per_luncho * ppp * luncho_value
             #dollar_value = local_currency_value / exchange_rate_per_USD
         else:
-            print('Exchange rate not found: ' + IMF_PPP_this_country['country_name'] + ' ' + IMF_PPP_this_country['currency_name'] + '(' + currency_code + ')')
+            print('Exchange rate not found: ' + country['country_name'] + ' ' + country['currency_name'] + '(' + currency_code + ')')
     else:
-        print('PPP not found: ' + IMF_PPP_this_country['country_name'] + ' ' + IMF_PPP_this_country['currency_name'] + '(' + currency_code + ')')
+        print('PPP not found: ' + country['country_name'] + ' ' + country['currency_name'] + '(' + currency_code + ')')
 
 
     return {
         'country_code': country_code,
-        'country_name': IMF_PPP_this_country['country_name'],
+        'country_name': country['country_name'],
+        'continent_code': country['continent_code'],
         'currency_code': currency_code,
-        'currency_name': IMF_PPP_this_country['currency_name'],
+        'currency_name': country['currency_name'],
         'exchange_rate': exchange_rate_per_USD,
         'ppp': ppp,
         'dollar_per_luncho': dollar_per_luncho,
@@ -96,7 +97,7 @@ async def lunchoDatas() -> List[LunchoData]:
     '''
 
     lunchoDatas: List[LunchoData] = []
-    for country_code in IMF_PPP_Map:  #type: CountryCode
+    for country_code in Countries:  #type: CountryCode
         lunchoDatas.append(await lunchoData(country_code))
     return lunchoDatas
 
@@ -106,19 +107,19 @@ async def countryCodes() -> List[CountryCode]:
     '''
       Returns a list of supported country codes.
     '''
-    return [country_code for coutry_data in IMF_PPP_Map]
+    return [country_code for coutry_data in Countries]
 
 
-@app.get("/country-PPPs", response_model=Dict[CountryCode, IMF_PPP_Country], tags=['Luncho'])
-async def countryPPPs() -> Dict[CountryCode, IMF_PPP_Country]:
-    '''
-      Returns country data for all countries.
-    '''
-    IMF_PPP_Map_copy: Dict[CountryCode, IMF_PPP_Country] = copy.deepcopy(IMF_PPP_Map)
+# @app.get("/country-PPPs", response_model=Dict[CountryCode, Country], tags=['Luncho'])
+# async def countryPPPs() -> Dict[CountryCode, Country]:
+#     '''
+#       Returns country data for all countries.
+#     '''
+#     Countries_copy: Dict[CountryCode, Country] = copy.deepcopy(Countries)
 
-    for country_code in IMF_PPP_Map_copy:  #type: CountryCode
-        del IMF_PPP_Map_copy[country_code]['year_ppp']
-    return IMF_PPP_Map_copy
+#     for country_code in Countries_copy:  #type: CountryCode
+#         del Countries_copy[country_code]['year_ppp']
+#     return Countries_copy
 
 
 

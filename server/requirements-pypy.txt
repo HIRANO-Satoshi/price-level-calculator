@@ -11,6 +11,7 @@ gunicorn
 uvicorn
 requests
 pycountry
+pycountry-convert
 mypy-extensions
 #orjson does not support Pypy
 #ujson does not support Pypy

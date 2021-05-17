@@ -10,12 +10,13 @@ import re
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 from typing_extensions import TypedDict
 import pycountry
+import pycountry_convert
 
 from src import exchange_rate
-from src.types import Currency, CurrencyCode, C1000, Country, CountryCode, LunchoData, IMF_PPP_Country
+from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
 from src.utils import error
 
-IMF_PPP_Map: Dict[CountryCode, IMF_PPP_Country] = {}  # ,
+Countries: Dict[CountryCode, Country] = {}  # ,
 
 # ICP country metadata
 #   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
@@ -38,7 +39,7 @@ kosovo.numeric = "383"
 kosovo.official_name = "Kosovo"
 
 def init() -> None:
-    global Country_Metadata, IMF_PPP_Map
+    global Country_Metadata, Countries
 
     # CountryMetadataType into Country_Metadata
     with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:
@@ -82,7 +83,7 @@ def init() -> None:
             Country_Metadata[country_code] = dict(data)
         #print(str(Country_Metadata))
 
-    # build IMF_PPP_Map: IMF_PPP_Country Implied PPP conversion rate (National currency per international dollar)
+    # build Countries: Country Implied PPP conversion rate (National currency per international dollar)
     mapping = {
         "China, People's Republic of": 'China',
         "Congo, Dem. Rep. of the": 'Congo, Dem. Rep.',
@@ -128,14 +129,19 @@ def init() -> None:
                 if ppp is None or ppp == 'no data':
                     continue
                 ppps[year] = float(ppp)
+            if country_code == 'TL': # Timor-Leste is in asia.
+                continent_code = 'AS'
+            else:
+                continent_code: Any = pycountry_convert.country_alpha2_to_continent_code(country_code)
             # print(str(ppps))
-            IMF_PPP_Map[country_code] = { 'year_ppp': ppps,
-                                      #'ppp': ppps[datetime.datetime.today().year],
-                                      'currency_code': Country_Metadata[country_code]['currency_code'],
-                                      'currency_name': Country_Metadata[country_code]['currency_name'],
-                                      'country_name': Country_Metadata[country_code]['table_name']
-            }
+            Countries[country_code] = { 'year_ppp': ppps,
+                                        #'ppp': ppps[datetime.datetime.today().year],
+                                        'currency_code': Country_Metadata[country_code]['currency_code'],
+                                        'continent_code': continent_code,
+                                        'currency_name': Country_Metadata[country_code]['currency_name'],
+                                        'country_name': Country_Metadata[country_code]['table_name']
+                                       }
 
-        #print(str(IMF_PPP_Map))
+        #print(str(Countries))
 
     exchange_rate.load_exchange_rates()

@@ -51,7 +51,6 @@ import luncho-python
 from pprint import pprint
 from luncho-python.api import luncho_api
 from luncho-python.model.http_validation_error import HTTPValidationError
-from luncho-python.model.imfppp_country import IMFPPPCountry
 from luncho-python.model.luncho_data import LunchoData
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
@@ -81,7 +80,6 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *LunchoApi* | [**country_codes**](docs/LunchoApi.md#country_codes) | **GET** /country-codes | Countrycodes
-*LunchoApi* | [**country_ppps**](docs/LunchoApi.md#country_ppps) | **GET** /country-PPPs | Countryppps
 *LunchoApi* | [**luncho_data**](docs/LunchoApi.md#luncho_data) | **GET** /luncho-data | Lunchodata
 *LunchoApi* | [**luncho_datas**](docs/LunchoApi.md#luncho_datas) | **GET** /luncho-datas | Lunchodatas
 
@@ -89,7 +87,6 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [HTTPValidationError](docs/HTTPValidationError.md)
- - [IMFPPPCountry](docs/IMFPPPCountry.md)
  - [LunchoData](docs/LunchoData.md)
  - [ValidationError](docs/ValidationError.md)
 

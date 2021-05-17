@@ -16,7 +16,14 @@ export class Countries {
     lunchoDataMap: Map<string, LunchoData>;
     showCurrencyCode = false;
     showCountryCode = false;
-
+    continents = {
+        'NA': 'North America',
+        'SA': 'South America',
+        'AS': 'Asia',
+        'EU': 'Europe',
+        'OC': 'Australia',
+        'AF': 'Africa',
+    }
     constructor(app: App, taskQueue: TaskQueue, luncho: Luncho) {
         this.app = app;
         this.taskQueue = taskQueue;

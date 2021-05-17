@@ -36,6 +36,12 @@ export interface LunchoData {
      * @type {string}
      * @memberof LunchoData
      */
+    continent_code: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LunchoData
+     */
     currency_code: string;
     /**
      * 
@@ -75,6 +81,7 @@ export function LunchoDataFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'country_code': json['country_code'],
         'country_name': json['country_name'],
+        'continent_code': json['continent_code'],
         'currency_code': json['currency_code'],
         'currency_name': json['currency_name'],
         'exchange_rate': !exists(json, 'exchange_rate') ? undefined : json['exchange_rate'],
@@ -94,6 +101,7 @@ export function LunchoDataToJSON(value?: LunchoData | null): any {
         
         'country_code': value.country_code,
         'country_name': value.country_name,
+        'continent_code': value.continent_code,
         'currency_code': value.currency_code,
         'currency_name': value.currency_name,
         'exchange_rate': value.exchange_rate,

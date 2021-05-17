@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **country_code** | **str** |  | 
 **country_name** | **str** |  | 
+**continent_code** | **str** |  | 
 **currency_code** | **str** |  | 
 **currency_name** | **str** |  | 
 **dollar_per_luncho** | **float** |  | 

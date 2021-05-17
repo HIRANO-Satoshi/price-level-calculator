@@ -16,20 +16,13 @@ export interface HTTPValidationError {
 }
 
 
-export interface IMFPPPCountry {
-  year_ppp?: { [key: string]: number; };
-  currency_code?: string;
-  currency_name?: string;
-  country_name?: string;
-}
-
-
 /**
  * Data needed to convert between Luncho and local currency. 
  */
 export interface LunchoData {
   country_code: string;
   country_name: string;
+  continent_code: string;
   currency_code: string;
   currency_name: string;
   exchange_rate?: number;

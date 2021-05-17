@@ -3,7 +3,6 @@
 .travis.yml
 README.md
 docs/HTTPValidationError.md
-docs/IMFPPPCountry.md
 docs/LunchoApi.md
 docs/LunchoData.md
 docs/ValidationError.md
@@ -17,7 +16,6 @@ luncho-python/configuration.py
 luncho-python/exceptions.py
 luncho-python/model/__init__.py
 luncho-python/model/http_validation_error.py
-luncho-python/model/imfppp_country.py
 luncho-python/model/luncho_data.py
 luncho-python/model/validation_error.py
 luncho-python/model_utils.py

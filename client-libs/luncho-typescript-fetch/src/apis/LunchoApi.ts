@@ -18,9 +18,6 @@ import {
     HTTPValidationError,
     HTTPValidationErrorFromJSON,
     HTTPValidationErrorToJSON,
-    IMFPPPCountry,
-    IMFPPPCountryFromJSON,
-    IMFPPPCountryToJSON,
     LunchoData,
     LunchoDataFromJSON,
     LunchoDataToJSON,
@@ -62,34 +59,6 @@ export class LunchoApi extends runtime.BaseAPI {
      */
     async countryCodes(): Promise<Array<string>> {
         const response = await this.countryCodesRaw();
-        return await response.value();
-    }
-
-    /**
-     * Returns country data for all countries.
-     * Countryppps
-     */
-    async countryPPPsRaw(): Promise<runtime.ApiResponse<{ [key: string]: IMFPPPCountry; }>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/country-PPPs`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => runtime.mapValues(jsonValue, IMFPPPCountryFromJSON));
-    }
-
-    /**
-     * Returns country data for all countries.
-     * Countryppps
-     */
-    async countryPPPs(): Promise<{ [key: string]: IMFPPPCountry; }> {
-        const response = await this.countryPPPsRaw();
         return await response.value();
     }
 

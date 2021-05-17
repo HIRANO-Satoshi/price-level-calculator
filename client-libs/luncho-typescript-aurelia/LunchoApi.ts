@@ -15,7 +15,6 @@ import { HttpClient } from 'aurelia-http-client';
 import { Api } from './Api';
 import { AuthStorage } from './AuthStorage';
 import {
-  IMFPPPCountry,
   LunchoData,
 } from './models';
 
@@ -23,12 +22,6 @@ import {
  * countryCodes - parameters interface
  */
 export interface ICountryCodesParams {
-}
-
-/**
- * countryPPPs - parameters interface
- */
-export interface ICountryPPPsParams {
 }
 
 /**
@@ -71,31 +64,6 @@ export class LunchoApi extends Api {
 
     // Create URL to call
     const url = `${this.basePath}/country-codes`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
-  }
-
-  /**
-   * Countryppps
-   * Returns country data for all countries.
-   */
-  async countryPPPs(): Promise<{ [key: string]: IMFPPPCountry; }> {
-    // Verify required parameters are set
-
-    // Create URL to call
-    const url = `${this.basePath}/country-PPPs`;
 
     const response = await this.httpClient.createRequest(url)
       // Set HTTP method

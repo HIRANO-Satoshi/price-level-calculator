@@ -15,7 +15,6 @@ export { AuthStorage } from './AuthStorage';
 export { LunchoApi } from './LunchoApi';
 export {
   HTTPValidationError,
-  IMFPPPCountry,
   LunchoData,
   ValidationError,
 } from './models';

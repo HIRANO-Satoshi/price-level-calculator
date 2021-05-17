@@ -18,13 +18,14 @@
     <table id="all-table"  class="tablesorter">
       <thead>
         <tr>
-          <th>Country</th><th if.bind="showCountryCode">Code</th><th>Local Currency</th><th if.bind="showCurrencyCode">Code</th><th>US Dollar</th>
+          <th>Country</th><th if.bind="showCountryCode">Code</th><th>Continent</th><th>Local Currency</th><th if.bind="showCurrencyCode">Code</th><th>US Dollar</th>
         </tr>
       </thead>
       <tbody>
         <tr repeat.for="[country_code, lunchoData] of lunchoDataMap">
           <td>${lunchoData.country_name}</td>
           <td if.bind="showCountryCode">${country_code}</td>
+          <td>${continents[lunchoData.continent_code]}</td>
           <td>${lunchoData.local_currency_value ? lunchoData.local_currency_value : '' | numberFormat: '0.00'} ${lunchoData.currency_name}</td>
           <!-- <td>${local_currency_values[country_code] | numberFormat: '0.00'}</td> -->
           <!-- <td>${local_currency_values[country_code] ? local_currency_values[country_code] : '' | numberFormat: '0.00'}</td> -->
