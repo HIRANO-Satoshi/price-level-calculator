@@ -1,6 +1,8 @@
 '''
 
   pytest test_client_lib.py
+  pytest test/test_client_lib.py::test_countries_luncho
+
 
   This test does not run in Emacs. Why?
 
@@ -14,7 +16,7 @@ from pprint import pprint
 # import importlib
 # foobar = importlib.import_module("luncho-python")
 import luncho_python
-from luncho_python.api import luncho_api
+from luncho_python.api import luncho_api, luncho
 from luncho_python.model.http_validation_error import HTTPValidationError
 from luncho_python.model.luncho_data import LunchoData
 # Defining the host is optional and defaults to http://localhost
@@ -23,7 +25,24 @@ configuration = luncho_python.Configuration(
     host = "http://localhost:8000"
 )
 
-def test_countries():
+def test_countries_luncho():
+
+    # Enter a context with an instance of the API client
+    with luncho_python.ApiClient(configuration) as api_client:
+        # Create an instance of the API class
+        api_instance = luncho.Luncho(api_client)
+
+        try:
+            datas: Dict[CountryCode, str] = api_instance.countries_fast()
+            assert len(datas) > 150
+
+            # again should use cache
+            datas = api_instance.countries_fast()
+            assert len(datas) > 150
+        except luncho_python.ApiException as e:
+            print("Exception when calling LunchoApi->countries: %s\n" % e)
+
+def test_countries_luncho_api():
 
     # Enter a context with an instance of the API client
     with luncho_python.ApiClient(configuration) as api_client:
@@ -31,13 +50,36 @@ def test_countries():
         api_instance = luncho_api.LunchoApi(api_client)
 
         try:
-            # Countries
             datas: Dict[CountryCode, str] = api_instance.countries()
             assert len(datas) > 150
         except luncho_python.ApiException as e:
             print("Exception when calling LunchoApi->countries: %s\n" % e)
 
-def test_luncho_data():
+def test_luncho_data_luncho():
+
+    # Enter a context with an instance of the API client
+    with luncho_python.ApiClient(configuration) as api_client:
+        # Create an instance of the API class
+        api_instance = luncho.Luncho(api_client)
+
+        try:
+            lunchoData: LunchoData = api_instance.luncho_data_fast('JP')
+            Japan_test(lunchoData)
+
+            # again should use cache
+            import pdb; pdb.set_trace()
+
+            lunchoData = api_instance.luncho_data_fast('JP')
+            Japan_test(lunchoData)
+        except luncho_python.ApiException as e:
+            print("Exception when calling LunchoApi->countries: %s\n" % e)
+
+        try:
+            lunchoData: LunchoData = api_instance.luncho_data_fast('NOT EXISTS')
+        except luncho_python.ApiException as e:
+            print("Exception when calling LunchoApi->countries: %s\n" % e)
+
+def test_luncho_data_luncho_api():
 
     # Enter a context with an instance of the API client
     with luncho_python.ApiClient(configuration) as api_client:
@@ -45,13 +87,29 @@ def test_luncho_data():
         api_instance = luncho_api.LunchoApi(api_client)
 
         try:
-            # Countries
             lunchoData: LunchoData = api_instance.luncho_data('JP')
             Japan_test(lunchoData)
         except luncho_python.ApiException as e:
             print("Exception when calling LunchoApi->countries: %s\n" % e)
 
-def test_luncho_datas():
+def test_luncho_datas_luncho():
+
+    # Enter a context with an instance of the API client
+    with luncho_python.ApiClient(configuration) as api_client:
+        # Create an instance of the API class
+        api_instance = luncho.Luncho(api_client)
+
+        try:
+            lunchoDatas: Dict[CountryCode, LunchoData] = api_instance.luncho_datas_fast()
+            Japan_test(lunchoDatas['JP'])
+
+            # again should use cache
+            lunchoDatas = api_instance.luncho_datas_fast()
+            Japan_test(lunchoDatas['JP'])
+        except luncho_python.ApiException as e:
+            print("Exception when calling LunchoApi->countries: %s\n" % e)
+
+def test_luncho_datas_luncho_api():
 
     # Enter a context with an instance of the API client
     with luncho_python.ApiClient(configuration) as api_client:
@@ -64,6 +122,42 @@ def test_luncho_datas():
             Japan_test(lunchoDatas['JP'])
         except luncho_python.ApiException as e:
             print("Exception when calling LunchoApi->countries: %s\n" % e)
+
+def test_localCurrencyFromLuncho():
+
+    # Enter a context with an instance of the API client
+    with luncho_python.ApiClient(configuration) as api_client:
+        # Create an instance of the API class
+        api_instance = luncho.Luncho(api_client)
+
+        try:
+            #import pdb; pdb.set_trace()
+            value: float = api_instance.localCurrencyFromLuncho(100.0, 'JP')
+            assert value >= 500
+
+            # again should use cache
+            value = api_instance.localCurrencyFromLuncho(100.0, 'JP')
+            assert value >= 500
+        except luncho_python.ApiException as e:
+            print("Exception when calling LunchoApi->countries: %s\n" % e)
+
+def test_USDollarFromLuncho():
+
+    # Enter a context with an instance of the API client
+    with luncho_python.ApiClient(configuration) as api_client:
+        # Create an instance of the API class
+        api_instance = luncho.Luncho(api_client)
+
+        try:
+            value: float = api_instance.USDollarFromLuncho(100.0, 'JP')
+            assert value >= 6.0
+
+            # again should use cache
+            value = api_instance.USDollarFromLuncho(100.0, 'JP')
+            assert value >= 6.0
+        except luncho_python.ApiException as e:
+            print("Exception when calling LunchoApi->countries: %s\n" % e)
+
 
 def Japan_test(lunchoData: LunchoData):
     assert lunchoData['country_code']   == 'JP'

@@ -1,5 +1,8 @@
 /**
-   Fast Luncho API by caching. Don't this
+  Fast Luncho API by caching. Use this and don't this LunchoApi.ts
+
+  @author: HIRANO Satoshi
+  @date: 2021-5-15
 */
 import { LunchoData } from './models';
 import { LunchoApi, ILunchoDataParams } from './LunchoApi';
@@ -14,7 +17,7 @@ export class Luncho extends LunchoApi {
 
 
     /**
-       Returns a local data for the given country code using cache.
+       Returns a Luncho data for the given country code using cache.
     */
     async lunchoData(param: ILunchoDataParams ): Promise<LunchoData> {
         const lunchoData: LunchoData = this.lunchoDataMap[param.countryCode];
