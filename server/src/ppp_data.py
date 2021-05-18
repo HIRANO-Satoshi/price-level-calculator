@@ -6,15 +6,17 @@
 '''
 
 import csv
+import logging
 import os
 import re
+import datetime
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 from typing_extensions import TypedDict
 import pycountry
 import pycountry_convert
 
 from conf import SDR_Per_Luncho
-from src import exchange_rate
+#from src import exchange_rate
 from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
 from src.utils import error
 
@@ -41,7 +43,7 @@ kosovo.name = "Kosovo"
 kosovo.numeric = "383"
 kosovo.official_name = "Kosovo"
 
-def init() -> None:
+def init(use_dummy_data: bool) -> None:
     global Country_Metadata, Countries, CountryCode_Names
 
     if not os.getcwd().endswith('server'):
@@ -51,6 +53,8 @@ def init() -> None:
     with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:
         metadata_reader  = csv.DictReader(metadata_file)
         country_data: Any
+
+        # 215 countries and regions in the file
         for data in metadata_reader:
             country_code3 = data['Code']     # ISO 3 letter code
             del data['Code']
@@ -118,6 +122,7 @@ def init() -> None:
     with open('data/imf-dm-export-20201110.csv', newline='', encoding="utf_8_sig") as imf_file:
         imf_reader  = csv.DictReader(imf_file)
 
+        # 193 countries and regions in the file
         for data in imf_reader:
             table_name: str = data.get('Implied PPP conversion rate (National currency per international dollar)')
             if not table_name or not data.get('2020'):
@@ -156,3 +161,16 @@ def init() -> None:
 
         #print(str(Countries))
         #print(CountryCode_Names)
+
+def update() -> None:
+    ''' Update Countries to reflect the latest exchange rates. '''
+
+    from src import exchange_rate
+    year: int = datetime.datetime.today().year
+    logging.info('ppp_data.update()')
+
+    for country_code, country in Countries.items():  #type: CountryCode, Country
+        country['ppp'] = country['year_ppp'].get(year, None)  # country's ppp of this year
+        country['exchange_rate'] = exchange_rate.exchange_rate_per_USD(country['currency_code'])
+        country['dollar_per_luncho'] = exchange_rate.Dollar_Per_SDR * SDR_Per_Luncho
+        country['expiration'] = exchange_rate.expiration

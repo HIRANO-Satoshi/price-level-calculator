@@ -22,11 +22,6 @@ continents: Dict[ContinentCode, str] = {
     'AF': 'Africa',
 }
 
-class Info(BaseModel):
-    expiration: float               # Data expiration in unix time. You need to call APIs after this time.
-    dollar_per_luncho: float        # dollar/luncho rate
-
-
 class LunchoData(BaseModel):
     ''' Data needed to convert between Luncho and local currency. '''
 
@@ -40,6 +35,7 @@ class LunchoData(BaseModel):
 
     ppp: Optional[float]            # PPP data
     dollar_per_luncho: float        # dollar/luncho rate
+    expiration: float               # Data expiration in unix time. You need to call APIs after this time.
     #dollar_value: float
     #local_currency_value: float
 

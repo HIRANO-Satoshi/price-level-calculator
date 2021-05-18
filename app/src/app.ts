@@ -1,7 +1,14 @@
+/**
+   The Luncho app.
+
+  @author HIRANO Satoshi
+  @date  2021/05/12
+
+*/
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
-import { Luncho } from 'luncho-typescript-aurelia/luncho';
+import { Luncho } from 'luncho_typescript-aurelia/luncho';
 
 @autoinject
 export class App {
@@ -16,7 +23,7 @@ export class App {
     constructor(taskQueue: TaskQueue, router: Router, luncho: Luncho) {
         this.taskQueue = taskQueue;
         this.luncho = luncho;
-        this.luncho.basePath = 'http://localhost:8000/v1'
+        this.luncho.basePath = 'http://localhost:8000'
         App.app = this;
         this.router = router;
     }

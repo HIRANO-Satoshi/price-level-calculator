@@ -1,7 +1,7 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { App } from './app';
-import { Luncho } from 'luncho-typescript-aurelia/luncho';
-import { LunchoData } from 'luncho-typescript-aurelia/models';
+import { Luncho } from 'luncho_typescript-aurelia/luncho';
+import { LunchoData } from 'luncho_typescript-aurelia/models';
 import 'tablesorter';
 import 'tablesorter/dist/css/theme.materialize.min.css';
 

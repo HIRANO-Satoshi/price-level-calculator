@@ -60,21 +60,28 @@ def exchange_rate_per_USD(currencyCode: CurrencyCode) -> Optional[float]:
 
     return Exchange_Rates.get(currencyCode, None)
 
-def load_exchange_rates():
-    ''' load exchange rates and SDR from fixer. '''
+def load_exchange_rates(use_dummy_data: bool):
+    ''' Load exchange rates and SDR from fixer or dummy data file. '''
 
-    global Fixer_Exchange_Rates, Exchange_Rates, last_load
+    global Fixer_Exchange_Rates, Exchange_Rates, last_load, expiration
 
-    if last_load + (20*60*1000) > time.time():  # don't load again for 20 min
-        return
+    # if last_load + (20*60*1000) > time.time():  # don't load again for 20 min
+    #     return
 
-    url: str = ''.join(('http://data.fixer.io/api/latest?access_key=', api_keys.Fixer_Access_Key))
+    if use_dummy_data:
+        with open('data/dummy-fixer-exchange-2020-11-11.json', 'r', newline='', encoding="utf_8_sig") as fixer_file:
+            # 168 currencies
+            Fixer_Exchange_Rates = json.load(fixer_file)
+    else:
+        url: str = ''.join(('http://data.fixer.io/api/latest?access_key=', api_keys.Fixer_Access_Key))
 
-    response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
-    assert response.ok   #XXX Can we retry?
-    logging.info('fetched exchange rate')
+        response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
+        if not response.ok:   # no retry. will load after one hour.
+            return
+        Fixer_Exchange_Rates = json.loads(response.text)
 
-    Fixer_Exchange_Rates = json.loads(response.text)
+        logging.debug('Fetched exchange rate')
+
     assert Fixer_Exchange_Rates['base'] == 'EUR'  # always EUR with free plan
 
     usd: float = Fixer_Exchange_Rates['rates']['USD']  # USD per euro
@@ -83,19 +90,29 @@ def load_exchange_rates():
         if currecy_code == 'XDR':
             global Dollar_Per_SDR
             Dollar_Per_SDR = 1 / Exchange_Rates[currecy_code]
-            logging.info('Dollar/SDR = ' + str(Dollar_Per_SDR))
-    last_load = time.time()
+            logging.debug('Dollar/SDR = ' + str(Dollar_Per_SDR))
 
-def cron():
+    last_load = time.time()
+    expiration = last_load + 60*60   # expires in 1 hour
+
+    from src import ppp_data
+    ppp_data.update()
+
+def cron(use_dummy_data):
+    ''' Cron task. Load exchange rates every one hour. '''
+
     while True:
         time.sleep(60*60)      # every one hour
-        load_exchange_rates()
+        #time.sleep(10)        # test
+        load_exchange_rates(use_dummy)
 
 
-def init():
+def init(use_dummy_data):
+    ''' Initialize exchange rates. '''
+
     # load exchange rates at startup and every one hour
-    load_exchange_rates()
+    load_exchange_rates(use_dummy_data)
 
     # # start cron task
-    thread: Thread = Thread(target=cron)
+    thread: Thread = Thread(target=cron, args=(use_dummy_data,))
     thread.start()

@@ -19,8 +19,8 @@ SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
 Gen_Openapi: Dict[str, str] = {
     'python': '',
     #'typescript-aurelia': 'supportsES6=true,npmName=luncho',
-    'typescript-aurelia': 'supportsES6=true,npmName=luncho-typescript-aurelia',
-    'typescript-fetch': 'supportsES6=true,npmName=luncho-typescript-fetch',
+    'typescript-aurelia': 'supportsES6=true,npmName=luncho_typescript-aurelia',
+    'typescript-fetch': 'supportsES6=true,npmName=luncho_typescript-fetch',
 }
 
 Openapi_Schema_File = 'data/openapi_schema.json'

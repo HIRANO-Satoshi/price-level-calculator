@@ -15,11 +15,13 @@
 ** Installation
 
 *** Create an account on Fixer to get exchange rate
+
   - Place your Fixer access key in api_keys.py.
 
     Fixer_Access_Key = 'XXXXXXXX'
 
 *** Local installation
+
   - [[https://www.pypy.org/download.html][Install pypy3]]
    - (Mac) brew install pypy3
   - Install Rust that is required to run pip
@@ -31,26 +33,11 @@
   - You have pypyenv dir that includes site-packages.
 
 *** Generate client library and link
+
   - pypy3 main.py gen
   - if you use yarn or npm, compile and link;
-    - pushd ../client-libs/luncho-typescript-aurelia; yarn install; yarn link; popd
-    - pushd ../client-libs/luncho-typescript-aurelia-fast; yarn link; yarn link "luncho-typescript-aurelia"; yarn install; popd
-    - pushd ../app; yarn link "luncho-typescript-aurelia"; yarn link "luncho-typescript-aurelia-fast"
-
-    -
-
-*** Obtaining country codes with IP geolocation
-
-  - When a client does not pass a country code, the Luncho server can estimate a country code from
-    IP address if one of the following conditions met.
-
-  1. If you run the Luncho server on GCP using Cloud load balancer, [[https://cloud.google.com/load-balancing/docs/custom-headers][set up Cloud load balancer to
-     pass 'client_region']] in request header for the Luncho server. The Luncho server detects the existence
-     of 'client_region' in the request header.
-
-  2. If you run the Luncho server on AWS, set up [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-cloudfront-headers.html][set up AWS CloudFront to pass
-     'CloudFront-Viewer-Country']] in request header for the Luncho server. The Luncho server detects
-     the existence of 'cloudfront_viewer_country' in the request header.
+    - pushd ../client-libs/luncho_typescript-aurelia; yarn install; yarn link; popd
+    - pushd ../app; yarn link "luncho_typescript-aurelia"
 
 
 *** Run a local Luncho server
@@ -66,6 +53,13 @@
      docker ps
   - kill
      docker kill containerID
+
+** Limitations
+
+  - The Luncho server refreshes exchange rates every one hour and tell clients to keep data for one
+    hour since the last refresh. If you have multiple Luncho servers, the servers refresh exchange
+    rates independently. You may get different results.
+
 
 ** Author
 
