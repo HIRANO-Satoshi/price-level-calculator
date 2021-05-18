@@ -16,7 +16,7 @@ export class App {
     constructor(taskQueue: TaskQueue, router: Router, luncho: Luncho) {
         this.taskQueue = taskQueue;
         this.luncho = luncho;
-        this.luncho.basePath = 'http://localhost:8000'
+        this.luncho.basePath = 'http://localhost:8000/v1'
         App.app = this;
         this.router = router;
     }

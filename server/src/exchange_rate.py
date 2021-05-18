@@ -17,7 +17,7 @@ import requests
 
 from src.utils import error
 import conf
-import keys
+import api_keys
 from src.types import Currency, CurrencyCode, C1000
 
 class FixerExchangeRate(TypedDict):
@@ -68,7 +68,7 @@ def load_exchange_rates():
     if last_load + (20*60*1000) > time.time():  # don't load again for 20 min
         return
 
-    url: str = ''.join(('http://data.fixer.io/api/latest?access_key=', keys.Fixer_Access_Key))
+    url: str = ''.join(('http://data.fixer.io/api/latest?access_key=', api_keys.Fixer_Access_Key))
 
     response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
     assert response.ok   #XXX Can we retry?

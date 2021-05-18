@@ -12,7 +12,7 @@ import os
 import sys
 import json
 import logging
-from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
+from typing import List, Dict, Optional
 
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
@@ -34,9 +34,7 @@ app = FastAPI(
 
 #pylint: disable=wrong-import-position
 import conf
-from src import api       # initialize routes
-from src import ppp_data
-from src import exchange_rate
+from src import api, ppp_data, exchange_rate
 
 # CORS
 app.add_middleware(
@@ -86,6 +84,9 @@ if __name__ == "__main__":
 
 def init():
     ''' Called from gunicorn_config.py '''
+
+    # initialize routes
+    app.include_router(api.api_router, prefix=conf.API_V1_STR)
 
     # load exchange rates at startup and every one hour
     logging.info('main.init()')

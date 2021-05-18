@@ -7,10 +7,11 @@ mypy
 fastapi
 fastapi-utils
 gunicorn
-uvicorn
-requests
+mypy-extensions
 pycountry
 pycountry-convert
-mypy-extensions
+pytest
+requests
+uvicorn
 #orjson does not support Pypy
 #ujson does not support Pypy

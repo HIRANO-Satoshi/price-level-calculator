@@ -7,7 +7,7 @@
 
 ** Requirements
 
-  - An access key of Fixer to get exchange rate.
+  - An access key of Fixer to get exchange rate. Placeit in api_keys.py
   - Follow the Installation section to install the required packages.
   - Pypy3 (Python compiler)
   - FastAPI (Web framework)
@@ -15,7 +15,7 @@
 ** Installation
 
 *** Create an account on Fixer to get exchange rate
-  - Place your Fixer access key in keys.py.
+  - Place your Fixer access key in api_keys.py.
 
     Fixer_Access_Key = 'XXXXXXXX'
 

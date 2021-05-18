@@ -6,14 +6,16 @@
 '''
 
 import csv
+import os
 import re
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 from typing_extensions import TypedDict
 import pycountry
 import pycountry_convert
 
+from conf import SDR_Per_Luncho
 from src import exchange_rate
-from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country, SDR_Per_Luncho
+from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
 from src.utils import error
 
 Countries: Dict[CountryCode, Country] = {}      # A map of country data
@@ -32,7 +34,7 @@ class CountryMetadataType(TypedDict):
 
 Country_Metadata: Dict[CountryCode, CountryMetadataType] = {}   # country_code, CountryMetadataType
 
-kosovo = any
+kosovo = pycountry.db.Data()
 kosovo.alpha_2 = "XK"
 kosovo.alpha_3 = "KSV"
 kosovo.name = "Kosovo"
@@ -41,6 +43,9 @@ kosovo.official_name = "Kosovo"
 
 def init() -> None:
     global Country_Metadata, Countries, CountryCode_Names
+
+    if not os.getcwd().endswith('server'):
+        os.chdir("server");
 
     # read country metadata to build Country_Metadata map
     with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:

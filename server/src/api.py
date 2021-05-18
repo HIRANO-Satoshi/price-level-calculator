@@ -12,18 +12,19 @@ import logging
 import pdb
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 
-from fastapi import Header
+from fastapi import Header, APIRouter
 from fastapi.openapi.utils import get_openapi
 from fastapi_utils.openapi import simplify_operation_ids
 
-from main import app
+from conf import SDR_Per_Luncho
 from src import exchange_rate
 from src.utils import error
 from src.ppp_data import Countries, CountryCode_Names
-from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country, SDR_Per_Luncho
+from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
 
+api_router = APIRouter()
 
-@app.get("/luncho-data", response_model=LunchoData, tags=['Luncho'])
+@api_router.get("/luncho-data", response_model=LunchoData, tags=['Luncho'])
 async def lunchoData(
 
         country_code: Optional[CountryCode] = None, # client provided country code in ISO-3166-1-2 formant like 'JP'
@@ -55,7 +56,7 @@ async def lunchoData(
     return country
 
 
-@app.get("/countries", response_model=Dict[CountryCode, str], tags=['Luncho'])
+@api_router.get("/countries", response_model=Dict[CountryCode, str], tags=['Luncho'])
 async def countries() -> Dict[CountryCode, str]:
     '''
       Returns a dict of supported country codes and names so that you can show
@@ -65,7 +66,7 @@ async def countries() -> Dict[CountryCode, str]:
     return CountryCode_Names
 
 
-@app.get("/luncho-datas", response_model=Dict[CountryCode, LunchoData], tags=['Luncho'])
+@api_router.get("/luncho-datas", response_model=Dict[CountryCode, LunchoData], tags=['Luncho'])
 async def lunchoDatas() -> Dict[CountryCode, LunchoData]:
     '''
       Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
@@ -97,4 +98,4 @@ def gen_openapi_schema() -> Dict:
 
 
 # use method names in OpenAPI operationIds to generate methods with the method names
-simplify_operation_ids(app)
+simplify_operation_ids(api_router)

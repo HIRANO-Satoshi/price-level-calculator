@@ -6,15 +6,12 @@
   Author: HIRANO Satoshi
 '''
 
-from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
-from typing_extensions import TypedDict
-from pydantic import BaseModel, create_model_from_typeddict
+from typing import List, Dict, Optional
+from pydantic import BaseModel
 
 CountryCode = str               # ISO 3166-1 2 letter code. E.g. 'JP'
 CurrencyCode = str              # ISO 4217   3 letter currency code. E.g. 'AFN'
 ContinentCode = str             # NA, SA, AS, OC, AF
-
-SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
 
 continents: Dict[ContinentCode, str] = {
     'NA': 'North America',
@@ -24,6 +21,11 @@ continents: Dict[ContinentCode, str] = {
     'OC': 'Australia',
     'AF': 'Africa',
 }
+
+class Info(BaseModel):
+    expiration: float               # Data expiration in unix time. You need to call APIs after this time.
+    dollar_per_luncho: float        # dollar/luncho rate
+
 
 class LunchoData(BaseModel):
     ''' Data needed to convert between Luncho and local currency. '''

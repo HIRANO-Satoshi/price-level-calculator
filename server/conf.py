@@ -6,6 +6,10 @@
 '''
 from typing import List, Dict, Tuple, Union, Any, Optional
 
+API_V1_STR: str = "/v1"
+
+SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
+
 # Luncho client library languages
 #  'language': 'option'
 #
