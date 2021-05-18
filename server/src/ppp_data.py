@@ -79,7 +79,7 @@ def init(use_dummy_data: bool) -> None:
             # decompose Currency Unit           AFN: Afghani (2011)
             currency_unit: Optional[str] = data['Currency Unit']
             data['currency_code'] = currency_unit[0:3]
-            data['currency_name'] = re.sub(' \(.*?\)', '', currency_unit[5:])
+            data['currency_name'] = re.sub(' \\(.*?\\)', '', currency_unit[5:])
             del data['Currency Unit']
 
             data['table_name'] = data['Table Name']
