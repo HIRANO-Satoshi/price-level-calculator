@@ -39,6 +39,10 @@
     - pushd ../client-libs/luncho_typescript-aurelia; yarn install; yarn link; popd
     - pushd ../app; yarn link "luncho_typescript-aurelia"
 
+*** Test
+
+  - pytest test/test_server.py
+  - pytest test/test_client_lib.py
 
 *** Run a local Luncho server
   - bin/start-gunicorn.sh

@@ -23,7 +23,9 @@ continents: Dict[ContinentCode, str] = {
 }
 
 class LunchoData(BaseModel):
-    ''' Data needed to convert between Luncho and local currency. '''
+    ''' Data needed to convert between Luncho and local currency.
+        If data for the country is not available, either ppp or exchange_rate is 0.
+    '''
 
     country_code: CountryCode       # Country code
     country_name: str               # Country name
@@ -31,9 +33,9 @@ class LunchoData(BaseModel):
 
     currency_code: CurrencyCode     # Currency code
     currency_name: str              # Currency name
-    exchange_rate: Optional[float]  # Exchange rate per US Dollar
+    exchange_rate: float            # Exchange rate per US Dollar. 0 if not available.
 
-    ppp: Optional[float]            # PPP data
+    ppp: float                      # PPP value. 0 if not available.
     dollar_per_luncho: float        # dollar/luncho rate
     expiration: float               # Data expiration in unix time. You need to call APIs after this time.
     #dollar_value: float

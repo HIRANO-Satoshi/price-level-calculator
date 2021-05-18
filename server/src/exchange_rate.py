@@ -54,11 +54,11 @@ def convert(source: Currency, currencyCode: CurrencyCode) -> Currency:
     return Currency(code=currencyCode, value=int(value))
 
 
-def exchange_rate_per_USD(currencyCode: CurrencyCode) -> Optional[float]:
+def exchange_rate_per_USD(currencyCode: CurrencyCode) -> float:
     ''' Returns exchange rate per USD for the currencyCode.
         None if the currencyCode is not available. '''
 
-    return Exchange_Rates.get(currencyCode, None)
+    return Exchange_Rates.get(currencyCode, 0.0)
 
 def load_exchange_rates(use_dummy_data: bool):
     ''' Load exchange rates and SDR from fixer or dummy data file. '''

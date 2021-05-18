@@ -60,6 +60,17 @@ app.add_middleware(
 # static files in static dir
 #app.mount("/static", StaticFiles(directory="static"), name="static")
 
+def init(use_dummy_data=False):
+    ''' Called from gunicorn_config.py '''
+
+    # initialize routes
+    app.include_router(api.api_router, prefix=conf.API_V1_STR)
+
+    # load exchange rates at startup and every one hour
+    logging.info('main.init()')
+    ppp_data.init(use_dummy_data=use_dummy_data)
+    exchange_rate.init(use_dummy_data)
+
 def gen_openapi_schema() -> Dict:
     ''' Callback for generating OpenAPI schema. '''
 
@@ -79,7 +90,9 @@ def gen_openapi_schema() -> Dict:
 
 if __name__ == "__main__":
     # command line
-    if len(sys.argv) == 2 and sys.argv[1] == 'gen':
+    if len(sys.argv) == 2 and sys.argv[1] == '--dummy':
+        init(use_dummy_data=True)
+    elif len(sys.argv) == 2 and sys.argv[1] == 'gen':
         # gen client library using openAPI generator if schema file is old.
 
         app.include_router(api.api_router, prefix=conf.API_V1_STR)
@@ -109,14 +122,3 @@ if __name__ == "__main__":
     else:
         print('To start Luncho server, just run start-gunicorn.py ', file=sys.stderr)
         print('pypy3 main.py gen    generate client library using openAPI generator', file=sys.stderr)
-
-def init(use_dummy_data=False):
-    ''' Called from gunicorn_config.py '''
-
-    # initialize routes
-    app.include_router(api.api_router, prefix=conf.API_V1_STR)
-
-    # load exchange rates at startup and every one hour
-    logging.info('main.init()')
-    ppp_data.init(use_dummy_data=use_dummy_data)
-    exchange_rate.init(use_dummy_data)

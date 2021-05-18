@@ -30,6 +30,7 @@ async def lunchoData(
 ) -> LunchoData:
     '''
       Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.
+        If data for the country is not available either ppp or exchange_rate is 0.
       Data size is about 400 bytes.
     '''
     country: Optional[Country] = Countries.get(country_code, None)
@@ -46,6 +47,7 @@ async def countries() -> Dict[CountryCode, str]:
       Returns a dict of supported country codes and names so that you can show
     a dropdown list of countries. Data size is about 3.5KB.
        E.g. {'JP': 'Japan', 'US': 'United States'...}.
+        If data for a country is not available, either its ppp or exchange_rate is 0.
     '''
     return CountryCode_Names
 

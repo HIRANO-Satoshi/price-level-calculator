@@ -170,7 +170,7 @@ def update() -> None:
     logging.info('ppp_data.update()')
 
     for country_code, country in Countries.items():  #type: CountryCode, Country
-        country['ppp'] = country['year_ppp'].get(year, None)  # country's ppp of this year
+        country['ppp'] = country['year_ppp'].get(year, 0.0)  # country's ppp of this year
         country['exchange_rate'] = exchange_rate.exchange_rate_per_USD(country['currency_code'])
         country['dollar_per_luncho'] = exchange_rate.Dollar_Per_SDR * SDR_Per_Luncho
         country['expiration'] = exchange_rate.expiration

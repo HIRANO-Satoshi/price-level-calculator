@@ -17,7 +17,9 @@ SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
 #
 #  'typescript-aurelia' is always generated as well.
 Gen_Openapi: Dict[str, str] = {
-    'python': '',
+    # add library=asyncio if needed, otherwise it uses default (library=urllib3)
+    'python': 'packageName=luncho_python,projectName=luncho_python',
+
     #'typescript-aurelia': 'supportsES6=true,npmName=luncho',
     'typescript-aurelia': 'supportsES6=true,npmName=luncho_typescript-aurelia',
     'typescript-fetch': 'supportsES6=true,npmName=luncho_typescript-fetch',

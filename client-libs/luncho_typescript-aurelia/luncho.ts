@@ -76,8 +76,11 @@ export class Luncho extends LunchoApi {
     async USDollarFromLuncho(lunchoValue: number, countryCode?: string): Promise<number> {
         return this.lunchoData({countryCode: countryCode})
             .then((lunchoData: LunchoData) => {
-                const local_currency_value = lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue;
-                return(local_currency_value / lunchoData.exchange_rate);
+                if (lunchoData.exchange_rate > 0) {
+                    const local_currency_value = lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue;
+                    return(local_currency_value / lunchoData.exchange_rate);
+                } else
+                    return 0.0
             });
     }
 }
