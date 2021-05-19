@@ -1,0 +1,14 @@
+** Locales
+  - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language.
+
+       import * as browserLocale from 'browser-locale';
+
+       const intl: any = Intl
+       var supportedLocales = intl.DisplayNames.supportedLocalesOf(browserLocale())
+       if (supportedLocales.length == 0)
+           supportedLocales = ['en'];
+       countryNames = new intl.DisplayNames(supportedLocales[0], {type: 'region'})
+       currencyNames = new intl.DisplayNames(supportedLocales[0], {type: 'currency'})
+
+       const local_countryName = countryNames.of('JP')
+       const local_currencyName = currencyNames.of('JPY')

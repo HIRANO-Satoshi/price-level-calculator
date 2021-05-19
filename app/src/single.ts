@@ -24,7 +24,7 @@ export class Single {
 
     async activate() {
         // download country codes and names
-        await this.luncho.getCountries();
+        await this.luncho.getCountries(true);
     }
 
     attached() {
@@ -35,10 +35,5 @@ export class Single {
         this.lunchoData = await this.luncho.lunchoData({countryCode: this.countryCode});
         this.local_currency_value = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, this.countryCode);
         this.dollar_value = await this.luncho.USDollarFromLuncho(this.lunchoValue, this.countryCode);
-
-        // this.luncho.localCurrencyFromLuncho({countryCode: this.countryCode, lunchoValue: Number(this.lunchoValue)})
-        //     .then((result: LunchoData) => {
-        //         this.result = result;
-        //     });
     }
 }

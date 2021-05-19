@@ -9,6 +9,8 @@ import { autoinject, TaskQueue } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
 import { Luncho } from 'luncho_typescript-aurelia/luncho';
+import * as browserLocale from 'browser-locale';
+import * as countryData from 'country-data';
 
 @autoinject
 export class App {
@@ -18,6 +20,15 @@ export class App {
     show = false;
     public taskQueue: TaskQueue;
     luncho: Luncho;
+    countryData = countryData
+    continents = {
+        'NA': 'North America',
+        'SA': 'South America',
+        'AS': 'Asia',
+        'EU': 'Europe',
+        'OC': 'Australia',
+        'AF': 'Africa',
+    }
 
 
     constructor(taskQueue: TaskQueue, router: Router, luncho: Luncho) {

@@ -16,26 +16,38 @@
     </div>
     <div class="vspace"></div>
 
+    <select md-select value.two-way="continentCode" class="country-select"
+            change.delegate="continentChanged()">
+
+      <option model.bind="null">All continents</option>
+      <option repeat.for="continent_code of app.continents | keys" model.bind="continent_code">
+        ${app.continents[continent_code]}</option>
+    </select>
+    <div class="vspace" style="padding-top: 2em;"></div>
 
     <table id="all-table"  class="tablesorter">
       <thead>
         <tr>
-          <th>Country</th><th if.bind="showCountryCode">Code</th><th>Continent</th><th>Local Currency</th><th if.bind="showCurrencyCode">Code</th><th>US Dollar</th>
+          <th>Country</th><th if.bind="showCountryCode">Code</th><th>Continent</th><th>Local</th><th>Currency</th><th if.bind="showCurrencyCode">Code</th><th>US Dollar</th>
         </tr>
       </thead>
       <tbody>
-        <tr repeat.for="country_code of luncho.lunchoDataMap | keys">
-          <td>${luncho.lunchoDataMap[country_code].country_name}</td>
+        <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]">
+          <!-- <tr repeat.for="country_code of lunchoDatas | keys" with.bind="lunchoDatas[country_code]"> -->
+          <td>${country_name}</td>
           <td if.bind="showCountryCode">${country_code}</td>
-          <td>${continents[luncho.lunchoDataMap[country_code].continent_code]}</td>
-          <td if.bind="luncho.lunchoDataMap[country_code].local_currency_value > 0">${luncho.lunchoDataMap[country_code].local_currency_value | numberFormat: '0.00'} ${luncho.lunchoDataMap[country_code].currency_name}</td>
-          <td else>? ${luncho.lunchoDataMap[country_code].currency_name}</td>
-          <!-- <td>${local_currency_values[country_code] | numberFormat: '0.00'}</td> -->
-          <!-- <td>${local_currency_values[country_code] ? local_currency_values[country_code] : '' | numberFormat: '0.00'}</td> -->
+          <td>${app.continents[continent_code]}</td>
+
+          <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 0">${local_currency_value | numberFormat: '0'}</td>
+          <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 1">${local_currency_value | numberFormat: '0.0'}</td>
+          <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 2">${local_currency_value | numberFormat: '0.00'}</td>
+          <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 3">${local_currency_value | numberFormat: '0.000'}</td>
+          <td if.bind="local_currency_value == 0">?</td>
+
+          <td>${currency_name}</td>
 
           <td if.bind="showCurrencyCode">${currency_code}</td>
-          <td if.bind="luncho.lunchoDataMap[country_code].dollar_value"> $${luncho.lunchoDataMap[country_code].dollar_value | numberFormat: '0.00'}</td>
-          <!-- <td if.bind="dollar_values[country_code]"> ${dollar_values[country_code] | numberFormat: '0.00'}</td> -->
+          <td if.bind="dollar_value"> $${dollar_value | numberFormat: '0.00'}</td>
           <td else></td>
         </tr>
       </tbody>

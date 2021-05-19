@@ -4,6 +4,8 @@
   @author: HIRANO Satoshi
   @date: 2021-5-15
 */
+import { HttpClient } from 'aurelia-http-client';
+import { AuthStorage } from './AuthStorage';
 import { LunchoData } from './models';
 import { LunchoApi, ILunchoDataParams } from './LunchoApi';
 
@@ -11,39 +13,65 @@ export type CountryCode = string;
 
 export class Luncho extends LunchoApi {
 
-    lunchoDataMap: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
+    lunchoDataCache: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
     allLunchoDatasFetched = false;
-    countryMap: { [key: string]: string; };
+    countryCache: { [key: string]: string; };
+
+    IntlCountryNames: any;  // Intl.DisplayNames for country names
+    IntlCurrencyNames: any; // Intl.DisplayNames for currency names
+    // localCountryNames: {[key: string]: string} = {}         // {countryCode : countryName}
+    // localCurrencyNames: {[key: string]: string; } = {}        // {countryCode : currencyName}
+
+    constructor(httpClient: HttpClient, authStorage: AuthStorage) {
+        super(httpClient, authStorage);
+
+        // prepare local name converters
+        var supportedLocales = (<any>Intl).DisplayNames.supportedLocalesOf(browserLocale())
+        if (supportedLocales.length == 0)
+            supportedLocales = ['en'];
+        this.IntlCountryNames = new (<any>Intl).DisplayNames(supportedLocales[0], {type: 'region'})
+        this.IntlCurrencyNames = new (<any>Intl).DisplayNames(supportedLocales[0], {type: 'currency'})
+    }
 
 
     /**
        Returns a Luncho data for the given country code using cache.
     */
-    async lunchoData(param: ILunchoDataParams ): Promise<LunchoData> {
-        const lunchoData: LunchoData = this.lunchoDataMap[param.countryCode];
+    async lunchoData(param: ILunchoDataParams, localName=true): Promise<LunchoData> {
+        const lunchoData: LunchoData = this.lunchoDataCache[param.countryCode];
         if (lunchoData && lunchoData.expiration > Date.now()/1000) {
             return Promise.resolve(lunchoData);
         }
 
         return super.lunchoData(param)
             .then((lunchoData: LunchoData) => {
-                this.lunchoDataMap[param.countryCode] = lunchoData;
-                  return(lunchoData);
+                this.lunchoDataCache[param.countryCode] = lunchoData;
+                if (localName) {
+                    lunchoData.country_name = this.IntlCountryNames.of(lunchoData.country_code);
+                    lunchoData.currency_name = this.IntlCurrencyNames.of(lunchoData.currency_code);
+                }
+                return(lunchoData);
             });
     }
 
     /**
        Returns a local data for the given country code using cache.
     */
-    async allLunchoData(): Promise<{ [key: string]: LunchoData} > {
-        if (this.allLunchoDatasFetched && this.lunchoDataMap['JP'].expiration > Date.now()/1000) {
-            return Promise.resolve(this.lunchoDataMap);
+    async allLunchoData(localName=true): Promise<{ [key: string]: LunchoData} > {
+        if (this.allLunchoDatasFetched && this.lunchoDataCache['JP'].expiration > Date.now()/1000) {
+            return Promise.resolve(this.lunchoDataCache);
         }
 
         return super.allLunchoData()
             .then((lunchoDatas: { [key: string]: LunchoData}) => {
-                this.lunchoDataMap = lunchoDatas;
+                this.lunchoDataCache = lunchoDatas;
                 this.allLunchoDatasFetched = true;
+                if (localName) {
+                    for (var countryCode of Object.keys(this.lunchoDataCache)) {
+                        this.lunchoDataCache[countryCode].country_name = this.IntlCountryNames.of(countryCode);
+                        this.lunchoDataCache[countryCode].currency_name = this.IntlCurrencyNames.of(this.lunchoDataCache[countryCode].currency_code);
+                    }
+                }
                 return(lunchoDatas);
             });
     }
@@ -51,15 +79,20 @@ export class Luncho extends LunchoApi {
     /**
        Returns a local data for the given country code using cache.
     */
-    async getCountries(): Promise<{ [key: string]: string; }> {
-        if (this.countryMap) {
-            return Promise.resolve(this.countryMap);
+    async getCountries(localName=true): Promise<{ [key: string]: string; }> {
+        if (this.countryCache) {
+            return Promise.resolve(this.countryCache);
         }
 
         return super.countries()
-            .then((countryMap: { [key: string]: string; }) => {
-                this.countryMap = countryMap;
-                  return(countryMap);
+            .then((countryCache: { [key: string]: string; }) => {
+                this.countryCache = countryCache;
+                if (localName) {
+                    for (var countryCode of Object.keys(this.countryCache)) {
+                        this.countryCache[countryCode] = this.IntlCountryNames.of(countryCode);
+                    }
+                }
+                return(countryCache);
             });
     }
 
@@ -86,4 +119,21 @@ export class Luncho extends LunchoApi {
                     return 0.0
             });
     }
+}
+
+function browserLocale () {
+  var lang
+
+  if (navigator.languages && navigator.languages.length) {
+    // latest versions of Chrome and Firefox set this correctly
+      lang = navigator.languages[0];
+  } else if ((<any>navigator).userLanguage) {
+    // IE only
+      lang = (<any>navigator).userLanguage;
+  } else {
+    // latest versions of Chrome, Firefox, and Safari set this correctly
+      lang = navigator.language || 'en';
+  }
+
+  return lang
 }

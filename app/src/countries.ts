@@ -13,14 +13,9 @@ export class Countries {
     lunchoValue: number = 100;
     showCurrencyCode = false;
     showCountryCode = false;
-    continents = {
-        'NA': 'North America',
-        'SA': 'South America',
-        'AS': 'Asia',
-        'EU': 'Europe',
-        'OC': 'Australia',
-        'AF': 'Africa',
-    }
+    lunchoDatas: { [key: string]: LunchoData} = {};
+    continentCode: string = null;
+
     constructor(app: App, taskQueue: TaskQueue, luncho: Luncho) {
         this.app = app;
         this.taskQueue = taskQueue;
@@ -31,20 +26,42 @@ export class Countries {
         this.lunchosForCountries();
     }
 
+    continentChanged() {
+        if (this.continentCode) {
+            this.lunchoDatas = {};
+            for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
+                if (this.luncho.lunchoDataCache[countryCode].continent_code == this.continentCode)
+                    this.lunchoDatas[countryCode] = this.luncho.lunchoDataCache[countryCode];
+            }
+        } else
+            this.lunchoDatas = this.luncho.lunchoDataCache;
+
+        var resort = true,
+        callback = function(table) {
+            console.log('table updated!');
+        };
+        $("#all-table").trigger("updateAll", [resort, callback]);
+    }
+
     async lunchosForCountries() {
         await this.luncho.allLunchoData();
-        for (var countryCode of Object.keys(this.luncho.lunchoDataMap)) {
+        for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
             // destructive, but don't care
-            this.luncho.lunchoDataMap[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
-            this.luncho.lunchoDataMap[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
         }
+        // this.continentChanged();
+        this.sort();
+    }
 
+    sort() {
         // run sorter
         this.taskQueue.queueTask(() => {
             const tmp: any = $("#all-table");
             tmp.tablesorter({
                 theme : 'materialize',
-                // sortList: [[0,0],[1,0]],
+                sortList: [[0,0]],  // initial sort on country name in ascending order
+                resort: true,       // sort when update
             });
         });
     }

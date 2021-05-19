@@ -13,23 +13,15 @@
       Convert Luncho for a country
     </h5>
 
-    <!-- <div class="divider"></div> -->
     <select md-select value.two-way="countryCode" class="country-select"
             change.delegate="convertFromLuncho()">
 
       <option model.bind="null" disabled>${"Select a country"}</option>
-      <option repeat.for="country_code of luncho.countryMap | keys" model.bind="country_code">
-        ${luncho.countryMap[country_code]}</option>
+      <option repeat.for="country_code of luncho.countryCache | keys" model.bind="country_code">
+        ${luncho.countryCache[country_code]}</option>
     </select>
-    <!-- <select md-select value.two-way="countryCode" class="country-select"
-         change.delegate="convertFromLuncho()">
-
-         <option model.bind="null" disabled>${"Select a country"}</option>
-         <option repeat.for="[country_code, lunchoData] of luncho.lunchoDataMap" model.bind="country_code">
-         ${lunchoData.country_name}</option>
-         </select>
-    -->
     <div class="vspace" style="padding-top: 2em;"></div>
+
     <div class="row" style="font-size: 160%;">
       <div class="col s12 m5 l4">
         <span><input value.bind="lunchoValue"
@@ -40,8 +32,21 @@
           Luncho
         </span>
       </div>
-      <div class="col s12 m7 l8" style="margin-top: 10px;">
-        = ${local_currency_value | numberFormat: '0.00'} ${lunchoData.currency_name}
+      <div class="col s12 m7 l8" style="margin-top: 10px;" with.bind="app.countryData.currencies[lunchoData.currency_code]">
+        =
+        <span if.bind="decimals == 0">
+          ${local_currency_value | numberFormat: '0'}
+        </span>
+        <span if.bind="decimals == 1">
+          ${local_currency_value | numberFormat: '0.0'}
+        </span>
+        <span if.bind="decimals == 2">
+          ${local_currency_value | numberFormat: '0.00'}
+        </span>
+        <span if.bind="decimals == 3">
+          ${local_currency_value | numberFormat: '0.000'}
+        </span>
+        ${lunchoData.currency_name}
       </div>
     </div>
     <div class="row">

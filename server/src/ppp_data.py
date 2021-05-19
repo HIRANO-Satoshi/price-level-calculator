@@ -27,8 +27,9 @@ CountryCode_Names: Dict[CountryCode, str] = {}  # A map of country code and name
 #   {'AFG': { 'Code': 'AFG', 'Long NameError(Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
 #   {'ALB': {1980: 24.4, 1981: 24.5...
 class CountryMetadataType(TypedDict):
-    code: CountryCode                 # AF  (ISO 2 letter country code)
-    long_name: str            # Islamic State of Afghanistan
+    code: CountryCode         # AF  (ISO 2 letter country code)
+    name: str                 # Afghanistan (common name in pycountry)
+    long_name: str            # Islamic State of Afghanistan (not used)
     currency_code: CurrencyCode  # AFN  (ISO 3 letter currency code)
     currency_name: str        # Afghani
     table_name: str           # Afghanistan
@@ -73,9 +74,9 @@ def init(use_dummy_data: bool) -> None:
             except:
                 import pdb; pdb.set_trace()
             country_code = data['country_code'] = country_data.alpha_2
-
-            data['long_name'] = data['Long Name']
+            data['name'] = getattr(country_data, 'common_name', country_data.name)
             del data['Long Name']
+
             # decompose Currency Unit           AFN: Afghani (2011)
             currency_unit: Optional[str] = data['Currency Unit']
             data['currency_code'] = currency_unit[0:3]
@@ -155,9 +156,18 @@ def init(use_dummy_data: bool) -> None:
                                         'currency_code': Country_Metadata[country_code]['currency_code'],
                                         'continent_code': continent_code,
                                         'currency_name': Country_Metadata[country_code]['currency_name'],
-                                        'country_name': Country_Metadata[country_code]['table_name']
+                                        'country_name': Country_Metadata[country_code]['name']
                                        }
-            CountryCode_Names[country_code] = Country_Metadata[country_code]['table_name']
+            CountryCode_Names[country_code] = Country_Metadata[country_code]['name']
+
+        Countries['KP'] = Countries.get('KP') or {
+            'year_ppp': {},
+            'country_code': 'KP',
+            'currency_code': 'KPW',
+            'continent_code': 'AS',
+            'currency_name': "North Korean Won",
+            'country_name': "Korea, Democratic People's Republic of"
+        }
 
         #print(str(Countries))
         #print(CountryCode_Names)

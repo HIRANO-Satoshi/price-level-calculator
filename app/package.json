@@ -18,6 +18,8 @@
     "aurelia-typed-observable-plugin": "^0.4.2",
     "aurelia-validation": "^1.6.0",
     "bluebird": "^3.5.2",
+    "browser-locale": "^1.0.3",
+    "country-data": "^0.0.31",
     "jquery": "^3.5.1",
     "materialize-css": "^1.0.0-rc.2",
     "numeral": "^2.0.6",
