@@ -27,6 +27,18 @@ export class Countries {
     }
 
     continentChanged() {
+        this.filterContinent();
+
+        //$("#all-table").trigger("update");
+        // var resort = true,
+        // callback = function(_table) {
+        //     console.log('table updated!');
+        // };
+        // $("#all-table").trigger("update", [resort, callback]);
+        // $("#all-table").trigger("updateCache");
+    }
+
+    filterContinent() {
         if (this.continentCode) {
             this.lunchoDatas = {};
             for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
@@ -35,12 +47,6 @@ export class Countries {
             }
         } else
             this.lunchoDatas = this.luncho.lunchoDataCache;
-
-        var resort = true,
-        callback = function(table) {
-            console.log('table updated!');
-        };
-        $("#all-table").trigger("updateAll", [resort, callback]);
     }
 
     async lunchosForCountries() {
@@ -50,7 +56,8 @@ export class Countries {
             this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
             this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
         }
-        // this.continentChanged();
+
+        this.filterContinent();
         this.sort();
     }
 

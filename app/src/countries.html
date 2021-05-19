@@ -25,6 +25,10 @@
     </select>
     <div class="vspace" style="padding-top: 2em;"></div>
 
+    <!-- <span repeat.for="country_code of lunchoDatas | keys">
+         =${country_code}
+         </span>
+    -->
     <table id="all-table"  class="tablesorter">
       <thead>
         <tr>
@@ -32,8 +36,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]">
-          <!-- <tr repeat.for="country_code of lunchoDatas | keys" with.bind="lunchoDatas[country_code]"> -->
+        <!-- <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]"> -->
+        <tr repeat.for="country_code of lunchoDatas | keys" with.bind="lunchoDatas[country_code]">
           <td>${country_name}</td>
           <td if.bind="showCountryCode">${country_code}</td>
           <td>${app.continents[continent_code]}</td>
