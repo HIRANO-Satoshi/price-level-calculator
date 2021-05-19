@@ -241,6 +241,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@krisdages/aurelia-table@^0.8.0-prerelease":
+  version "0.8.0-prerelease"
+  resolved "https://registry.yarnpkg.com/@krisdages/aurelia-table/-/aurelia-table-0.8.0-prerelease.tgz#744fead402a9e49f2d1fe0b0461325c8be360e03"
+  integrity sha512-2K4+D94VdRsXOt4OKrrCe8Y1BPEFELmGdKgUNbyYOT1wVHQZZaF+whmbij36Plw6i4aFDtHCdWWJoh2a+m609A==
+  dependencies:
+    aurelia-pal "^1.8.2"
+    natives "^1.1.6"
+
 "@nestjs/common@7.6.15":
   version "7.6.15"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.6.15.tgz#ae96f18cb6209a21724ffa7ed1a182be1e4fd0af"
@@ -1244,10 +1252,10 @@ aurelia-logging@^1.0.0, aurelia-logging@^1.5.0, aurelia-logging@^1.5.2:
   resolved "https://registry.yarnpkg.com/aurelia-logging/-/aurelia-logging-1.5.2.tgz#eddacfeded5da39808d36fd916829dd8d4c88ddd"
   integrity sha512-R0UdpGYBNSosBZ9WefmoIpgr36szFwQrRk2pbblhI+Vx911dUEEW85QXb6BRKVAP1ykz52Fuq8lCZxR6UupQXA==
 
-aurelia-materialize-bridge@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/aurelia-materialize-bridge/-/aurelia-materialize-bridge-1.5.2.tgz#a0024857cff3dbd0ca7e982f66061a5782ab2e4f"
-  integrity sha512-eklACbP+XgSGgupPP99Rs+DiiBLzIiIj8V/mkIuYC0dwbJOnVj3R9o7YW1TNA5t/IR44F5AJMoClnzrNfx+UZg==
+aurelia-materialize-bridge@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/aurelia-materialize-bridge/-/aurelia-materialize-bridge-1.6.4.tgz#b51f1945d798b8b8456662b152a1c26afea38602"
+  integrity sha512-7PWeScHWQJ0xh9YkhEUS13CXsUjXrlwkxSOdEYvs1gipepvhWecxyWBdZWMTmPAzrzXgCUo1GF1YY7jFEXXNRQ==
 
 aurelia-metadata@^1.0.0, aurelia-metadata@^1.0.2, aurelia-metadata@^1.0.4:
   version "1.0.6"
@@ -1271,7 +1279,7 @@ aurelia-pal-nodejs@^1.1.1:
     aurelia-pal "^1.1.0"
     jsdom "~11.5.1"
 
-aurelia-pal@^1.0.0, aurelia-pal@^1.1.0, aurelia-pal@^1.1.1, aurelia-pal@^1.3.0, aurelia-pal@^1.4.0, aurelia-pal@^1.7.0, aurelia-pal@^1.8.0:
+aurelia-pal@^1.0.0, aurelia-pal@^1.1.0, aurelia-pal@^1.1.1, aurelia-pal@^1.3.0, aurelia-pal@^1.4.0, aurelia-pal@^1.7.0, aurelia-pal@^1.8.0, aurelia-pal@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/aurelia-pal/-/aurelia-pal-1.8.2.tgz#9c39509ea2650291fa4bda06a4ed37d8be31f0ac"
   integrity sha512-6erozUK5aaD88PvThs/L87kLsqxqPaBU59PGECr36v9yezhve0BHqpKgbtJ8haHJSiH80K9lsJtXfefedS/3sw==
@@ -6554,10 +6562,9 @@ matchdep@^2.0.0:
     resolve "^1.4.0"
     stack-trace "0.0.10"
 
-materialize-css@^1.0.0-rc.2:
-  version "1.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/materialize-css/-/materialize-css-1.0.0-rc.2.tgz#b9e6b18f698c6ef77bb6b628d59147faf131eff5"
-  integrity sha512-FuQmSyq4Qv0ov7A2qXw0E6/jbQzSWx2P1pg2/XQDYTkkSc/GyiFAxu3fw9zgShwuTvyumEiw5jkxQWT9siqMBQ==
+"materialize-css@git+https://github.com/Dogfalo/materialize.git":
+  version "1.0.0"
+  resolved "git+https://github.com/Dogfalo/materialize.git#824e78248b3de81e383445e76ffb04cc3264fe7d"
 
 math-random@^1.0.1:
   version "1.0.4"
@@ -6886,6 +6893,11 @@ nanomatch@^1.2.9:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+natives@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/natives/-/natives-1.1.6.tgz#a603b4a498ab77173612b9ea1acdec4d980f00bb"
+  integrity sha512-6+TDFewD4yxY14ptjKaS63GVdtKiES1pTPyxn9Jb0rBqPMZ7VcCiooEhPNsr+mqHtMGxa/5c/HhcC4uPEUw/nA==
 
 natural-compare@^1.4.0:
   version "1.4.0"

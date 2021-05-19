@@ -1,43 +1,85 @@
 <template>
   <style>
-   input {
+   .aut-sortable:after {
+     content: "↕︎";
+   }
+   .aut-asc:after{
+     content: "↓";
+   }
+   .aut-desc:after{
+     content: "↑";
+   }
+
+   /* .aut-sortable {
+      background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDE2Ij48cGF0aCBkPSJNMTUgOCAxIDggOCAwek0xNSA5IDEgOSA4IDE2eiIgZmlsbD0iIzIyMiIvPjwvc3ZnPg==);
+      background-repeat: no-repeat;
+      background-position: center right;
+      cursor: pointer;
+      } */
+   /* .aut-asc {
+      background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDE2Ij48cGF0aCBkPSJNMTUgMTEgMSAxMSA4IDN6IiBmaWxsPSIjMjIyIi8+PC9zdmc+);
+      background-repeat: no-repeat;
+      background-position: center right;
+      cursor: pointer;
+      }
+    */
+   /* .aut-desc {
+      background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDE2Ij48cGF0aCBkPSJNMTUgNiAxIDYgOCAxM3oiIGZpbGw9IiMyMjIiLz48L3N2Zz4=);
+      background-repeat: no-repeat;
+      background-position: center right;
+      cursor: pointer;
+      } */
+   .large-input input {
      font-size: 160% !important;
    }
+   .filters .col {
+     padding-left: 0;
+   }
   </style>
+
   <div class="container">
-    <h5>
-      Convert Luncho for all countries
-    </h5>
+    <!-- <h5>
+         Convert Luncho for all countries
+         </h5> -->
     <div class="valign-wrapper">
       <md-input label="Luncho " value.bind="lunchoValue"
                 input.delegate="lunchosForCountries()"
-                class="width-10em"></md-input>
+                class="width-10em large-input"></md-input>
       <!-- <button md-button click.delegate="lunchosForCountries()">Calc</button> -->
     </div>
     <div class="vspace"></div>
 
-    <select md-select value.two-way="continentCode" class="country-select"
-            change.delegate="continentChanged()">
+    <div class="row filters">
+      <div class="col s12 m5 l4">
+        <!-- XXX fails selection sometimes on mobile -->
+        <select md-select value.two-way="filters[1].value" class="country-select">
+          <option model.bind="null">All continents</option>
+          <option repeat.for="continent_code of app.continents | keys" model.bind="continent_code">
+            ${app.continents[continent_code]}</option>
+        </select>
+      </div>
+      <div class="col s12 m5 l4">
+        <md-input type="text" value.bind="filters[0].value"
+               placeholder="Country name, Currency" class="form-control"/>
+      </div>
+    </div>
 
-      <option model.bind="null">All continents</option>
-      <option repeat.for="continent_code of app.continents | keys" model.bind="continent_code">
-        ${app.continents[continent_code]}</option>
-    </select>
-    <div class="vspace" style="padding-top: 2em;"></div>
-
-    <!-- <span repeat.for="country_code of lunchoDatas | keys">
-         =${country_code}
-         </span>
-    -->
-    <table id="all-table"  class="tablesorter">
+    <table id="all-table"  class="table table-striped"
+           aurelia-table="data.bind: lunchoDatas; display-data.bind: $displayData; filters.bind: filters">
       <thead>
         <tr>
-          <th>Country</th><th if.bind="showCountryCode">Code</th><th>Continent</th><th>Local</th><th>Currency</th><th if.bind="showCurrencyCode">Code</th><th>US Dollar</th>
+          <th aut-sort="key: country_name">Country</th>
+          <th if.bind="showCountryCode">Code</th>
+          <th aut-sort="key: continent_code">Continent</th>
+          <th>Local</th>
+          <th aut-sort="key: currency_name">Currency</th>
+          <th if.bind="showCurrencyCode">Code</th>
+          <th aut-sort="key: dollar_value; default: desc">US Dollar</th>
         </tr>
       </thead>
       <tbody>
         <!-- <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]"> -->
-        <tr repeat.for="country_code of lunchoDatas | keys" with.bind="lunchoDatas[country_code]">
+        <tr repeat.for="country_code of $displayData | keys" with.bind="$displayData[country_code]">
           <td>${country_name}</td>
           <td if.bind="showCountryCode">${country_code}</td>
           <td>${app.continents[continent_code]}</td>

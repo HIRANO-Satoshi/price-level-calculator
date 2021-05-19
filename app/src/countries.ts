@@ -13,8 +13,13 @@ export class Countries {
     lunchoValue: number = 100;
     showCurrencyCode = false;
     showCountryCode = false;
-    lunchoDatas: { [key: string]: LunchoData} = {};
+    lunchoDatas: LunchoData[];
     continentCode: string = null;
+
+    filters = [
+        {value: '', keys: ['country_name', 'currency_name']},
+        {value: '', keys: ['continent_code']},
+    ];
 
     constructor(app: App, taskQueue: TaskQueue, luncho: Luncho) {
         this.app = app;
@@ -27,27 +32,18 @@ export class Countries {
     }
 
     continentChanged() {
-        this.filterContinent();
-
-        //$("#all-table").trigger("update");
-        // var resort = true,
-        // callback = function(_table) {
-        //     console.log('table updated!');
-        // };
-        // $("#all-table").trigger("update", [resort, callback]);
-        // $("#all-table").trigger("updateCache");
     }
 
-    filterContinent() {
-        if (this.continentCode) {
-            this.lunchoDatas = {};
-            for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
-                if (this.luncho.lunchoDataCache[countryCode].continent_code == this.continentCode)
-                    this.lunchoDatas[countryCode] = this.luncho.lunchoDataCache[countryCode];
-            }
-        } else
-            this.lunchoDatas = this.luncho.lunchoDataCache;
-    }
+    // filterContinent() {
+    //     if (this.continentCode) {
+    //         this.lunchoDatas = {};
+    //         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
+    //             if (this.luncho.lunchoDataCache[countryCode].continent_code == this.continentCode)
+    //                 this.lunchoDatas[countryCode] = this.luncho.lunchoDataCache[countryCode];
+    //         }
+    //     } else
+    //         this.lunchoDatas = this.luncho.lunchoDataCache;
+    // }
 
     async lunchosForCountries() {
         await this.luncho.allLunchoData();
@@ -57,19 +53,9 @@ export class Countries {
             this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
         }
 
-        this.filterContinent();
-        this.sort();
-    }
-
-    sort() {
-        // run sorter
-        this.taskQueue.queueTask(() => {
-            const tmp: any = $("#all-table");
-            tmp.tablesorter({
-                theme : 'materialize',
-                sortList: [[0,0]],  // initial sort on country name in ascending order
-                resort: true,       // sort when update
-            });
-        });
+        this.lunchoDatas = [];
+        for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
+            this.lunchoDatas.push(this.luncho.lunchoDataCache[countryCode]);
+        }
     }
 }
