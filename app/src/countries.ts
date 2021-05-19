@@ -2,8 +2,6 @@ import { autoinject, TaskQueue } from 'aurelia-framework';
 import { App } from './app';
 import { Luncho } from 'luncho_typescript-aurelia/luncho';
 import { LunchoData } from 'luncho_typescript-aurelia/models';
-import 'tablesorter';
-import 'tablesorter/dist/css/theme.materialize.min.css';
 
 @autoinject
 export class Countries {
@@ -11,10 +9,9 @@ export class Countries {
     luncho: Luncho
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
-    showCurrencyCode = false;
-    showCountryCode = false;
-    lunchoDatas: LunchoData[];
-    continentCode: string = null;
+    lunchoDatas: LunchoData[];      // this is the table data.
+
+    showCode = false;
 
     filters = [
         {value: '', keys: ['country_name', 'currency_name']},
@@ -30,20 +27,6 @@ export class Countries {
     attached() {
         this.lunchosForCountries();
     }
-
-    continentChanged() {
-    }
-
-    // filterContinent() {
-    //     if (this.continentCode) {
-    //         this.lunchoDatas = {};
-    //         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
-    //             if (this.luncho.lunchoDataCache[countryCode].continent_code == this.continentCode)
-    //                 this.lunchoDatas[countryCode] = this.luncho.lunchoDataCache[countryCode];
-    //         }
-    //     } else
-    //         this.lunchoDatas = this.luncho.lunchoDataCache;
-    // }
 
     async lunchosForCountries() {
         await this.luncho.allLunchoData();

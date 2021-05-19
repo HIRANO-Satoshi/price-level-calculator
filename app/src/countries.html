@@ -9,26 +9,6 @@
    .aut-desc:after{
      content: "↑";
    }
-
-   /* .aut-sortable {
-      background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDE2Ij48cGF0aCBkPSJNMTUgOCAxIDggOCAwek0xNSA5IDEgOSA4IDE2eiIgZmlsbD0iIzIyMiIvPjwvc3ZnPg==);
-      background-repeat: no-repeat;
-      background-position: center right;
-      cursor: pointer;
-      } */
-   /* .aut-asc {
-      background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDE2Ij48cGF0aCBkPSJNMTUgMTEgMSAxMSA4IDN6IiBmaWxsPSIjMjIyIi8+PC9zdmc+);
-      background-repeat: no-repeat;
-      background-position: center right;
-      cursor: pointer;
-      }
-    */
-   /* .aut-desc {
-      background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDE2Ij48cGF0aCBkPSJNMTUgNiAxIDYgOCAxM3oiIGZpbGw9IiMyMjIiLz48L3N2Zz4=);
-      background-repeat: no-repeat;
-      background-position: center right;
-      cursor: pointer;
-      } */
    .large-input input {
      font-size: 160% !important;
    }
@@ -69,11 +49,11 @@
       <thead>
         <tr>
           <th aut-sort="key: country_name">Country</th>
-          <th if.bind="showCountryCode">Code</th>
+          <th if.bind="showCode"></th>
           <th aut-sort="key: continent_code">Continent</th>
           <th>Local</th>
           <th aut-sort="key: currency_name">Currency</th>
-          <th if.bind="showCurrencyCode">Code</th>
+          <th if.bind="showCode"></th>
           <th aut-sort="key: dollar_value; default: desc">US Dollar</th>
         </tr>
       </thead>
@@ -81,7 +61,7 @@
         <!-- <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]"> -->
         <tr repeat.for="country_code of $displayData | keys" with.bind="$displayData[country_code]">
           <td>${country_name}</td>
-          <td if.bind="showCountryCode">${country_code}</td>
+          <td if.bind="showCode">${country_code}</td>
           <td>${app.continents[continent_code]}</td>
 
           <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 0">${local_currency_value | numberFormat: '0'}</td>
@@ -92,11 +72,14 @@
 
           <td>${currency_name}</td>
 
-          <td if.bind="showCurrencyCode">${currency_code}</td>
+          <td if.bind="showCode">${currency_code}</td>
           <td if.bind="dollar_value"> $${dollar_value | numberFormat: '0.00'}</td>
           <td else></td>
         </tr>
       </tbody>
     </table>
+
+    <div style="height: 3em;"></div>
+    <md-checkbox checked.bind="showCode">Show code</md-checkbox>
   </div>
 </template>
