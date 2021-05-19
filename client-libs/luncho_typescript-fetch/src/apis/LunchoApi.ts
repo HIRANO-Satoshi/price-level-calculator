@@ -33,7 +33,35 @@ export interface LunchoDataRequest {
 export class LunchoApi extends runtime.BaseAPI {
 
     /**
-     *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.
+     * Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.
+     * All Luncho Data
+     */
+    async allLunchoDataRaw(): Promise<runtime.ApiResponse<{ [key: string]: LunchoData; }>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/v1/all-luncho-data`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => runtime.mapValues(jsonValue, LunchoDataFromJSON));
+    }
+
+    /**
+     * Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.
+     * All Luncho Data
+     */
+    async allLunchoData(): Promise<{ [key: string]: LunchoData; }> {
+        const response = await this.allLunchoDataRaw();
+        return await response.value();
+    }
+
+    /**
+     *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.
      * Countries
      */
     async countriesRaw(): Promise<runtime.ApiResponse<{ [key: string]: string; }>> {
@@ -52,7 +80,7 @@ export class LunchoApi extends runtime.BaseAPI {
     }
 
     /**
-     *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.
+     *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.
      * Countries
      */
     async countries(): Promise<{ [key: string]: string; }> {
@@ -61,8 +89,36 @@ export class LunchoApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. Data size is about 400 bytes.
-     * Lunchodata
+     * Do nothing other than telling it\'s OK.
+     * Health
+     */
+    async healthRaw(): Promise<runtime.ApiResponse<any>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/v1/health`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Do nothing other than telling it\'s OK.
+     * Health
+     */
+    async health(): Promise<any> {
+        const response = await this.healthRaw();
+        return await response.value();
+    }
+
+    /**
+     * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.
+     * Luncho Data
      */
     async lunchoDataRaw(requestParameters: LunchoDataRequest): Promise<runtime.ApiResponse<LunchoData>> {
         if (requestParameters.countryCode === null || requestParameters.countryCode === undefined) {
@@ -88,39 +144,11 @@ export class LunchoApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. Data size is about 400 bytes.
-     * Lunchodata
+     * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.
+     * Luncho Data
      */
     async lunchoData(requestParameters: LunchoDataRequest): Promise<LunchoData> {
         const response = await this.lunchoDataRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
-     * Lunchodatas
-     */
-    async lunchoDatasRaw(): Promise<runtime.ApiResponse<{ [key: string]: LunchoData; }>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/v1/luncho-datas`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => runtime.mapValues(jsonValue, LunchoDataFromJSON));
-    }
-
-    /**
-     * Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
-     * Lunchodatas
-     */
-    async lunchoDatas(): Promise<{ [key: string]: LunchoData; }> {
-        const response = await this.lunchoDatasRaw();
         return await response.value();
     }
 

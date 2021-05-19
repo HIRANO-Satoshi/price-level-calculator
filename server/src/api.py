@@ -25,7 +25,7 @@ from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Co
 api_router = APIRouter()
 
 @api_router.get("/luncho-data", response_model=LunchoData, tags=['Luncho'])
-async def lunchoData(
+async def luncho_data(
         country_code: CountryCode, # client provided country code in ISO-3166-1-2 formant like 'JP'
 ) -> LunchoData:
     '''
@@ -52,13 +52,21 @@ async def countries() -> Dict[CountryCode, str]:
     return CountryCode_Names
 
 
-@api_router.get("/luncho-datas", response_model=Dict[CountryCode, LunchoData], tags=['Luncho'])
-async def lunchoDatas() -> Dict[CountryCode, LunchoData]:
+@api_router.get("/all-luncho-data", response_model=Dict[CountryCode, LunchoData], tags=['Luncho'])
+async def all_luncho_data() -> Dict[CountryCode, LunchoData]:
     '''
-      Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
+      Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.
     '''
 
     return Countries
+
+
+@api_router.get("/health", tags=['Luncho'])
+async def health() -> None:
+    '''
+      Do nothing other than telling it's OK.
+    '''
+    return
 
 
 

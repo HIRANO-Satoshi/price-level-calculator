@@ -19,9 +19,21 @@ import {
 } from './models';
 
 /**
+ * allLunchoData - parameters interface
+ */
+export interface IAllLunchoDataParams {
+}
+
+/**
  * countries - parameters interface
  */
 export interface ICountriesParams {
+}
+
+/**
+ * health - parameters interface
+ */
+export interface IHealthParams {
 }
 
 /**
@@ -29,12 +41,6 @@ export interface ICountriesParams {
  */
 export interface ILunchoDataParams {
   countryCode: string;
-}
-
-/**
- * lunchoDatas - parameters interface
- */
-export interface ILunchoDatasParams {
 }
 
 /**
@@ -54,8 +60,33 @@ export class LunchoApi extends Api {
   }
 
   /**
+   * All Luncho Data
+   * Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.
+   */
+  async allLunchoData(): Promise<{ [key: string]: LunchoData; }> {
+    // Verify required parameters are set
+
+    // Create URL to call
+    const url = `${this.basePath}/v1/all-luncho-data`;
+
+    const response = await this.httpClient.createRequest(url)
+      // Set HTTP method
+      .asGet()
+
+      // Send the request
+      .send();
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw new Error(response.content);
+    }
+
+    // Extract the content
+    return response.content;
+  }
+
+  /**
    * Countries
-   *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\&#39;JP\&#39;: \&#39;Japan\&#39;, \&#39;US\&#39;: \&#39;United States\&#39;...}.
+   *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\&#39;JP\&#39;: \&#39;Japan\&#39;, \&#39;US\&#39;: \&#39;United States\&#39;...}.     If data for a country is not available, either its ppp or exchange_rate is 0.
    */
   async countries(): Promise<{ [key: string]: string; }> {
     // Verify required parameters are set
@@ -79,8 +110,33 @@ export class LunchoApi extends Api {
   }
 
   /**
-   * Lunchodata
-   * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode. Data size is about 400 bytes.
+   * Health
+   * Do nothing other than telling it\&#39;s OK.
+   */
+  async health(): Promise<any> {
+    // Verify required parameters are set
+
+    // Create URL to call
+    const url = `${this.basePath}/v1/health`;
+
+    const response = await this.httpClient.createRequest(url)
+      // Set HTTP method
+      .asGet()
+
+      // Send the request
+      .send();
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw new Error(response.content);
+    }
+
+    // Extract the content
+    return response.content;
+  }
+
+  /**
+   * Luncho Data
+   * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.
    * @param params.countryCode 
    */
   async lunchoData(params: ILunchoDataParams): Promise<LunchoData> {
@@ -97,31 +153,6 @@ export class LunchoApi extends Api {
       .withParams({ 
         'country_code': params['countryCode'],
       })
-
-      // Send the request
-      .send();
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new Error(response.content);
-    }
-
-    // Extract the content
-    return response.content;
-  }
-
-  /**
-   * Lunchodatas
-   * Returns A list of LunchoDatas for all supported countries. Data size is about 40KB.
-   */
-  async lunchoDatas(): Promise<{ [key: string]: LunchoData; }> {
-    // Verify required parameters are set
-
-    // Create URL to call
-    const url = `${this.basePath}/v1/luncho-datas`;
-
-    const response = await this.httpClient.createRequest(url)
-      // Set HTTP method
-      .asGet()
 
       // Send the request
       .send();

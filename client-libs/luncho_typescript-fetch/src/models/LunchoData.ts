@@ -14,7 +14,8 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Data needed to convert between Luncho and local currency. 
+ * Data needed to convert between Luncho and local currency.
+ * If data for the country is not available, either ppp or exchange_rate is 0.
  * @export
  * @interface LunchoData
  */
@@ -54,13 +55,13 @@ export interface LunchoData {
      * @type {number}
      * @memberof LunchoData
      */
-    exchange_rate?: number;
+    exchange_rate: number;
     /**
      * 
      * @type {number}
      * @memberof LunchoData
      */
-    ppp?: number;
+    ppp: number;
     /**
      * 
      * @type {number}
@@ -90,8 +91,8 @@ export function LunchoDataFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'continent_code': json['continent_code'],
         'currency_code': json['currency_code'],
         'currency_name': json['currency_name'],
-        'exchange_rate': !exists(json, 'exchange_rate') ? undefined : json['exchange_rate'],
-        'ppp': !exists(json, 'ppp') ? undefined : json['ppp'],
+        'exchange_rate': json['exchange_rate'],
+        'ppp': json['ppp'],
         'dollar_per_luncho': json['dollar_per_luncho'],
         'expiration': json['expiration'],
     };

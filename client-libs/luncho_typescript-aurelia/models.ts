@@ -17,7 +17,7 @@ export interface HTTPValidationError {
 
 
 /**
- * Data needed to convert between Luncho and local currency. 
+ * Data needed to convert between Luncho and local currency. If data for the country is not available, either ppp or exchange_rate is 0.
  */
 export interface LunchoData {
   country_code: string;
@@ -25,8 +25,8 @@ export interface LunchoData {
   continent_code: string;
   currency_code: string;
   currency_name: string;
-  exchange_rate?: number;
-  ppp?: number;
+  exchange_rate: number;
+  ppp: number;
   dollar_per_luncho: number;
   expiration: number;
 }

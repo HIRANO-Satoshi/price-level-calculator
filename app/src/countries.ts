@@ -32,7 +32,7 @@ export class Countries {
     }
 
     async lunchosForCountries() {
-        await this.luncho.lunchoDatas();
+        await this.luncho.allLunchoData();
         for (var countryCode of Object.keys(this.luncho.lunchoDataMap)) {
             // destructive, but don't care
             this.luncho.lunchoDataMap[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);

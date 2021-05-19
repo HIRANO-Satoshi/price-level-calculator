@@ -36,7 +36,7 @@ def test_server_api():
     lunchoData: LunchoData = cast(LunchoData, response.json())
     Japan_test(lunchoData)
 
-    response = client.get("/v1/luncho-datas")
+    response = client.get("/v1/all-luncho-data")
     assert response.status_code == 200
     lunchoDatas: Dict[CountryCode, LunchoData] = cast(Dict[CountryCode, LunchoData], response.json())
     Japan_test(lunchoDatas['JP'])

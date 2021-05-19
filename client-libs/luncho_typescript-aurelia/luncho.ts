@@ -35,12 +35,12 @@ export class Luncho extends LunchoApi {
     /**
        Returns a local data for the given country code using cache.
     */
-    async lunchoDatas(): Promise<{ [key: string]: LunchoData} > {
+    async allLunchoData(): Promise<{ [key: string]: LunchoData} > {
         if (this.allLunchoDatasFetched && this.lunchoDataMap['JP'].expiration > Date.now()/1000) {
             return Promise.resolve(this.lunchoDataMap);
         }
 
-        return super.lunchoDatas()
+        return super.allLunchoData()
             .then((lunchoDatas: { [key: string]: LunchoData}) => {
                 this.lunchoDataMap = lunchoDatas;
                 this.allLunchoDatasFetched = true;

@@ -77,10 +77,10 @@ class LunchoData(ModelNormal):
             'continent_code': (str,),  # noqa: E501
             'currency_code': (str,),  # noqa: E501
             'currency_name': (str,),  # noqa: E501
-            'dollar_per_luncho': (float,),  # noqa: E501
-            'expiration': (float,),  # noqa: E501
             'exchange_rate': (float,),  # noqa: E501
             'ppp': (float,),  # noqa: E501
+            'dollar_per_luncho': (float,),  # noqa: E501
+            'expiration': (float,),  # noqa: E501
         }
 
     @cached_property
@@ -94,10 +94,10 @@ class LunchoData(ModelNormal):
         'continent_code': 'continent_code',  # noqa: E501
         'currency_code': 'currency_code',  # noqa: E501
         'currency_name': 'currency_name',  # noqa: E501
-        'dollar_per_luncho': 'dollar_per_luncho',  # noqa: E501
-        'expiration': 'expiration',  # noqa: E501
         'exchange_rate': 'exchange_rate',  # noqa: E501
         'ppp': 'ppp',  # noqa: E501
+        'dollar_per_luncho': 'dollar_per_luncho',  # noqa: E501
+        'expiration': 'expiration',  # noqa: E501
     }
 
     _composed_schemas = {}
@@ -112,7 +112,7 @@ class LunchoData(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, country_code, country_name, continent_code, currency_code, currency_name, dollar_per_luncho, expiration, *args, **kwargs):  # noqa: E501
+    def __init__(self, country_code, country_name, continent_code, currency_code, currency_name, exchange_rate, ppp, dollar_per_luncho, expiration, *args, **kwargs):  # noqa: E501
         """LunchoData - a model defined in OpenAPI
 
         Args:
@@ -121,6 +121,8 @@ class LunchoData(ModelNormal):
             continent_code (str):
             currency_code (str):
             currency_name (str):
+            exchange_rate (float):
+            ppp (float):
             dollar_per_luncho (float):
             expiration (float):
 
@@ -155,8 +157,6 @@ class LunchoData(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            exchange_rate (float): [optional]  # noqa: E501
-            ppp (float): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -187,6 +187,8 @@ class LunchoData(ModelNormal):
         self.continent_code = continent_code
         self.currency_code = currency_code
         self.currency_name = currency_name
+        self.exchange_rate = exchange_rate
+        self.ppp = ppp
         self.dollar_per_luncho = dollar_per_luncho
         self.expiration = expiration
         for var_name, var_value in kwargs.items():

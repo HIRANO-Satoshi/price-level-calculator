@@ -66,11 +66,11 @@ with luncho_python.ApiClient(configuration) as api_client:
     api_instance = luncho_api.LunchoApi(api_client)
     
     try:
-        # Countries
-        api_response = api_instance.countries()
+        # All Luncho Data
+        api_response = api_instance.all_luncho_data()
         pprint(api_response)
     except luncho_python.ApiException as e:
-        print("Exception when calling LunchoApi->countries: %s\n" % e)
+        print("Exception when calling LunchoApi->all_luncho_data: %s\n" % e)
 ```
 
 ## Documentation for API Endpoints
@@ -79,9 +79,10 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*LunchoApi* | [**all_luncho_data**](docs/LunchoApi.md#all_luncho_data) | **GET** /v1/all-luncho-data | All Luncho Data
 *LunchoApi* | [**countries**](docs/LunchoApi.md#countries) | **GET** /v1/countries | Countries
-*LunchoApi* | [**luncho_data**](docs/LunchoApi.md#luncho_data) | **GET** /v1/luncho-data | Lunchodata
-*LunchoApi* | [**luncho_datas**](docs/LunchoApi.md#luncho_datas) | **GET** /v1/luncho-datas | Lunchodatas
+*LunchoApi* | [**health**](docs/LunchoApi.md#health) | **GET** /v1/health | Health
+*LunchoApi* | [**luncho_data**](docs/LunchoApi.md#luncho_data) | **GET** /v1/luncho-data | Luncho Data
 
 
 ## Documentation For Models
