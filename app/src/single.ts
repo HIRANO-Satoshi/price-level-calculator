@@ -29,6 +29,17 @@ export class Single {
 
     attached() {
         this.convertFromLuncho();
+
+        // var elems = document.querySelectorAll('.autocomplete');
+        // var instances = M.Autocomplete.init(elems, {
+        //     data: // this.luncho.countryCache,
+        //     {
+        //         "Apple": null,
+        //         "Microsoft": null,
+        //         "Google": 'https://placehold.it/250x250'
+        //     },
+        //     minLength: 0,
+        // });
     }
 
     async convertFromLuncho() {

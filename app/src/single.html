@@ -13,7 +13,9 @@
          Convert Luncho for a country
          </h5>
     -->
+    <!-- <input value.two-way="countryCode" class="country-select autocomplete"/> -->
     <select md-select value.two-way="countryCode" class="country-select"
+            id="autocomplete-input"
             change.delegate="convertFromLuncho()">
 
       <option model.bind="null" disabled>${"Select a country"}</option>
