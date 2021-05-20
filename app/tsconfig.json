@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
+    "noEmit": false,
     "sourceRoot": "src",
     "sourceMap": true,
     "allowJs": true,

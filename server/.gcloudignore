@@ -1,0 +1,9 @@
+.git
+.gitignore
+__pycache__
+.mypy_cache
+.dockerignore
+.pytest_cache
+pyenv
+pypyenv
+test

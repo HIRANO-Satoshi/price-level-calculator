@@ -127,7 +127,9 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
         use: cssRules
       },
       { test: /\.html$/i, loader: 'html-loader' },
-      { test: /\.ts$/, loader: "ts-loader" },
+      { test: /\.ts$/, loader: "ts-loader", options: {
+          onlyCompileBundledFiles: true
+      } },
       // use Bluebird as the global Promise implementation:
       { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
       // embed small images and fonts as Data Urls and larger ones as files:

@@ -31,6 +31,13 @@ export interface ICountriesParams {
 }
 
 /**
+ * countryCode - parameters interface
+ */
+export interface ICountryCodeParams {
+  xAppengineCountry?: string;
+}
+
+/**
  * health - parameters interface
  */
 export interface IHealthParams {
@@ -98,6 +105,32 @@ export class LunchoApi extends Api {
       // Set HTTP method
       .asGet()
 
+      // Send the request
+      .send();
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw new Error(response.content);
+    }
+
+    // Extract the content
+    return response.content;
+  }
+
+  /**
+   * Country Code
+   * Returns country code. This is available only when the server runs on Google App Engine.
+   * @param params.xAppengineCountry 
+   */
+  async countryCode(params: ICountryCodeParams): Promise<string> {
+    // Verify required parameters are set
+
+    // Create URL to call
+    const url = `${this.basePath}/v1/country-code`;
+
+    const response = await this.httpClient.createRequest(url)
+      // Set HTTP method
+      .asGet()
+      .withHeader('X-Appengine-Country', params['xAppengineCountry'])
       // Send the request
       .send();
 

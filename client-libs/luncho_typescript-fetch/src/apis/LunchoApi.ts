@@ -23,6 +23,10 @@ import {
     LunchoDataToJSON,
 } from '../models';
 
+export interface CountryCodeRequest {
+    xAppengineCountry?: string;
+}
+
 export interface LunchoDataRequest {
     countryCode: string;
 }
@@ -85,6 +89,38 @@ export class LunchoApi extends runtime.BaseAPI {
      */
     async countries(): Promise<{ [key: string]: string; }> {
         const response = await this.countriesRaw();
+        return await response.value();
+    }
+
+    /**
+     * Returns country code. This is available only when the server runs on Google App Engine.
+     * Country Code
+     */
+    async countryCodeRaw(requestParameters: CountryCodeRequest): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters.xAppengineCountry !== undefined && requestParameters.xAppengineCountry !== null) {
+            headerParameters['X-Appengine-Country'] = String(requestParameters.xAppengineCountry);
+        }
+
+        const response = await this.request({
+            path: `/v1/country-code`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Returns country code. This is available only when the server runs on Google App Engine.
+     * Country Code
+     */
+    async countryCode(requestParameters: CountryCodeRequest): Promise<string> {
+        const response = await this.countryCodeRaw(requestParameters);
         return await response.value();
     }
 

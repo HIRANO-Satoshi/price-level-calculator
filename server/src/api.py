@@ -40,6 +40,15 @@ async def luncho_data(
 
     return country
 
+@api_router.get("/country-code", response_model=str, tags=['Luncho'])
+async def country_code(
+        X_Appengine_Country: Optional[str]=Header(None),  # country code if on Google App Engine
+) -> str:
+    '''
+      Returns country code. This is available only when the server runs on Google App Engine.
+    '''
+    print('country_code before = ' + str(X_Appengine_Country))
+    return X_Appengine_Country or 'JP'
 
 @api_router.get("/countries", response_model=Dict[CountryCode, str], tags=['Luncho'])
 async def countries() -> Dict[CountryCode, str]:

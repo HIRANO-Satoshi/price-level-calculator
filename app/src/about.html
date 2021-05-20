@@ -1,16 +1,173 @@
 <template>
-  <div class="container">
+  <style>
+   .org-ul {
+   }
+   .about h3 {
+     color: #4466dd;
+   }
+  </style>
+  <div class="container about">
+    <section>
+      <h3 class=""> We overcome the inequality problem</h3>
+
+      <p>
+        Among many causes of the economic inequality problem, Luncho will contribute to overcome two major problems. One is the rapid progress of information technology (IT) that is promoting the gap between people who are utilizing IT and others. The other is decreasing labor's share.
+      </p>
+
+      <p>
+        To solve to the IT gap, for example, anyone must have enough access to the latest IT services such as apps for commerce, productivity, life, and entertainment. However, people living in developping countries cannot buy digital services because of their high prices.
+      </p>
+
+      <p>
+      Suppose you are selling your digital service for $7 per month per user. That price may be good for
+      people living in advanced countries. But, how about for people in other countries? So many people
+        might feel that $7 was too expensive.
+      </p>
+
+      <p>
+        In that case you can sell your digital service at 100 Luncho per month at your web site, for example. Show one of the following examples to a visitor according to the location of the visitor. It shows both a Luncho price and its local price.
+      </p>
+
+      <dl>
+        <dt>In USA</dt>
+        <dd>Product A:  100 Luncho per month, $7.12 ($7.12 USD)</dd>
+        <dt>In India</dt>
+        <dd>Product A:  100 Luncho per month, 157.51 Rupee ($2.14 USD)</dd>
+        <dt>In Finland</dt>
+        <dd>Product A:  100 Luncho per month, 6.08 Euro ($7.35 USD)</dd>
+        <dt>In Peru</dt>
+        <dd>Product A:  100 Luncho per month, 12.84 Sol ($3.45 USD)</dd>
+      </dl>
+
+      <p>
+      It seems your revenue goes down? Maybe NO, because people who couldn't buy your digital service would
+        become to buy it. You can expect more users will utilize your service.
+      </p>
+    </section>
 
     <section>
-      <h3 class="center" style="margin: 1.7em 0;">We overcome the inequality issue!</h3>
+      <h3> Who should use Luncho?</h3>
 
-      <p>Luncho is a common value index that is similar to <a href="https://www.economist.com/big-mac-index" target="_blank">Big Mac index</a>, but is designed to be used widely for determining wages and the fees of digital services wages <b>for overcoming the inequality issue</b> in the world.</p>
+      <ul class="browser-default">
+        <li>Digital service providers</li>
+        <li>Global companies that pay wages</li>
+        <li>Donors</li>
+      </ul>
+    </section>
 
-      <p>Luncho is calculated every hour on <a href="https://www.worldbank.org/en/programs/icp" target="_blank">implied PPP in the latest International Comparison Program (ICP)</a>, <a href="https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR" target="_blank">SDR</a>, and exchange rates.</p>
+    <section>
+      <h3>How it works?</h3>
 
-      <p>The World Bank's ICP is tremendous effort by many people that investigates price levels of <a href="https://openknowledge.worldbank.org/bitstream/handle/10986/33623/9781464815300.pdf" target="_blank">many items such as bread, pork, cheese, sugar, gas, medical services, cars, etc. in all countries</a>. Luncho uses Actual Individual Consumption (AIC) per capita that represents statistical price levels in daily lives for wide application, not actual lunch prices. </p>
+      <p>
+        Luncho is calculated using <a href="https://www.worldbank.org/en/programs/icp">implied Purchase Power Parity (PPP) in the latest International Comparison Program (ICP)</a>, <a href="https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR">IMF's Special Drawing Rights (SDR)</a>, and the exchange rate of every currency.
+      </p>
 
-      <p>So, with 100 Luncho in a country, you can expect to have simple lunch in a restaurant for local residents. Restaurant for tourists should be much more expensive!</p>
+      <p>
+      A PPP shows the price level in a country, that is, how much goods and services are in the
+      country. The SDR is a mixture of major currencies including US Dollar, Euro, GB Pound, Japanese Yen,
+        and Chinese Yuan. The SDR and exchange rates are updated every hour.
+      </p>
+
+      <p>
+        100 Luncho is 5 SDR and it's converted into local currency using the PPP.
+      </p>
+
+      <p>
+      The PPP is based on the latest International Comparison Program (ICP) lead by the World Bank. The
+      ICP is tremendous effort done every five years by many people that investigates price levels of <a href="https://openknowledge.worldbank.org/bitstream/handle/10986/33623/9781464815300.pdf">many
+        items such as bread, pork, cheese, sugar, gas, medical services, cars, etc. in all countries</a>. Luncho
+      uses Actual Individual Consumption (AIC) per capita that represents statistical price levels in
+        daily lives for wide applications, not actual lunch prices.
+      </p>
+
+      <p>
+      Thus, with 100 Luncho in a country, you can expect to have simple lunch in a restaurant for local
+        residents. Caution that restaurant for tourists should be much more expensive actually.
+      </p>
+
+      <p>
+        It's similar to <a href="https://www.economist.com/big-mac-index">the famous Big Mac index</a>, but it considers much more factors and it's applicable to more things.
+      </p>
+    </section>
+
+    <section>
+      <h3>Data</h3>
+
+      <ul class="browser-default">
+        <li>PPP from IMF World Economic Outlook (October 2020)
+          <ul class="class="browser-default"">
+            <li>data/imf-dm-export-20201110.csv</li>
+            <li>Press "All Data" to get it at <a href="https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD">here</a></li>
+            <li>194 countries and regions</li>
+            <li>Each country name is defined as "Table Name" in the following ICP-2017 metadata.</li>
+          </ul>
+        </li>
+
+        <li>ICP-2017 metadata
+          <ul class="class="browser-default"">
+            <li>data/Data_Extract_From_ICP_2017_Metadata.csv</li>
+            <li>Extracted the following metadata from <a href="https://databank.worldbank.org/source/icp-2017?preview=on">ICP-2017 database</a></li>
+            <li>Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage</li>
+            <li>
+              Examples:
+              <ul>
+                <li>AFG,Islamic State of Afghanistan,AFN: Afghani,Afghanistan,</li>
+                <li>ALB,Republic of Albania,ALL: Lek,Albania,Urban only</li>
+                <li>DZA,People's Democratic Republic of Algeria,DZD: Algerian Dinar,Algeria,Urban and Rural</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li>ICP-2017 Purchasing power parity (PPP) (US$ = 1)
+          <ul class="class="browser-default"">
+            <li>Extracted the following from <a href="https://databank.worldbank.org/source/icp-2017?preview=on">ICP-2017 database</a>
+              <ul class="class="browser-default"">
+                <li>Actual Individual Consumption (AIC) per capita</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Author</h3>
+      <p>
+        HIRANO Satoshi Ph.D  &emsp;AIST, University of Tokyo IIS, Peace and Passion
+      </p>
+    </section>
+
+    <section>
+      <h3> Acknowledgment</h3>
+      <ul class="class="browser-default"">
+        <li>Many people who worked hard for the International Comparison Program</li>
+        <li>The Aurelia core team for Aurelia framework</li>
+        <li>MaterializeCSS and Aurelia Materialize Bridge for CSS</li>
+        <li>Starlette, Pydantic, and FastAPI for Web framework</li>
+        <li>SQLAlchemy for database access</li>
+        <li>OpenAPI for generating client libraries</li>
+        <li>Fixer.io for exchange rates</li>
+        <li>AIST and Human Informatics and Interaction Research Institute (HIIRI) for support</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3> MIT License</h3>
+      <p>
+        Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
+      </p>
+
+      <p>
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+      </p>
+
+      <p>
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+      </p>
+
+      <p>
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       </p>
     </section>
   </div>

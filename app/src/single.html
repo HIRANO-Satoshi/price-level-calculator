@@ -34,19 +34,21 @@
           Luncho
         </span>
       </div>
-      <div class="col s12 m7 l8" style="margin-top: 10px;" with.bind="app.countryData.currencies[lunchoData.currency_code]">
-        =
-        <span if.bind="decimals == 0">
-          ${local_currency_value | numberFormat: '0'}
-        </span>
-        <span if.bind="decimals == 1">
-          ${local_currency_value | numberFormat: '0.0'}
-        </span>
-        <span if.bind="decimals == 2">
-          ${local_currency_value | numberFormat: '0.00'}
-        </span>
-        <span if.bind="decimals == 3">
-          ${local_currency_value | numberFormat: '0.000'}
+      <div class="col s12 m7 l8" style="margin-top: -5px;" with.bind="app.countryData.currencies[lunchoData.currency_code]">
+        <span style="font-size: 160%;">=</span>
+        <span style="width: 3em; font-size: 160%;">
+          <span if.bind="decimals == 0">
+            ${local_currency_value | numberFormat: '0'}
+          </span>
+          <span if.bind="decimals == 1">
+            ${local_currency_value | numberFormat: '0.0'}
+          </span>
+          <span if.bind="decimals == 2">
+            ${local_currency_value | numberFormat: '0.00'}
+          </span>
+          <span if.bind="decimals == 3">
+            ${local_currency_value | numberFormat: '0.000'}
+          </span>
         </span>
         ${lunchoData.currency_name}
       </div>

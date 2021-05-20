@@ -81,6 +81,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *LunchoApi* | [**all_luncho_data**](docs/LunchoApi.md#all_luncho_data) | **GET** /v1/all-luncho-data | All Luncho Data
 *LunchoApi* | [**countries**](docs/LunchoApi.md#countries) | **GET** /v1/countries | Countries
+*LunchoApi* | [**country_code**](docs/LunchoApi.md#country_code) | **GET** /v1/country-code | Country Code
 *LunchoApi* | [**health**](docs/LunchoApi.md#health) | **GET** /v1/health | Health
 *LunchoApi* | [**luncho_data**](docs/LunchoApi.md#luncho_data) | **GET** /v1/luncho-data | Luncho Data
 

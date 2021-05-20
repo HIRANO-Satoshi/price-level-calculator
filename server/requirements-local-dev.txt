@@ -1,4 +1,4 @@
-# requirements.txt for Python with mypy for development.
+# requirements-local-dev.txt for local development with Python
 #
 
 # packages
@@ -7,7 +7,7 @@ mypy
 fastapi
 fastapi-utils
 gunicorn
-#../client-libs/luncho_python  # don't include for GAE
+../client-libs/luncho_python
 mypy-extensions
 pycountry
 pycountry-convert

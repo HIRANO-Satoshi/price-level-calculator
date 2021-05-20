@@ -16,6 +16,7 @@ export class Luncho extends LunchoApi {
     lunchoDataCache: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
     allLunchoDatasFetched = false;
     countryCache: { [key: string]: string; };
+    countryCodeCache: string;
 
     IntlCountryNames: any;  // Intl.DisplayNames for country names
     IntlCurrencyNames: any; // Intl.DisplayNames for currency names
@@ -38,9 +39,12 @@ export class Luncho extends LunchoApi {
        Returns a Luncho data for the given country code using cache.
     */
     async lunchoData(param: ILunchoDataParams, localName=true): Promise<LunchoData> {
-        const lunchoData: LunchoData = this.lunchoDataCache[param.countryCode];
-        if (lunchoData && lunchoData.expiration > Date.now()/1000) {
-            return Promise.resolve(lunchoData);
+        if (param && param.countryCode) {
+            const lunchoData: LunchoData = this.lunchoDataCache[param.countryCode];
+            if (lunchoData) {
+                //XXX if (lunchoData && lunchoData.expiration > Date.now()/1000) {
+                return Promise.resolve(lunchoData);
+            }
         }
 
         return super.lunchoData(param)
@@ -58,7 +62,8 @@ export class Luncho extends LunchoApi {
        Returns a local data for the given country code using cache.
     */
     async allLunchoData(localName=true): Promise<{ [key: string]: LunchoData} > {
-        if (this.allLunchoDatasFetched && this.lunchoDataCache['JP'].expiration > Date.now()/1000) {
+        if (this.allLunchoDatasFetched) {
+        // XXX if (this.allLunchoDatasFetched && this.lunchoDataCache['JP'].expiration > Date.now()/1000) {
             return Promise.resolve(this.lunchoDataCache);
         }
 
@@ -93,6 +98,21 @@ export class Luncho extends LunchoApi {
                     }
                 }
                 return(countryCache);
+            });
+    }
+
+    /**
+       Returns an estimated country code of this app. Available only if the server supports.
+    */
+    async getCountryCode(): Promise<string> {
+        if (this.countryCodeCache) {
+            return Promise.resolve(this.countryCodeCache);
+        }
+
+        return super.countryCode({})
+            .then((countryCode: string) => {
+                this.countryCodeCache = countryCode;
+                return(this.countryCodeCache);
             });
     }
 

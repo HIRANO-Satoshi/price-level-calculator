@@ -24,6 +24,10 @@ export class Single {
 
     async activate() {
         // download country codes and names
+        if (window.origin.indexOf('localhost') >= 0)
+            this.countryCode = 'JP';
+        else
+            this.countryCode = await this.luncho.getCountryCode();
         await this.luncho.getCountries(true);
     }
 

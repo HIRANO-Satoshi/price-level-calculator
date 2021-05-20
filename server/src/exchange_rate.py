@@ -104,7 +104,7 @@ def cron(use_dummy_data):
     while True:
         time.sleep(60*60)      # every one hour
         #time.sleep(10)        # test
-        load_exchange_rates(use_dummy)
+        load_exchange_rates(use_dummy_data)
 
 
 def init(use_dummy_data):

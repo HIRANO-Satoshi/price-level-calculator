@@ -47,7 +47,7 @@ kosovo.official_name = "Kosovo"
 def init(use_dummy_data: bool) -> None:
     global Country_Metadata, Countries, CountryCode_Names
 
-    if not os.getcwd().endswith('server'):
+    if not os.getcwd().endswith('server') and not os.environ.get('GAE_APPLICATION'):
         os.chdir("server");
 
     # read country metadata to build Country_Metadata map

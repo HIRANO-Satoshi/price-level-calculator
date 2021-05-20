@@ -1,0 +1,23 @@
+runtime: python39
+entrypoint: gunicorn -b :$PORT --access-logfile - --error-logfile - -k uvicorn.workers.UvicornH11Worker -c gunicorn_config.py main:app
+instance_class: F1
+default_expiration: "10s"
+#default_expiration: "4d 5h"
+
+handlers:
+- url: /img
+  static_dir: img
+- url: /v1/.*
+  secure: always
+  script: auto
+- url: /index.html
+  secure: always
+  static_files: app-dist/index.html
+  upload: app-dist/index.html
+- url: /
+  secure: always
+  static_files: app-dist/index.html
+  upload: app-dist/index.html
+- url: .*
+  secure: always
+  static_dir: app-dist
