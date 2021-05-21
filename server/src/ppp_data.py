@@ -15,6 +15,7 @@ from typing_extensions import TypedDict
 import pycountry
 import pycountry_convert
 
+import conf
 from conf import SDR_Per_Luncho
 #from src import exchange_rate
 from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country

@@ -9,7 +9,7 @@ from typing import List, Dict, Tuple, Union, Any, Optional
 
 # Configurable constants
 
-Use_Fixer_For_Forex: bool = True          # True to use Fixer.io for exchange rates. Set api_keys.py.
+Use_Fixer_For_Forex: bool = False          # True to use Fixer.io for exchange rates. Set api_keys.py.
 
 # Luncho client library languages
 #  'language': 'option'
