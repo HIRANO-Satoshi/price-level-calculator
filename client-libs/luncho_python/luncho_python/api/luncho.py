@@ -28,7 +28,7 @@ class Luncho():
         self.lunchoApi = LunchoApi(api_client)             # for delegation
 
         self.lunchoDataCache: Dict[CountryCode, LunchoData] = {}  # Cache {CountryCode: LunchoData}
-        self.allLunchoDatasFetched: bool = False
+        self.allLunchoDatasExpiration: float = 0.0;
         self.countryCache: Dict[CountryCode, str] = {}       # { CountryCode: name }
 
 
@@ -45,8 +45,8 @@ class Luncho():
           Returns a Luncho value from a local currency value for the specified country.
         '''
 
-        lunchoData: LunchoData = self.luncho_data(countryCode, **kwargs)
-        return lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue
+        assert False, 'XXX Implement me'
+        return 0.0
 
     def luncho_to_US_dollar(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
         '''
@@ -65,16 +65,12 @@ class Luncho():
           Returns a Luncho value from a US Dollar value for the specified country.
         '''
 
-        lunchoData: LunchoData = self.luncho_data(countryCode, **kwargs)
-        if lunchoData.exchange_rate > 0:
-            local_currency_value: float = lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue;
-            return local_currency_value / lunchoData.exchange_rate
-        else:
-            return 0.0
+        assert False, 'XXX Implement me'
+        return 0.0
 
     def countries(self, **kwargs) -> Dict[CountryCode, str]:
         '''
-          Returns a dict of country codes and country names.
+          Returns a dict of supported country codes and country names.
         '''
 
         if self.countryCache:
@@ -101,13 +97,13 @@ class Luncho():
           Returns a dict of LunchoDatas of all countries. You don't need to use this method
            usually. Use localCurrencyFromLuncho() and USDollarFromLuncho().
         '''
-        if self.allLunchoDatasFetched:
-            lunchoData: Optional[LunchoData] = self.lunchoDataCache.get('JP')
-            if lunchoData and lunchoData.expiration > time.time():
-                return self.lunchoDataCache
+        if self.allLunchoDatasExpiration > time.time():
+            return self.lunchoDataCache
 
         self.lunchoDataCache = self.lunchoApi.all_luncho_data(**kwargs)
-        self.allLunchoDatasFetched = True
+        assert self.lunchoDataCache
+        assert self.lunchoDataCache['JP']
+        self.allLunchoDatasExpiration = self.lunchoDataCache['JP'].expiration
         return self.lunchoDataCache
 
 

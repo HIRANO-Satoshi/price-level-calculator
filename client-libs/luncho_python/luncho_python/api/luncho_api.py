@@ -43,7 +43,7 @@ class LunchoApi(object):
         ):
             """All Luncho Data  # noqa: E501
 
-            Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.  # noqa: E501
+              Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: Dict[CountryCode, LunchoData] A dict of a country code and LunchoData.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
@@ -148,7 +148,7 @@ class LunchoApi(object):
         ):
             """Countries  # noqa: E501
 
-              Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.  # noqa: E501
+              Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: Dict[CountryCode, str] A dict of a country code and country name.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
@@ -253,7 +253,7 @@ class LunchoApi(object):
         ):
             """Country Code  # noqa: E501
 
-            Returns country code. This is available only when the server runs on Google App Engine.  # noqa: E501
+            Returns country code. This is available only when the server runs on Google App Engine. - **X_Appengine_Country**: Internal use. Ignore this. - **return**: str. A country code.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
@@ -262,7 +262,6 @@ class LunchoApi(object):
 
 
             Keyword Args:
-                x_appengine_country (str): [optional]
                 _return_http_data_only (bool): response data without head status
                     code and headers. Default is True.
                 _preload_content (bool): if False, the urllib3.HTTPResponse object
@@ -320,7 +319,6 @@ class LunchoApi(object):
             },
             params_map={
                 'all': [
-                    'x_appengine_country',
                 ],
                 'required': [],
                 'nullable': [
@@ -336,14 +334,10 @@ class LunchoApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'x_appengine_country':
-                        (str,),
                 },
                 'attribute_map': {
-                    'x_appengine_country': 'X-Appengine-Country',
                 },
                 'location_map': {
-                    'x_appengine_country': 'header',
                 },
                 'collection_format_map': {
                 }
@@ -470,7 +464,7 @@ class LunchoApi(object):
         ):
             """Luncho Data  # noqa: E501
 
-            Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.  # noqa: E501
+            Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.  - **country_code**: client provided country code in ISO-3166-1-2 formant like 'JP' - **return**: LunchoData  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 

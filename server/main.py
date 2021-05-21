@@ -85,6 +85,11 @@ def gen_openapi_schema() -> Dict:
     # openapi_schema["info"]["x-logo"] = {
     #     "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
     # }
+
+    # Remove params starts with "X-" such as X-Appengine-Country
+    params = openapi_schema["paths"][conf.API_V1_STR + "/country-code"]["get"]["parameters"]
+    params = [param for param in params if not param["name"].startswith("X-")]
+    openapi_schema["paths"][conf.API_V1_STR + "/country-code"]["get"]["parameters"] = params
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
@@ -122,3 +127,23 @@ if __name__ == "__main__":
     else:
         print('To start Luncho server, just run start-gunicorn.py ', file=sys.stderr)
         print('pypy3 main.py gen    generate client library using openAPI generator', file=sys.stderr)
+
+
+# def custom_openapi():
+#     if app.openapi_schema:
+#         return app.openapi_schema
+#     openapi_schema = get_openapi(
+#         title="Custom title",
+#         version="2.5.0",
+#         description="This is a very custom OpenAPI schema",
+#         routes=app.routes,
+#     )
+#     # Remove paramB
+#     params = openapi_schema["paths"]["/country-code"]["get"]["parameters"]
+#     params = [param for param in params if param["name"] != "X_Appengine_Country"]
+#     openapi_schema["paths"]["/country-code"]["get"]["parameters"] = params
+#     app.openapi_schema = openapi_schema
+#     return app.openapi_schema
+
+
+# app.openapi = custom_openapi

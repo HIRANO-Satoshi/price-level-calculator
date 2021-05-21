@@ -1,4 +1,56 @@
-** Locales
+** Luncho client library for Python
+
+*** Example
+
+    - See [[../../app/src/app.ts]],  [[../../app/src/single.ts]], and  [[../../app/src/countries.ts]].
+
+*** Typical usage
+
+    import { Luncho } from 'luncho_typescript-aurelia/luncho';
+
+    luncho: Luncho;
+
+    async func() {
+      this.luncho = new Luncho();
+      this.luncho.basePath = "http://luncho-index.org"
+      // luncho.basePath = 'http://localhost:8000';
+
+      var countryCode = 'JP';
+      // var countryCode = await this.luncho.getCountryCode();
+
+      // get a local currency value from a Luncho value
+      local_currency_value: number = await this.luncho.localCurrencyFromLuncho(100.0, countryCode);
+
+      // get a dollar value from a Luncho value
+      this.dollar_value = await this.luncho.USDollarFromLuncho(100.0, countryCode);
+
+      // get a Luncho Data for a country
+      lunchoData: LunchoData = await this.luncho.lunchoData({countryCode: countryCode});
+
+      // Load or get a dict of LunchoDatas for supported countries.  Data size is about 40KB.
+      // If you show data of all countries, call this before in order to load all LunchoDatas at once,
+      // or it loads LunchoData one by one and that is very slow.
+      await this.luncho.allLunchoData();
+
+      // calculate local currency values for all countries
+      for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
+          this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
+          this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
+      }
+
+*** Cached data
+
+  - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
+    reloaded.
+  - These variables are available.
+
+    this.luncho.lunchoDataCache: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
+    this.luncho.allLunchoDatasExpiration: number = 0;
+    this.luncho.countryCache: { [key: string]: string; };
+    this.luncho.countryCodeCache: string;
+
+*** Locales
+
   - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language.
 
        import * as browserLocale from 'browser-locale';

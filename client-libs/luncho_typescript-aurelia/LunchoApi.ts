@@ -34,7 +34,6 @@ export interface ICountriesParams {
  * countryCode - parameters interface
  */
 export interface ICountryCodeParams {
-  xAppengineCountry?: string;
 }
 
 /**
@@ -68,7 +67,7 @@ export class LunchoApi extends Api {
 
   /**
    * All Luncho Data
-   * Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.
+   *   Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: Dict[CountryCode, LunchoData] A dict of a country code and LunchoData.
    */
   async allLunchoData(): Promise<{ [key: string]: LunchoData; }> {
     // Verify required parameters are set
@@ -93,7 +92,7 @@ export class LunchoApi extends Api {
 
   /**
    * Countries
-   *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\&#39;JP\&#39;: \&#39;Japan\&#39;, \&#39;US\&#39;: \&#39;United States\&#39;...}.     If data for a country is not available, either its ppp or exchange_rate is 0.
+   *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\&#39;JP\&#39;: \&#39;Japan\&#39;, \&#39;US\&#39;: \&#39;United States\&#39;...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: Dict[CountryCode, str] A dict of a country code and country name.
    */
   async countries(): Promise<{ [key: string]: string; }> {
     // Verify required parameters are set
@@ -118,10 +117,9 @@ export class LunchoApi extends Api {
 
   /**
    * Country Code
-   * Returns country code. This is available only when the server runs on Google App Engine.
-   * @param params.xAppengineCountry 
+   * Returns country code. This is available only when the server runs on Google App Engine. - **X_Appengine_Country**: Internal use. Ignore this. - **return**: str. A country code.
    */
-  async countryCode(params: ICountryCodeParams): Promise<string> {
+  async countryCode(): Promise<string> {
     // Verify required parameters are set
 
     // Create URL to call
@@ -130,7 +128,7 @@ export class LunchoApi extends Api {
     const response = await this.httpClient.createRequest(url)
       // Set HTTP method
       .asGet()
-      .withHeader('X-Appengine-Country', params['xAppengineCountry'])
+
       // Send the request
       .send();
 
@@ -169,7 +167,7 @@ export class LunchoApi extends Api {
 
   /**
    * Luncho Data
-   * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.
+   * Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.  - **country_code**: client provided country code in ISO-3166-1-2 formant like \&#39;JP\&#39; - **return**: LunchoData
    * @param params.countryCode 
    */
   async lunchoData(params: ILunchoDataParams): Promise<LunchoData> {

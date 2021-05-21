@@ -1,22 +1,44 @@
 * Luncho Server
 
-** What it is?
+** What it does?
 
-  - The Luncho server provides API so that your web site can show both Luncho price and local prices.
-  - The Luncho server provides OpenAPI so tha you can generate client libraries.
+  - The Luncho server provides API so that your app or web site can show both Luncho prices and
+    local prices. The API provides required data in LunchoData structure to client libraries. The
+    client libraries calculate Luncho and local prices locally using cached LunchoData at the client
+    side. So, the calculation is local and fast.
+
+  - The Luncho server provides OpenAPI so that you can generate the client libraries.
+    - See [[https://www.luncho-index.org/redoc][API documentation]] and [[https://www.luncho-index.org/openapi.json ][schema definition]].
+    - However, our client libraries have additional files for the local calculation and caching. See
+      individual README files for each language.
+      - [[../client-libs/luncho_typescript-aurelia/README.org][luncho_typescript-aurelia]],
+      - [[../client-libs/luncho_python/README.org][luncho_python]]
+
+  - The Luncho server hosts [[../app][the Luncho app]] web site.
 
 ** Requirements
 
-  - An access key of Fixer to get exchange rate. Placeit in api_keys.py
-  - Follow the Installation section to install the required packages.
-  - Pypy3 (Python compiler)
+  - Python3 or Pypy3
   - FastAPI (Web framework)
+  - gunicorn (Optional)
+
+  - Server
+    - Google App Engine, standard or flexible (Optional)
+    - or any Docker compatible server
+    - or any Python
 
 ** Installation
 
-*** Create an account on Fixer to get exchange rate
+*** (Optional) Access key for foreign exchange (forex) rate data
 
-  - Place your Fixer access key in api_keys.py.
+  - By default, we use exchangerate.host which is a free exchange rate data provider. The Luncho
+    server updates the forex data at 00:06 UTC every day. LunchoData expires at the time. If 24-hour
+    update cycle of the forex data is OK for you, skip to the installation as you don't need to do
+    anything about the exchange rate.
+
+  - However, if you want to use one hour update rather than the default 24-hour update, edit conf.py
+    to set Use_Fixer_For_Forex to True. And create a user account on Fixer.io and place your access
+    key in api_keys.py.
 
     Fixer_Access_Key = 'XXXXXXXX'
 
@@ -32,20 +54,21 @@
    - bin/install-packages.sh
   - You have pypyenv dir that includes site-packages.
 
-*** Generate client library and link
-
-  - pypy3 main.py gen
-  - if you use yarn or npm, compile and link;
-    - pushd ../client-libs/luncho_typescript-aurelia; yarn install; yarn link; popd
-    - pushd ../app; yarn link "luncho_typescript-aurelia"
-
-*** Test
-
-  - pytest test/test_server.py
-  - pytest test/test_client_lib.py
-
 *** Run a local Luncho server
+
   - bin/start-gunicorn.sh
+
+  - Open a browser at http://localhost:8000/v1/all-country-data for API access.
+  - See [[../app/README.org][../app/README.org]] how to run the Luncho app.
+
+*** Run on Google App Engine
+
+  - Install gcloud SDK
+  - Make a project and deploy
+    gcloud auth login
+    gcloud app create --project=my-luncho-server
+    gcloud config set project my-luncho-server
+    gcloud app deploy --quiet
 
 *** Docker installation
 
@@ -53,28 +76,30 @@
      docker compose build --progress plain
   - run
      docker run luncho-server_app
-  - ps for containerID
-     docker ps
-  - kill
-     docker kill containerID
+
+*** (Optional) To generate client library and link
+
+  - pypy3 main.py gen
+  - if you use yarn or npm, compile and link;
+    - pushd ../client-libs/luncho_typescript-aurelia; yarn install; yarn link; popd
+    - pushd ../app; yarn link "luncho_typescript-aurelia"; popd
+
+*** Test
+
+  - pytest test/test_server.py
+  - pytest test/test_client_lib.py
 
 ** Limitations
 
-  - The Luncho server refreshes exchange rates every one hour and tell clients to keep data for one
-    hour since the last refresh. If you have multiple Luncho servers, the servers refresh exchange
-    rates independently. You may get different results.
+  - The Luncho server refreshes exchange rates every 24 hours and tell clients to keep data for one
+    hour. If you have multiple Luncho servers, the servers refresh exchange rates independently. You
+    may get different results.
 
 
 ** Author
 
-Dr HIRANO Satoshi, AIST
+   HIRANO Satoshi Ph.D  AIST, University of Tokyo IIS, Peace and Passion
 
-** MIT License
+** [[../LICENSE][MIT License]]
 
 Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

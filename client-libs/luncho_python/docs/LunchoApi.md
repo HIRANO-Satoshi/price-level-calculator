@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 All Luncho Data
 
-Returns A dict of LunchoDatas for all supported countries. Data size is about 40KB.
+  Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: Dict[CountryCode, LunchoData] A dict of a country code and LunchoData.
 
 ### Example
 
@@ -77,7 +77,7 @@ No authorization required
 
 Countries
 
-  Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.
+  Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: Dict[CountryCode, str] A dict of a country code and country name.
 
 ### Example
 
@@ -137,7 +137,7 @@ No authorization required
 
 Country Code
 
-Returns country code. This is available only when the server runs on Google App Engine.
+Returns country code. This is available only when the server runs on Google App Engine. - **X_Appengine_Country**: Internal use. Ignore this. - **return**: str. A country code.
 
 ### Example
 
@@ -158,13 +158,11 @@ configuration = luncho_python.Configuration(
 with luncho_python.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = luncho_api.LunchoApi(api_client)
-    x_appengine_country = "X-Appengine-Country_example" # str |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
+    # example, this endpoint has no required or optional parameters
     try:
         # Country Code
-        api_response = api_instance.country_code(x_appengine_country=x_appengine_country)
+        api_response = api_instance.country_code()
         pprint(api_response)
     except luncho_python.ApiException as e:
         print("Exception when calling LunchoApi->country_code: %s\n" % e)
@@ -172,10 +170,7 @@ with luncho_python.ApiClient() as api_client:
 
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **x_appengine_country** | **str**|  | [optional]
+This endpoint does not need any parameter.
 
 ### Return type
 
@@ -264,7 +259,7 @@ No authorization required
 
 Luncho Data
 
-Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.
+Returns LunchoData that is needed to convert between Luncho and local currency of the countryCode.   If data for the country is not available either ppp or exchange_rate is 0. Data size is about 400 bytes.  - **country_code**: client provided country code in ISO-3166-1-2 formant like 'JP' - **return**: LunchoData
 
 ### Example
 

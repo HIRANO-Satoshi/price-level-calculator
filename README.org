@@ -1,36 +1,44 @@
 * Luncho: Common Value Index for the economic inequality issue
 
+Developers, see  [[client-lib/README.org]] for use.
+
 ** With 100 Luncho, you can have simple lunch in every country.
 
-The main applications are *determining wages* and the *pricing of digital services*.
+Among many causes of the economic inequality problem, Luncho will contribute to overcome two major
+problems. One is the rapid progress of information technology (IT) that is promoting the gap between
+people who are utilizing IT and others. The other is decreasing labor's share.
+
+To solve to the IT gap, for example, anyone must have enough access to the latest IT services such
+as apps for commerce, productivity, life, and entertainment. However, people living in developing
+countries cannot buy digital services because of their high prices.
 
 Suppose you are selling your digital service for $7 per month per user. That price may be good for
 people living in advanced countries. But, how about for people in other countries? So many people
 might feel that $7 was too expensive.
 
-In that case you can sell your digital service at 100 Luncho per month, for example. Your site can
-show both a Luncho price and its local prices using this Luncho server.
+In that case you can sell your digital service at 100 Luncho per month at your web site, for
+example. Show one of the following examples to a visitor according to the location of the
+visitor. It shows both a Luncho price and its local price.
 
 - In USA
-  Product A  100 Luncho per month, $7.12 ($7.12 USD)
+  Product A:  100 Luncho per month, $7.12 ($7.12 USD)
 
 - In India
-  Product A  100 Luncho per month, 157.51 Rupee ($2.14 USD)
+  Product A:  100 Luncho per month, 157.51 Rupee ($2.14 USD)
 
 - In Finland
-  Product A  100 Luncho per month, 6.08 Euro ($7.35 USD)
+  Product A:  100 Luncho per month, 6.08 Euro ($7.35 USD)
 
-- In Peru
-  Product A  100 Luncho per month, 12.84 Sol ($3.45 USD)
-
-It seems your revenue goes down? Maybe no because people who couldn't buy your digital service would
-become to buy it. You can expect more users will utilize your service.
+It seems your revenue will go down? Maybe NO, because people who couldn't buy your digital service
+would become to buy it. You can expect that accelerates growth of your user base and your revenue
+will be increased beyond the current revenue without Luncho.
 
 
 ** Who should use Luncho?
 
 - Digital service providers
 - Global companies that pay wages
+- Donors
 
 ** How it works?
 
@@ -39,7 +47,7 @@ Comparison Program (ICP)]], [[https://www.imf.org/en/About/Factsheets/Sheets/201
 
 A PPP shows the price level in a country, that is, how much goods and services are in the
 country. The SDR is a mixture of major currencies including US Dollar, Euro, GB Pound, Japanese Yen,
-and Chinese Yuan. The SDR and exchange rates are updated every hour.
+and Chinese Yuan. The SDR and exchange rates are updated at 00:06 UTC every day.
 
 100 Luncho is 5 SDR and it's converted into local currency using the PPP.
 
@@ -58,13 +66,13 @@ It's similar to [[https://www.economist.com/big-mac-index][Big Mac index]], but 
 ** Data
 
 - PPP from IMF World Economic Outlook (October 2020)
-  - data/imf-dm-export-20201110.csv
+  - [[server/data/imf-dm-export-20201110.csv]]
   - Press "All Data" to get it at [[https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD][here]]
   - 194 countries and regions
   - Country name is defined as "Table Name" in the following ICP-2017 metadata
 
 - ICP-2017 metadata
-  - data/Data_Extract_From_ICP_2017_Metadata.csv
+  - [[server/data/Data_Extract_From_ICP_2017_Metadata.csv]]
   - Extracted the following metadata from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
   - Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage
   - Examples
@@ -79,25 +87,16 @@ It's similar to [[https://www.economist.com/big-mac-index][Big Mac index]], but 
 
 ** Author
 
-Dr HIRANO Satoshi, AIST
+   HIRANO Satoshi Ph.D  AIST, University of Tokyo IIS, Peace and Passion
 
 ** Acknowledgment
 
 - Many people who worked hard for the International Comparison Program
-- The Aurelia core team for Aurelia framework
+- The Aurelia core team  and contributors for Aurelia framework
 - MaterializeCSS and Aurelia Materialize Bridge for CSS
-- Starlette, Pydantic, and FastAPI for Web framework
-- SQLAlchemy for database access
-- OpenAPI for generating client libraries
-- Fixer.io for exchange rates
+- exchangerate.host for free exchange rates
 - AIST and Human Informatics and Interaction Research Institute (HIIRI) for support
 
-** MIT License
+** [[LICENSE][MIT License]]
 
 Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

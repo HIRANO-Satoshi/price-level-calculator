@@ -5,11 +5,27 @@ default_expiration: "10s"
 #default_expiration: "4d 5h"
 
 handlers:
-- url: /img
-  static_dir: img
+# Luncho API
 - url: /v1/.*
   secure: always
   script: auto
+
+# OpenAPI related pages served by FastAPI
+- url: /redoc
+  secure: always
+  script: auto
+- url: /doc
+  secure: always
+  script: auto
+- url: /openapi.json
+  secure: always
+  script: auto
+
+# static files
+- url: /img
+  static_dir: img
+
+# index.html and bundle files for web site (the Luncho app)
 - url: /index.html
   secure: always
   static_files: app-dist/index.html

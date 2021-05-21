@@ -4,11 +4,12 @@
   Author: HIRANO Satoshi
   Date: 2021/05/12
 '''
+import os
 from typing import List, Dict, Tuple, Union, Any, Optional
 
-API_V1_STR: str = "/v1"
+# Configurable constants
 
-SDR_Per_Luncho = 5.0/100.0   # 100 Luncho is 5 SDR.
+Use_Fixer_For_Forex: bool = True          # True to use Fixer.io for exchange rates. Set api_keys.py.
 
 # Luncho client library languages
 #  'language': 'option'
@@ -25,7 +26,15 @@ Gen_Openapi: Dict[str, str] = {
     'typescript-fetch': 'supportsES6=true,npmName=luncho_typescript-fetch',
 }
 
-Openapi_Schema_File = 'data/openapi_schema.json'
 
 def Header_To_Fetch(lang: str) -> Dict:
     return {"Accept-Language": "".join([lang, ";"]), "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"}
+
+
+# Unconfigurable constants
+
+SDR_Per_Luncho: float     = 5.0/100.0      # 100 Luncho is 5 SDR.
+API_V1_STR: str = "/v1"
+Is_AppEngine   = os.environ.get('GAE_APPLICATION') is not None  # True if running on Google App Engine
+
+Openapi_Schema_File = 'data/openapi_schema.json'
