@@ -1,6 +1,6 @@
 * Luncho: Common Value Index for the economic inequality issue
 
-Developers, see  [[client-lib/README.org]] for use.
+Developers, see  [[client-libs/README.org]] for use.
 
 ** With 100 Luncho, you can have simple lunch in every country.
 
