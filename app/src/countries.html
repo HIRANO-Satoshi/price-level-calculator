@@ -68,7 +68,7 @@
           <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 1">${local_currency_value | numberFormat: '0.0'}</td>
           <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 2">${local_currency_value | numberFormat: '0.00'}</td>
           <td if.bind="local_currency_value > 0 && app.countryData.currencies[currency_code].decimals == 3">${local_currency_value | numberFormat: '0.000'}</td>
-          <td if.bind="local_currency_value == 0">?</td>
+          <td if.bind="!(local_currency_value > 0)">?</td>
 
           <td>${currency_name}</td>
 

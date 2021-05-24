@@ -121,7 +121,8 @@ def init(use_dummy_data: bool) -> None:
     }
 
     # build Countries map from Implied PPP conversion rates (National currency per international dollar)
-    with open('data/imf-dm-export-20201110.csv', newline='', encoding="utf_8_sig") as imf_file:
+    with open('data/imf-dm-export-20210524.csv', newline='', encoding="utf_8_sig") as imf_file:
+        # with open('data/imf-dm-export-20201110.csv', newline='', encoding="utf_8_sig") as imf_file:
         imf_reader  = csv.DictReader(imf_file)
 
         # 193 countries and regions in the file
@@ -183,5 +184,5 @@ def update() -> None:
     for country_code, country in Countries.items():  #type: CountryCode, Country
         country['ppp'] = country['year_ppp'].get(year, 0.0)  # country's ppp of this year
         country['exchange_rate'] = exchange_rate.exchange_rate_per_USD(country['currency_code'])
-        country['dollar_per_luncho'] = exchange_rate.Dollar_Per_SDR * SDR_Per_Luncho
+        country['dollar_per_luncho'] = SDR_Per_Luncho / exchange_rate.SDR_Per_Dollar
         country['expiration'] = exchange_rate.expiration

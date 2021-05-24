@@ -58,7 +58,8 @@
       </p>
 
       <p>Luncho is a common value index among currencies made for that. A luncho value shows the
-        same value in any country respecting its price levels. It's fair and easy to understand.
+        same value in any country respecting its price levels. Because it doesn't depend on a
+        specificy currency, it's neutral and fair.
       </p>
 
       <p>
@@ -92,12 +93,25 @@
     <section>
       <h3>How it works?</h3>
 
-      <b>100 Luncho is 5 <a target="_blank" href="https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR">SDR (IMF's Special Drawing Rights)</a> and a Luncho value is calculated into a local currency using <a target="_blank" href="https://en.wikipedia.org/wiki/Purchasing_power_parity">implied Purchase Power Parity (PPP)</a> obtained from <a target="_blank" href="https://www.worldbank.org/en/programs/icp">the latest International Comparison Program (ICP)</a> and exchange rates.</b>
+      <pre>
+      local_currency_value = luncho_value * PPP * SDR_per_Luncho * Dollar_per_SDR
+      </pre>
 
-      <p>
-        A PPP shows the price level in a country against another country, that is, how much goods
-        and services are in the country. Our PPP data is based on the latest International
-        Comparison Program (ICP) lead by the World Bank. The ICP is tremendous effort done every
+      where:
+      SDR_per_Luncho = 5
+      PPP = country's PPP value
+      Dollar_per_SDR = Today's SDR in US dollar
+
+      International dollar
+
+      <b>100 Luncho is 5 <a target="_blank" href="https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR">SDR </a> and a Luncho value is calculated into a local currency using <a target="_blank" href="https://www.imf.org/external/pubs/ft/weo/faq.htm#q4d">implied Purchase Power Parity (PPP)</a>, and exchange rates.</b>
+
+      <p><a href="https://github.com/HIRANO-Satoshi/luncho/blob/master/luncho_python/luncho_python/api/luncho.py">See  def luncho_to_currency() in a client library.</a></p>
+
+        <p>
+          A PPP shows the price level in a country against another country, that is, how much goods
+          and services are in the country. Our PPP data is from <a target="_blank" href="https://www.worldbank.org/en/programs/icp">the
+          latest International Comparison Program (ICP)</a> lead by the World Bank. The ICP is tremendous effort done every
         five years by many people that investigates price levels of <a target="_blank" href="https://openknowledge.worldbank.org/bitstream/handle/10986/33623/9781464815300.pdf">many
         items such as bread, pork, cheese, sugar, gas, medical services, cars, etc. in all countries</a>. Thus,
         Luncho reflects the overall price levels, not actual lunch prices.
@@ -105,9 +119,9 @@
 
       <p>
 
-        The SDR is a mixture of major currencies including US
-        Dollar, Euro, GB Pound, Japanese Yen, and Chinese Yuan. The SDR and exchange rate data are
-        updated at 00:06 UTC every day.
+        The SDR is IMF's Special Drawing Right. SDR mixture of major currencies including US Dollar,
+        Euro, GB Pound, Japanese Yen, and Chinese Yuan. The SDR and exchange rate data are updated
+        at 00:06 UTC every day.
 
       </p>
 
@@ -121,9 +135,9 @@
       <h3><a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/tree/master/server/data">Data</a></h3>
 
       <ul class="browser-default">
-        <li>Implied PPP conversion rate from IMF World Economic Outlook (October 2020) <a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/imf-dm-export-20201110.csv">imf-dm-export-20201110.csv</a>
+        <li>Implied PPP conversion rate from <a href="https://www.imf.org/en/Publications/WEO/Issues/2021/03/23/world-economic-outlook-april-2021">IMF World Economic Outlook (March 23, 2021)</a>
           <ul class="class="browser-default"">
-            <li>Press "All Data" to get it at <a target="_blank" href="https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD">here</a></li>
+            <li>Open <a target="_blank" href="https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD">PPPEX data at IMF database</a> and press "All Data" to download a XLF file. Open the XLS file and save it as a CSV file  (<a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/imf-dm-export-20201110.csv">imf-dm-export-20201110.csv</a>).</li>
             <li>194 countries and regions</li>
             <li>Each country name is defined as "Table Name" in the following ICP-2017 metadata.</li>
           </ul>
@@ -166,9 +180,7 @@
         <li><a target="_blank" href="https://www.economist.com/big-mac-index">The Big Mac index by The Economist</a> (<a target="_blank" href="https://github.com/TheEconomist/big-mac-data">Github</a>)</li>
         <li><a target="_blank" href="https://www.finder.com/ca/starbucks-index">The Starbucks Latte index</a></li>
         <li><a target="_blank" href="https://baike.baidu.com/item/%E6%A6%A8%E8%8F%9C%E6%8C%87%E6%95%B0/9227101?fr=aladdin">Chinese Zha cai pickle index</a></li>
-        <li><a target="_blank" href="https://github.com/rwieruch/purchasing-power-parity">https://github.com/rwieruch/purchasing-power-parity</a></li>
-        <li><a target="_blank" href="https://github.com/lorensr/ppp">https://github.com/lorensr/ppp</a></li>
-        <li><a target="_blank" href="https://github.com/nechita/pppmakers.com">https://github.com/nechita/pppmakers.com</a></li>
+        <li>@rwieruch's Simple dollar based PPP at<a target="_blank" href="https://purchasing-power-parity.com">https://purchasing-power-parity.com/</a>. (<a target="_blank" href="https://github.com/rwieruch/purchasing-power-parity">Github</a></li>
       </ul>
     </section>
 

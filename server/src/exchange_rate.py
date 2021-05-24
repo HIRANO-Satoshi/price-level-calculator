@@ -31,8 +31,8 @@ expiration: float = 0.0
 # time of the last load of Exchange_Rates
 last_load: float = 0
 
-# Dollar/SDR
-Dollar_Per_SDR: float = 0   # filled in load_exchange_rates()  1 SDR = $1.4...
+# SDR/Dollar
+SDR_Per_Dollar: float = 0   # filled in load_exchange_rates()  1 SDR = $1.4...
 
 class FixerExchangeRate(TypedDict):
     success: bool    # true if API success
@@ -80,6 +80,7 @@ def load_exchange_rates(use_dummy_data: bool):
             url = ''.join(('http://data.fixer.io/api/latest?access_key=', api_keys.Fixer_Access_Key))
         else:
             url = ''.join(('https://api.exchangerate.host/latest'))
+        #XXX fall back?
 
         response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
         if not response.ok:   # no retry. will load after one hour.
@@ -94,9 +95,9 @@ def load_exchange_rates(use_dummy_data: bool):
     for currecy_code, euro_value in Fixer_Exchange_Rates['rates'].items():  #type: CurrencyCode, float
         Exchange_Rates[currecy_code] = euro_value / usd   # store in USD
         if currecy_code == 'XDR':
-            global Dollar_Per_SDR
-            Dollar_Per_SDR = 1 / Exchange_Rates[currecy_code]
-            logging.debug('Dollar/SDR = ' + str(Dollar_Per_SDR))
+            global SDR_Per_Dollar
+            SDR_Per_Dollar = Exchange_Rates[currecy_code]
+            logging.debug('SDR/Dollar = ' + str(SDR_Per_Dollar))
 
     last_load = time.time()
 

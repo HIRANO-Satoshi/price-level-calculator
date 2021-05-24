@@ -6,6 +6,7 @@
 
 *** Typical usage
 
+#+BEGIN_SRC
     import luncho_python
     from luncho_python.api import luncho_api, luncho
     from luncho_python.model.luncho_data import LunchoData
@@ -36,6 +37,7 @@
     # If you show data of all countries, call this before in order to load all LunchoDatas at once,
     # or it loads LunchoData one by one and that is very slow.
     self.luncho.all_luncho_data()
+#+END_SRC
 
 *** Cached data
 
@@ -43,6 +45,8 @@
     reloaded.
   - These variables are available.
 
+#+BEGIN_SRC
         self.luncho.lunchoDataCache: Dict[CountryCode, LunchoData] = {}  # Cache {CountryCode: LunchoData}
         self.luncho.allLunchoDatasExpiration: float = 0.0;
         self.luncho.countryCache: Dict[CountryCode, str] = {}       # { CountryCode: name }
+#+END_SRC
