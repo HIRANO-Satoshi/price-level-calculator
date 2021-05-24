@@ -1,12 +1,19 @@
-** Luncho client library for Python
+# Luncho client library for Python
 
-*** Example
+- This client library includes a hand written API core ([./luncho_python/api/luncho.py](./luncho_python/api/luncho.py)), a hand written
+  README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
+- Use hand-written [./luncho_python/api/luncho.py](./luncho_python/api/luncho.py) rather than
+  [./luncho_python/api/lunchoApi.py](./luncho_python/api/lunchoApi.py) which was auto-generated,
+  because luncho.py provides functions for data conversion, data fetch and caching.
 
-  - See [[../../server/test/test_client_lib.py]] for example.
 
-*** Typical usage
+### Example
 
-#+BEGIN_SRC
+  - See [../../server/test/test_client_lib.py](../../server/test/test_client_lib.py) for example.
+
+### Usage
+
+```
     import luncho_python
     from luncho_python.api import luncho_api, luncho
     from luncho_python.model.luncho_data import LunchoData
@@ -37,16 +44,16 @@
     # If you show data of all countries, call this before in order to load all LunchoDatas at once,
     # or it loads LunchoData one by one and that is very slow.
     self.luncho.all_luncho_data()
-#+END_SRC
+```
 
-*** Cached data
+### Cached data
 
   - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
     reloaded.
   - These variables are available.
 
-#+BEGIN_SRC
+```
         self.luncho.lunchoDataCache: Dict[CountryCode, LunchoData] = {}  # Cache {CountryCode: LunchoData}
         self.luncho.allLunchoDatasExpiration: float = 0.0;
         self.luncho.countryCache: Dict[CountryCode, str] = {}       # { CountryCode: name }
-#+END_SRC
+```

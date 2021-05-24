@@ -1,19 +1,15 @@
-# Luncho client library for TypeScript and Aurelia
+# Luncho client library for TypeScript and Fetch
 
-- This client library includes a hand written API core ([luncho.ts](./luncho.ts)), a hand written
+- Note that this client library is not tested at all. PRs are welcome.
+
+- This client library includes a hand written API core [./src/apis/luncho.ts](./src/apis/luncho.ts), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
-- Use hand-written [./luncho.ts](./luncho.ts) rather than [./lunchoApi.ts](./lunchoApi.ts) which was
-  auto-generated to call the API, because luncho.ts provides functions for data conversion, data
-  fetch and caching.
-
-### Example
-
-- See [../app/src/app.ts](../app/src/app.ts),  [../app/src/single.ts](../app/src/single.ts), and  [../app/src/countries.ts](../app/src/countries.ts).
+- Use luncho.ts to call the API instead of auto-generated files.
 
 ### Usage
 
 ```
-    import { Luncho } from 'luncho_typescript-aurelia/luncho';
+    import { Luncho } from 'luncho_typescript-fetch/apis/luncho';
 
     luncho: Luncho;
 
