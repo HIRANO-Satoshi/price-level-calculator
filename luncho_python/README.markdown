@@ -3,7 +3,7 @@
 - This client library includes a hand written API core ([./luncho_python/api/luncho.py](./luncho_python/api/luncho.py)), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
 - Use hand-written [./luncho_python/api/luncho.py](./luncho_python/api/luncho.py) rather than
-  [./luncho_python/api/LunchoApi.py](./luncho_python/api/LunchoApi.py) which was auto-generated,
+  [./luncho_python/api/luncho_api.py](./luncho_python/api/luncho_api.py) which was auto-generated,
   because luncho.py provides functions for data conversion, data fetch and caching.
 
 
