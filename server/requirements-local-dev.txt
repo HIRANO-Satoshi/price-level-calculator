@@ -7,7 +7,7 @@ mypy
 fastapi
 fastapi-utils
 gunicorn
-../client-libs/luncho_python
+../luncho_python
 mypy-extensions
 pycountry
 pycountry-convert

@@ -6,6 +6,7 @@
 
 *** Typical usage
 
+#+BEGIN_SRC
     import { Luncho } from 'luncho_typescript-aurelia/luncho';
 
     luncho: Luncho;
@@ -37,6 +38,7 @@
           this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
           this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
       }
+#+END_SRC
 
 *** Cached data
 
@@ -44,15 +46,18 @@
     reloaded.
   - These variables are available.
 
+#+BEGIN_SRC
     this.luncho.lunchoDataCache: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
     this.luncho.allLunchoDatasExpiration: number = 0;
     this.luncho.countryCache: { [key: string]: string; };
     this.luncho.countryCodeCache: string;
+#+END_SRC
 
 *** Locales
 
   - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language.
 
+#+BEGIN_SRC
        import * as browserLocale from 'browser-locale';
 
        const intl: any = Intl
@@ -64,3 +69,4 @@
 
        const local_countryName = countryNames.of('JP')
        const local_currencyName = currencyNames.of('JPY')
+#+END_SRC

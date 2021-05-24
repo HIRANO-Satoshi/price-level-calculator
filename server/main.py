@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
             # gen client libraries using openAPI generator
             for typ, opt in conf.Gen_Openapi.items():  #type: str, Optional[str]
-                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../client-libs/luncho_' + typ + ' --package-name luncho_' + typ + ' "--additional-properties=modelPropertyNaming=original,' + (opt if opt else '') + '"'
+                cmd = 'npx @openapitools/openapi-generator-cli generate -i ' + conf.Openapi_Schema_File + ' -g ' + typ + ' -o ../luncho_' + typ + ' --package-name luncho_' + typ + ' "--additional-properties=modelPropertyNaming=original,' + (opt if opt else '') + '"'
                 print(cmd, file=sys.stderr, flush=True)
                 os.system(cmd)
     else:

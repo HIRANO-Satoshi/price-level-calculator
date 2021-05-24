@@ -1,8 +1,34 @@
 * Luncho: Common Value Index for the economic inequality issue
 
-Developers, see  [[client-libs/README.org]] for use.
-
 ** With 100 Luncho, you can have simple lunch in every country.
+
+Luncho is a common value index among currencies. A luncho value shows the same value in any country
+respecting its price levels. For example, with 100 Luncho, you can have simple lunch in India, in
+Brazil, in USA, and so on.
+
+In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while 100 Luncho is equivalent to
+17 real ($3.12 US dollar) in Brazil. In USA, 100 Luncho is about $7.21 US dollar. All are the same
+value because they are 100 Luncho.
+
+*** [[https://luncho-index.org/#/single.html][How much Luncho in your country]]?
+*** [[https://luncho-index.org/#/countries.html][Luncho in all countries]]
+*** [[https://luncho-index.org/#/about.html][More detail about Luncho, how it works]]
+
+*** For developers
+
+- Client libraries are in luncho_language dirs. See README files for usage.
+- [[./server][Server code]]
+- [[./app][Web app code]]
+
+*** Benefit for business owners and developers
+
+- Your user base will be expanded
+
+If you use Luncho in your pricing page, people in developing countries who are not able to your
+digital service will become to buy it. Luncho accelerates growth of your user base and your revenue
+beyond the revenue without Luncho.
+
+*** The inequality problem
 
 Among many causes of the economic inequality problem, Luncho will contribute to overcome two major
 problems. One is the rapid progress of information technology (IT) that is promoting the gap between
@@ -10,7 +36,13 @@ people who are utilizing IT and others. The other is decreasing labor's share.
 
 To solve to the IT gap, for example, anyone must have enough access to the latest IT services such
 as apps for commerce, productivity, life, and entertainment. However, people living in developing
-countries cannot buy digital services because of their high prices.
+countries cannot buy digital services because of their high prices. That is enlarging the gap between developed countries and developing countries.
+
+What if we use a unit of price that has the same value in any country?
+
+*** Solution and an example of use
+
+Luncho is a common value index among currencies. 100
 
 Suppose you are selling your digital service for $7 per month per user. That price may be good for
 people living in advanced countries. But, how about for people in other countries? So many people
@@ -29,74 +61,12 @@ visitor. It shows both a Luncho price and its local price.
 - In Finland
   Product A:  100 Luncho per month, 6.08 Euro ($7.35 USD)
 
-It seems your revenue will go down? Maybe NO, because people who couldn't buy your digital service
-would become to buy it. You can expect that accelerates growth of your user base and your revenue
-will be increased beyond the current revenue without Luncho.
+If you use Luncho in your pricing page, people in developing countries who are not able to your
+digital service will become to buy it. Luncho accelerates growth of your user base and your revenue
+beyond the revenue without Luncho.
 
 
-** Who should use Luncho?
-
-- Digital service providers
-- Global companies that pay wages
-- Donors
-
-** How it works?
-
-Luncho is calculated using [[https://www.worldbank.org/en/programs/icp][implied Purchase Power Parity (PPP) in the latest International
-Comparison Program (ICP)]], [[https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR][IMF's Special Drawing Rights (SDR)]], and the exchange rate of every currency.
-
-A PPP shows the price level in a country, that is, how much goods and services are in the
-country. The SDR is a mixture of major currencies including US Dollar, Euro, GB Pound, Japanese Yen,
-and Chinese Yuan. The SDR and exchange rates are updated at 00:06 UTC every day.
-
-100 Luncho is 5 SDR and it's converted into local currency using the PPP.
-
-The PPP is based on the latest International Comparison Program (ICP) lead by the World Bank. The
-ICP is tremendous effort done every five years by many people that investigates price levels of [[https://openknowledge.worldbank.org/bitstream/handle/10986/33623/9781464815300.pdf][many
-items such as bread, pork, cheese, sugar, gas, medical services, cars, etc. in all countries]]. Luncho
-uses Actual Individual Consumption (AIC) per capita that represents statistical price levels in
-daily lives for wide applications, not actual lunch prices.
-
-Thus, with 100 Luncho in a country, you can expect to have simple lunch in a restaurant for local
-residents. Caution that restaurant for tourists should be much more expensive actually.
-
-It's similar to [[https://www.economist.com/big-mac-index][Big Mac index]], but considers much more factors.
-
-
-** Data
-
-- PPP from IMF World Economic Outlook (October 2020)
-  - [[server/data/imf-dm-export-20201110.csv]]
-  - Press "All Data" to get it at [[https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD][here]]
-  - 194 countries and regions
-  - Country name is defined as "Table Name" in the following ICP-2017 metadata
-
-- ICP-2017 metadata
-  - [[server/data/Data_Extract_From_ICP_2017_Metadata.csv]]
-  - Extracted the following metadata from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
-  - Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage
-  - Examples
-
-     AFG,Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
-     ALB,Republic of Albania,ALL: Lek,Albania,Urban only
-     DZA,People's Democratic Republic of Algeria,DZD: Algerian Dinar,Algeria,Urban and Rural
-
-- ICP-2017 Purchasing power parity (PPP) (US$ = 1)
-  - Extracted the following from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
-    - Actual Individual Consumption (AIC) per capita
 
 ** Author
 
    HIRANO Satoshi Ph.D  AIST, University of Tokyo IIS, Peace and Passion
-
-** Acknowledgment
-
-- Many people who worked hard for the International Comparison Program
-- The Aurelia core team  and contributors for Aurelia framework
-- MaterializeCSS and Aurelia Materialize Bridge for CSS
-- exchangerate.host for free exchange rates
-- AIST and Human Informatics and Interaction Research Institute (HIIRI) for support
-
-** [[LICENSE][MIT License]]
-
-Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
