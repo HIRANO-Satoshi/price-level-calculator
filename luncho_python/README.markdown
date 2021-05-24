@@ -3,15 +3,15 @@
 - This client library includes a hand written API core ([./luncho_python/api/luncho.py](./luncho_python/api/luncho.py)), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
 - Use hand-written [./luncho_python/api/luncho.py](./luncho_python/api/luncho.py) rather than
-  [./luncho_python/api/lunchoApi.py](./luncho_python/api/lunchoApi.py) which was auto-generated,
+  [./luncho_python/api/LunchoApi.py](./luncho_python/api/LunchoApi.py) which was auto-generated,
   because luncho.py provides functions for data conversion, data fetch and caching.
 
 
-### Example
+## Example
 
-  - See [../../server/test/test_client_lib.py](../../server/test/test_client_lib.py) for example.
+  - See [../server/test/test_client_lib.py](../server/test/test_client_lib.py) for example.
 
-### Usage
+## Usage
 
 ```
     import luncho_python
@@ -46,7 +46,7 @@
     self.luncho.all_luncho_data()
 ```
 
-### Cached data
+## Cached data
 
   - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
     reloaded.

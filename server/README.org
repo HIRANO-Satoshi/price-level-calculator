@@ -10,9 +10,9 @@
   - The Luncho server provides OpenAPI so that you can generate the client libraries.
     - See [[https://www.luncho-index.org/redoc][API documentation]] and [[https://www.luncho-index.org/openapi.json ][schema definition]].
     - However, our client libraries have additional files for the local calculation and caching. See
-      individual README files for each language.
-      - [[../luncho_typescript-aurelia/README.org][luncho_typescript-aurelia]],
-      - [[../luncho_python/README.org][luncho_python]]
+      README.markdown files.
+      - [[../luncho_typescript-aurelia][luncho_typescript-aurelia]],
+      - [[../luncho_python][luncho_python]]
 
   - The Luncho server hosts [[../app][the Luncho app]] web site.
 

@@ -2,15 +2,15 @@
 
 - This client library includes a hand written API core ([luncho.ts](./luncho.ts)), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
-- Use hand-written [./luncho.ts](./luncho.ts) rather than [./lunchoApi.ts](./lunchoApi.ts) which was
+- Use hand-written [./luncho.ts](./luncho.ts) rather than [./LunchoApi.ts](./LunchoApi.ts) which was
   auto-generated to call the API, because luncho.ts provides functions for data conversion, data
   fetch and caching.
 
-### Example
+## Examples
 
 - See [../app/src/app.ts](../app/src/app.ts),  [../app/src/single.ts](../app/src/single.ts), and  [../app/src/countries.ts](../app/src/countries.ts).
 
-### Usage
+## Usage
 
 ```
     import { Luncho } from 'luncho_typescript-aurelia/luncho';
@@ -46,7 +46,7 @@
       }
 ```
 
-### Cached data
+## Cached data
 
   - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
     reloaded.

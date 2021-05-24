@@ -6,7 +6,7 @@
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
 - Use luncho.ts to call the API instead of auto-generated files.
 
-### Usage
+## Usage
 
 ```
     import { Luncho } from 'luncho_typescript-fetch/apis/luncho';
@@ -42,7 +42,7 @@
       }
 ```
 
-### Cached data
+## Cached data
 
   - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
     reloaded.
@@ -55,7 +55,7 @@
     this.luncho.countryCodeCache: string;
 ```
 
-### Locales
+## Locales
 
   - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language.
 
