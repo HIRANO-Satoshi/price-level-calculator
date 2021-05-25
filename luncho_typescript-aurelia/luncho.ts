@@ -1,5 +1,5 @@
 /**
-  Fast Luncho API by caching. Use this and don't this LunchoApi.ts
+  Fast Luncho API with caching. Use this and don't this LunchoApi.ts.
 
   @author: HIRANO Satoshi
   @date: 2021-5-15
@@ -11,6 +11,14 @@ import { LunchoApi, ILunchoDataParams } from './LunchoApi';
 
 export type CountryCode = string;
 
+/**
+    Fast Luncho API client by caching.
+        This class converts values between Luncho and a specified currency using cached
+        LunchoData. If the cache is not available, it delegates to LunchoApi which
+        is a auto-generated class.
+
+        In the cases of error, methods throws an Error. See LunchoApi.ts for error.
+ */
 export class Luncho extends LunchoApi {
 
     lunchoDataCache: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
@@ -27,18 +35,24 @@ export class Luncho extends LunchoApi {
         super(httpClient, authStorage);
 
         // prepare local name converters
-        var supportedLocales = (<any>Intl).DisplayNames.supportedLocalesOf(browserLocale())
-        if (supportedLocales.length == 0)
-            supportedLocales = ['en'];
-        this.IntlCountryNames = new (<any>Intl).DisplayNames(supportedLocales[0], {type: 'region'})
-        this.IntlCurrencyNames = new (<any>Intl).DisplayNames(supportedLocales[0], {type: 'currency'})
+        if ((<any>Intl).DisplayNames) {
+            var supportedLocales = (<any>Intl).DisplayNames.supportedLocalesOf(browserLocale())
+            if (supportedLocales.length == 0)
+                supportedLocales = ['en'];
+            this.IntlCountryNames = new (<any>Intl).DisplayNames(supportedLocales[0], {type: 'region'})
+            this.IntlCurrencyNames = new (<any>Intl).DisplayNames(supportedLocales[0], {type: 'currency'})
+        }
     }
 
 
     /**
        Returns a local currency value from the given Luncho value.
+
+       @param lunchoValue A Luncho value to be converted.
+       @param countryCode A 2-letter country code. The result is in the primary currency of the country.
+       @return Promise for a value in local currency.
     */
-    async localCurrencyFromLuncho(lunchoValue: number, countryCode?: string): Promise<number> {
+    async localCurrencyFromLuncho(lunchoValue: number, countryCode: string): Promise<number> {
         return this.lunchoData({countryCode: countryCode})
             .then((lunchoData: LunchoData) => {
                   return(lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue);
@@ -46,9 +60,13 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns a Luncho value from the given local currency value.
+       Returns a Luncho value from the given local currency value (not implemented).
+
+       @param localValue A value in local currency to be converted.
+       @param countryCode A 2-letter country code of the country for the localValue.
+       @return Promise for a value in Luncho.
     */
-    async LunchoFromLocalCurrency(localValue: number, countryCode?: string): Promise<number> {
+    async LunchoFromLocalCurrency(localValue: number, countryCode: string): Promise<number> {
         debugger;  // XXX Implement me
 
         return this.lunchoData({countryCode: countryCode})
@@ -59,8 +77,12 @@ export class Luncho extends LunchoApi {
 
     /**
        Returns a US Dollar value from the given Luncho value using cache.
+
+       @param lunchoValue A Luncho value to be converted.
+       @param countryCode A 2-letter country code.
+       @return Promise for a value in US dollar.
     */
-    async USDollarFromLuncho(lunchoValue: number, countryCode?: string): Promise<number> {
+    async USDollarFromLuncho(lunchoValue: number, countryCode: string): Promise<number> {
         return this.lunchoData({countryCode: countryCode})
             .then((lunchoData: LunchoData) => {
                 if (lunchoData.exchange_rate > 0) {
@@ -72,9 +94,13 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns a Luncho value from the given US Dollar value.
+       Returns a Luncho value from the given US Dollar value (not implemented).
+
+       @param dollarValue A value in US dollar to be converted.
+       @param countryCode A 2-letter country code of the country.
+       @return Promise for a value in Luncho.
     */
-    async LunchoFromUSDollar(dollarValue: number, countryCode?: string): Promise<number> {
+    async LunchoFromUSDollar(dollarValue: number, countryCode: string): Promise<number> {
         debugger;  // XXX Implement me
 
         return this.lunchoData({countryCode: countryCode})
@@ -89,6 +115,10 @@ export class Luncho extends LunchoApi {
 
     /**
        Returns a Luncho data for the given country code.
+
+       @param param A ILunchoDataParams object.
+       @param localName True for country names and currency names in the local lauguage. Ignored if Intl.DisplayNames is not available.
+       @return Promise for LunchoData.
     */
     async lunchoData(param: ILunchoDataParams, localName=true): Promise<LunchoData> {
         if (param && param.countryCode) {
@@ -102,7 +132,7 @@ export class Luncho extends LunchoApi {
         return super.lunchoData(param)
             .then((lunchoData: LunchoData) => {
                 this.lunchoDataCache[param.countryCode] = lunchoData;
-                if (localName) {
+                if (localName && this.IntlCountryNames) {
                     lunchoData.country_name = this.IntlCountryNames.of(lunchoData.country_code);
                     lunchoData.currency_name = this.IntlCurrencyNames.of(lunchoData.currency_code);
                 }
@@ -112,6 +142,9 @@ export class Luncho extends LunchoApi {
 
     /**
        Returns a dict of Luncho datas of all countries.
+
+       @param localName True for country names and currency names in the local lauguage. Ignored if Intl.DisplayNames is not available.
+       @return Promise for a dict of Luncho datas of all countries.
     */
     async allLunchoData(localName=true): Promise<{ [key: string]: LunchoData} > {
         if (this.allLunchoDatasExpiration > Date.now()/1000) {
@@ -122,7 +155,7 @@ export class Luncho extends LunchoApi {
             .then((lunchoDatas: { [key: string]: LunchoData}) => {
                 this.lunchoDataCache = lunchoDatas;
                 this.allLunchoDatasExpiration = lunchoDatas['JP'].expiration;
-                if (localName) {
+                if (localName && this.IntlCountryNames) {
                     for (var countryCode of Object.keys(this.lunchoDataCache)) {
                         this.lunchoDataCache[countryCode].country_name = this.IntlCountryNames.of(countryCode);
                         this.lunchoDataCache[countryCode].currency_name = this.IntlCurrencyNames.of(this.lunchoDataCache[countryCode].currency_code);
@@ -133,7 +166,10 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns country codes and names.
+       Returns a dict of supported country codes and country names.
+
+       @param localName True for country names and currency names in the local lauguage. Ignored if Intl.DisplayNames is not available.
+       @return Promise for a dict of supported country codes and country names.
     */
     async getCountries(localName=true): Promise<{ [key: string]: string; }> {
         if (this.countryCache) {
@@ -143,7 +179,7 @@ export class Luncho extends LunchoApi {
         return super.countries()
             .then((countryCache: { [key: string]: string; }) => {
                 this.countryCache = countryCache;
-                if (localName) {
+                if (localName && this.IntlCountryNames) {
                     for (var countryCode of Object.keys(this.countryCache)) {
                         this.countryCache[countryCode] = this.IntlCountryNames.of(countryCode);
                     }

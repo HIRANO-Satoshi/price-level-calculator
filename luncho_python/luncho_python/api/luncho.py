@@ -1,5 +1,5 @@
 '''
-   Fast Luncho API client by caching. Use this and don't this LunchoApi.py
+   Fast Luncho API client with caching. Use this and don't this LunchoApi.py.
 
   @author: HIRANO Satoshi
   @date: 2021-5-18

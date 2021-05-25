@@ -12,6 +12,8 @@
 
 ## Usage
 
+  - See comments for detail on [luncho.ts](./luncho.ts).
+
 ```
     import { Luncho } from 'luncho_typescript-aurelia/luncho';
 
