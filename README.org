@@ -2,69 +2,34 @@
 
 ** With 100 Luncho, you can have simple lunch in every country.
 
-Luncho is a common value index among currencies. A luncho value shows the same value in any country
-respecting its price levels. For example, with 100 Luncho, you can have simple lunch in India, in
-Brazil, in USA, and so on.
+   We can resolve the inequality problem. Use Luncho or request for use of Luncho.
 
-In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while 100 Luncho is equivalent to
-17 real ($3.12 US dollar) in Brazil. In USA, 100 Luncho is about $7.21 US dollar. All are the same
-value because they are 100 Luncho.
+        Luncho is a common value index among currencies. A luncho value shows the same value in any
+      country respecting its price levels. For example, with 100 Luncho, you can have simple lunch
+      in India, in Brazil, in USA, in Japan, and in any other countries.
 
-*** [[https://luncho-index.org][How much Luncho in your country]]?
-*** [[https://luncho-index.org/#/countries][Luncho in all countries]]
-*** [[https://luncho-index.org/#/about][More detail about Luncho, how it works]]
+      In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same 100 Luncho
+      is equivalent to 17 real ($3.12 US dollar) in Brazil. In USA, 100 Luncho is about $7.21 US
+        dollar. All are the same value because everything is just 100 Luncho.
+
+*** [[https://luncho-index.org][Official Luncho web site]]
+*** [[https://luncho-index.org/#/about][Detail about Luncho, how it works]]
 
 *** For developers
 
-- Client libraries are in luncho_language dirs. See README files for usage.
+See README files for usage in each of the following directory.
+
+- Client libraries are in luncho_language directories.
 - [[./server][Server code]]
 - [[./app][Web app code]]
 
-*** Benefit for business owners and developers
+*** Your IT business will glow
 
 - Your user base will be expanded
 
-If you use Luncho in your pricing page, people in developing countries who are not able to your
-digital service will become to buy it. Luncho accelerates growth of your user base and your revenue
-beyond the revenue without Luncho.
-
-*** The inequality problem
-
-Among many causes of the economic inequality problem, Luncho will contribute to overcome two major
-problems. One is the rapid progress of information technology (IT) that is promoting the gap between
-people who are utilizing IT and others. The other is decreasing labor's share.
-
-To solve to the IT gap, for example, anyone must have enough access to the latest IT services such
-as apps for commerce, productivity, life, and entertainment. However, people living in developing
-countries cannot buy digital services because of their high prices. That is enlarging the gap between developed countries and developing countries.
-
-What if we use a unit of price that has the same value in any country?
-
-*** Solution and an example of use
-
-Luncho is a common value index among currencies. 100
-
-Suppose you are selling your digital service for $7 per month per user. That price may be good for
-people living in advanced countries. But, how about for people in other countries? So many people
-might feel that $7 was too expensive.
-
-In that case you can sell your digital service at 100 Luncho per month at your web site, for
-example. Show one of the following examples to a visitor according to the location of the
-visitor. It shows both a Luncho price and its local price.
-
-- In USA
-  Product A:  100 Luncho per month, $7.12 ($7.12 USD)
-
-- In India
-  Product A:  100 Luncho per month, 157.51 Rupee ($2.14 USD)
-
-- In Finland
-  Product A:  100 Luncho per month, 6.08 Euro ($7.35 USD)
-
-If you use Luncho in your pricing page, people in developing countries who are not able to your
-digital service will become to buy it. Luncho accelerates growth of your user base and your revenue
-beyond the revenue without Luncho.
-
+        Once you use Luncho in your pricing page, people in developing countries who are not able to
+      buy your digital service will become to afford to buy it. Luncho will accelerate growth of
+      your user base and your revenue beyond the current ones without Luncho.
 
 
 ** Author

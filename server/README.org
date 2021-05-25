@@ -16,14 +16,19 @@
 
   - The Luncho server hosts [[../app][the Luncho app]] web site.
 
-** Requirements
+** Supported lauguages and platforms
 
-  - Python3 or Pypy3
-  - FastAPI (Web framework)
-  - gunicorn (Optional)
-
+  - Client
+    - Python
+    - TypeScript and Aurelia
+    - TypeScript and Fetch (not tested)
   - Server
-    - Google App Engine, standard or flexible (Optional)
+    - Python3 or Pypy3
+    - FastAPI (Web framework)
+    - gunicorn (Optional)
+
+  - Supported platforms
+    - Google App Engine, standard or flexible
     - or any Docker compatible server
     - or any Python
 
@@ -54,6 +59,8 @@
    - bin/install-packages.sh
   - You have pypyenv dir that includes site-packages.
 
+** Run and build client libraries
+
 *** Run a local Luncho server
 
   - bin/start-gunicorn.sh
@@ -77,46 +84,18 @@
   - run
      docker run luncho-server_app
 
-*** (Optional) To generate client library and link
+** (Optional) Generation of client libraries with OpenAPI generator and yarn link
 
-  - pypy3 main.py gen
-  - if you use yarn or npm, compile and link;
-    pushd ../luncho_typescript-aurelia; yarn install; yarn link; popd
-    pushd ../app; yarn link "luncho_typescript-aurelia"; popd
+  - build
+    pypy3 main.py gen
+    bin/link.sh
 
-*** Test
+** Test
 
   - pytest test/test_server.py
   - pytest test/test_client_lib.py
 
-** Limitations
-
-  - The Luncho server refreshes exchange rates every 24 hours and tell clients to keep data for one
-    hour. If you have multiple Luncho servers, the servers refresh exchange rates independently. You
-    may get different results.
-
-
-** Data
-
-- PPP from IMF World Economic Outlook (October 2020)
-  - [[server/data/imf-dm-export-20201110.csv]]
-  - Press "All Data" to get it at [[https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD][here]]
-  - 194 countries and regions
-  - Country name is defined as "Table Name" in the following ICP-2017 metadata
-
-- ICP-2017 metadata
-  - [[server/data/Data_Extract_From_ICP_2017_Metadata.csv]]
-  - Extracted the following metadata from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
-  - Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage
-  - Examples
-
-     AFG,Islamic State of Afghanistan,AFN: Afghani,Afghanistan,
-     ALB,Republic of Albania,ALL: Lek,Albania,Urban only
-     DZA,People's Democratic Republic of Algeria,DZD: Algerian Dinar,Algeria,Urban and Rural
-
-- ICP-2017 Purchasing power parity (PPP) (US$ = 1)
-  - Extracted the following from [[https://databank.worldbank.org/source/icp-2017?preview=on][ICP-2017 database]]
-    - Actual Individual Consumption (AIC) per capita
+** [[https://luncho-index.org/#/about][See Data section for data]]
 
 ** Author
 
