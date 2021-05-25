@@ -1,8 +1,8 @@
-* Luncho: Common Value Index for the economic inequality issue. Useful for pricing pages.
+** Luncho: Common Value Index for the economic inequality issue
+
+Useful for exchange rate conversion on pricing pages.
 
 *** With 100 Luncho, you can have simple lunch in every country.
-
-Luncho is a common unit of currencies for mitigating the inequality problem. Useful for pricing pages.
 
 A luncho value shows the same value in any country respecting its price levels. For example, with
       100 Luncho, you can have simple lunch in India, in Brazil, in USA, in Japan, and in any other
