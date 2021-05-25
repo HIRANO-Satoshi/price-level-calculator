@@ -14,7 +14,7 @@ import * as countryData from 'country-data';
 
 @autoinject
 export class App {
-    public title: string = 'Luncho';
+    public title: string = 'Luncho: Common Value Index for the economic inequality issue';
     public router: Router;
     public static app: App;
     show = false;

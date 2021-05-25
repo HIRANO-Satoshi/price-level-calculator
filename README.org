@@ -1,6 +1,6 @@
-** Luncho: Common Value Index for the economic inequality issue
+** Luncho: Common Value Index for the economic inequality problem and growth
 
-Useful for exchange rate conversion on pricing pages.
+Useful for currency conversion on pricing pages.
 
 *** With 100 Luncho, you can have simple lunch in every country.
 
