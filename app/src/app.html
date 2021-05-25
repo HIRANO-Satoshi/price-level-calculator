@@ -16,7 +16,9 @@
      width: 5em !important;
    }
   </style>
+
   <require from="materialize-css/dist/css/materialize.css"></require>
+
   <div class="tabs-in-navbar">
     <md-navbar extended="true">
       <ul class="hide-on-med-and-up left">
@@ -30,8 +32,11 @@
         Luncho
       </a>
       <ul class="hide-on-small-only right">
-        <li md-waves><a route-href="route: about;">About</a></li>
+        <!-- <li md-waves><a route-href="route: about;">About</a></li> -->
         <!-- <li md-waves><a>Help/Docs</a></li> -->
+        <!-- <div class="hide-on-small-only" style="position: absolute; right: 0; top: 15px;"> -->
+        <iframe style="margin-top: 18px;" src="https://ghbtns.com/github-btn.html?user=HIRANO-Satoshi&repo=luncho&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+          <!-- </div> -->
       </ul>
 
       <!-- tabs -->
@@ -40,33 +45,43 @@
           <li repeat.for="row of router.navigation" class="">
             <a href.bind="row.href" class="nav-link ${row.isActive ? 'active' : ''}">${row.title}</a>
           </li>
+          <li class="right"  md-waves><a route-href="route: about;">About Luncho</a></li>
         </ul>
       </div>
     </md-navbar>
   </div>
 
-  <div class="">
+  <div class="" sytle="">
     <H3 class="center">Luncho: Common Value Index</h3>
     <h6 class="center container">
-      <p>With 100 Luncho, you can have simple lunch in every country</p>
+      for the inequality problem among countries
+      <p>With 100 Luncho, you can have simple lunch in every country.</p>
     </h6>
     <div style="height: 1em;" ></div>
-    <div class="center">
-      <iframe src="https://ghbtns.com/github-btn.html?user=HIRANO-Satoshi&repo=luncho&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
-      <iframe src="https://ghbtns.com/github-btn.html?user=HIRANO-Satoshi&repo=luncho&type=watch&count=true&size=large&v=2" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
-    </div>
-    <div style="height: 3em;" ></div>
-    <!-- <h5 class="hide-on-small-only center">
-         <span repeat.for="row of router.navigation" class="nav-item">
-         <a href.bind="row.href" class="nav-link ${row.isActive ? 'active' : ''}">${row.title}</a>
-         </span>
-         </h5>
-         <div class="vspace" ></div> -->
-    <div class="vspace" ></div>
-    <div class="vspace" ></div>
+
+    <!-- <div class="hide-on-med-and-up center">
+         <iframe src="https://ghbtns.com/github-btn.html?user=HIRANO-Satoshi&repo=luncho&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+         </div> -->
+    <div style="height: 2em;" ></div>
 
     <router-view>
     </router-view>
+
+
+    <div class="vspace" style="padding-top: 2em;"></div>
+    <div class="divider"></div>
+    <footer>
+      <div class="container">
+        <div class="vspace" style="padding-top: 1em;"></div>
+        <ul>
+          <li><a href="/#/single">Single country</a></li>
+          <li><a href="/#/countries">All countries</a></li>
+          <li><a href="/#/about"> About Luncho</a></li>
+        </ul>
+        Dr HIRANO Satoshi,  <a target="_blank" href="https://unit.aist.go.jp/hiiri/index-en.html">Human Informatics and Interaction Research Institute, AIST</a><br>
+        Copyright 2019-2021 <a target="_blank" href="https://www.aist.go.jp/">The National Institute of Advanced Industrial Science and Technology (AIST), Japan</a>
+      </div>
+    </footer>
   </div>
 
   <md-sidenav view-model.ref="sideNav" fixed.bind="show" edge="left">

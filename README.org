@@ -1,37 +1,33 @@
-* Luncho: Common Value Index for the economic inequality issue
+* Luncho: Common Value Index for the economic inequality issue. Useful for pricing pages.
 
-** With 100 Luncho, you can have simple lunch in every country.
+*** With 100 Luncho, you can have simple lunch in every country.
 
-   We can resolve the inequality problem. Use Luncho or request for use of Luncho.
+Luncho is a common unit of currencies for mitigating the inequality problem. Useful for pricing pages.
 
-        Luncho is a common value index among currencies. A luncho value shows the same value in any
-      country respecting its price levels. For example, with 100 Luncho, you can have simple lunch
-      in India, in Brazil, in USA, in Japan, and in any other countries.
+A luncho value shows the same value in any country respecting its price levels. For example, with
+      100 Luncho, you can have simple lunch in India, in Brazil, in USA, in Japan, and in any other
+      countries.
 
-      In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same 100 Luncho
+In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same 100 Luncho
       is equivalent to 17 real ($3.12 US dollar) in Brazil. In USA, 100 Luncho is about $7.21 US
         dollar. All are the same value because everything is just 100 Luncho.
 
 *** [[https://luncho-index.org][Official Luncho web site]]
 *** [[https://luncho-index.org/#/about][Detail about Luncho, how it works]]
 
-*** For developers
+*** Usages
 
-See README files for usage in each of the following directory.
+- [[./luncho_python/README.markdown][README for Python client library]]
+- [[./luncho_typescript-aurelia/README.markdown][README for TypeScript and Aurelia client library]]
+- [[./luncho_typescript-fetch/README.markdown][README for TypeScript and Fetch client library]]
 
-- Client libraries are in luncho_language directories.
-- [[./server][Server code]]
-- [[./app][Web app code]]
+- [[./server/README.org][README for the Luncho server]]
+- [[./app/README.org][README for the Luncho app]]
 
-*** Your IT business will glow
+Send PRs if you make client libs for other languages.
 
-- Your user base will be expanded
+*** Grow your product with Luncho
 
         Once you use Luncho in your pricing page, people in developing countries who are not able to
       buy your digital service will become to afford to buy it. Luncho will accelerate growth of
       your user base and your revenue beyond the current ones without Luncho.
-
-
-** Author
-
-   HIRANO Satoshi Ph.D  AIST, University of Tokyo IIS, Peace and Passion
