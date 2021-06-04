@@ -1,6 +1,6 @@
 # Luncho client library for TypeScript and Fetch
 
-- Note that this client library is not tested at all. PRs are welcome.
+- Note that this client library has NOT BEEN TESTED AT ALL. PRs are welcome.
 
 - This client library includes a hand written API core [./src/apis/luncho.ts](./src/apis/luncho.ts), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
@@ -9,13 +9,18 @@
 ## Usage
 
 ```
+    cd luncho_typescript-fetch
+    yarn install
+```
+
+```
     import { Luncho } from 'luncho_typescript-fetch/apis/luncho';
 
     luncho: Luncho;
 
     async func() {
       this.luncho = new Luncho();
-      this.luncho.basePath = "http://luncho-index.org"
+      this.luncho.basePath = "https://luncho-index.org"
       // luncho.basePath = 'http://localhost:8000';
 
       var countryCode = 'JP';
@@ -42,6 +47,9 @@
       }
 ```
 
+ - See comments for detail on [luncho.ts](./src/apis/luncho.ts).
+ - Read auto-generated [README.md](./README.md), too.
+
 ## Cached data
 
   - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
@@ -55,20 +63,20 @@
     this.luncho.countryCodeCache: string;
 ```
 
-## Locales
+### Locales
 
-  - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language.
+  - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language. It is available in Chrome but not in Safari.
 
 ```
-       import * as browserLocale from 'browser-locale';
+       if (intl.DisplayNames) {
+           const intl: any = Intl
+           var supportedLocales = intl.DisplayNames.supportedLocalesOf(navigator.languages[0])
+           if (supportedLocales.length == 0)
+               supportedLocales = ['en'];
+           countryNames = new intl.DisplayNames(supportedLocales[0], {type: 'region'})
+           currencyNames = new intl.DisplayNames(supportedLocales[0], {type: 'currency'})
 
-       const intl: any = Intl
-       var supportedLocales = intl.DisplayNames.supportedLocalesOf(browserLocale())
-       if (supportedLocales.length == 0)
-           supportedLocales = ['en'];
-       countryNames = new intl.DisplayNames(supportedLocales[0], {type: 'region'})
-       currencyNames = new intl.DisplayNames(supportedLocales[0], {type: 'currency'})
-
-       const local_countryName = countryNames.of('JP')
-       const local_currencyName = currencyNames.of('JPY')
+           const local_countryName = countryNames.of('JP')
+           const local_currencyName = currencyNames.of('JPY')
+       }
 ```

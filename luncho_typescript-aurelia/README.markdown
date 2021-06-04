@@ -12,8 +12,6 @@
 
 ## Usage
 
- - See comments for detail on [luncho.ts](./luncho.ts).
-
 ```
     cd luncho_typescript-aurelia
     yarn install
@@ -53,6 +51,7 @@
       }
 ```
 
+ - See comments for detail on [luncho.ts](./luncho.ts).
  - Read auto-generated [README.md](./README.md), too.
 
 ## Cached data
