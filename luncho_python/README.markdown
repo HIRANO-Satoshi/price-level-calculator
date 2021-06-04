@@ -40,7 +40,7 @@
     lunchoData: LunchoData = self.luncho.luncho_data(country_code)
 
     # Get a dict of supported county codes and names
-    data: Dict[CountryCode, str] = self.luncho.countries())
+    data: Dict[CountryCode, str] = self.luncho.countries()
 
     # Load or get a dict of LunchoDatas for supported countries.  Data size is about 40KB.
     # If you show data of all countries, call this before in order to load all LunchoDatas at once,
