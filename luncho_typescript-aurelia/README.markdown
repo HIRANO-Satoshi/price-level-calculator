@@ -12,7 +12,12 @@
 
 ## Usage
 
-  - See comments for detail on [luncho.ts](./luncho.ts).
+ - See comments for detail on [luncho.ts](./luncho.ts).
+
+```
+    cd luncho_typescript-aurelia
+    yarn install
+```
 
 ```
     import { Luncho } from 'luncho_typescript-aurelia/luncho';
@@ -21,7 +26,7 @@
 
     async func() {
       this.luncho = new Luncho();
-      this.luncho.basePath = "http://luncho-index.org"
+      this.luncho.basePath = "https://luncho-index.org"
       // luncho.basePath = 'http://localhost:8000';
 
       var countryCode = 'JP';
@@ -48,6 +53,8 @@
       }
 ```
 
+ - Read auto-generated [README.md](./README.md), too.
+
 ## Cached data
 
   - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
@@ -63,18 +70,18 @@
 
 ### Locales
 
-  - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language.
+  - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language. It is available in Chrome but not in Safari.
 
 ```
-       import * as browserLocale from 'browser-locale';
+       if (intl.DisplayNames) {
+           const intl: any = Intl
+           var supportedLocales = intl.DisplayNames.supportedLocalesOf(navigator.languages[0])
+           if (supportedLocales.length == 0)
+               supportedLocales = ['en'];
+           countryNames = new intl.DisplayNames(supportedLocales[0], {type: 'region'})
+           currencyNames = new intl.DisplayNames(supportedLocales[0], {type: 'currency'})
 
-       const intl: any = Intl
-       var supportedLocales = intl.DisplayNames.supportedLocalesOf(browserLocale())
-       if (supportedLocales.length == 0)
-           supportedLocales = ['en'];
-       countryNames = new intl.DisplayNames(supportedLocales[0], {type: 'region'})
-       currencyNames = new intl.DisplayNames(supportedLocales[0], {type: 'currency'})
-
-       const local_countryName = countryNames.of('JP')
-       const local_currencyName = currencyNames.of('JPY')
+           const local_countryName = countryNames.of('JP')
+           const local_currencyName = currencyNames.of('JPY')
+       }
 ```
