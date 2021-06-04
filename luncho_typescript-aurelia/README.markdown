@@ -12,9 +12,16 @@
 
 ## Usage
 
+- Since an npm package is not available yet, use a symlink.
+
 ```
-    cd luncho_typescript-aurelia
+    cd LOCATION
+    git clone https://github.com/HIRANO-Satoshi/luncho.git
+    cd luncho/luncho_typescript-aurelia
     yarn install
+
+    cd YOUR_SRC
+    ln -s LOCATION/luncho/luncho_typescript-aurelia .
 ```
 
 ```

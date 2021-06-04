@@ -9,11 +9,20 @@
 
 ## Example
 
-  - See [../server/test/test_client_lib.py](../server/test/test_client_lib.py) for example.
+- See [../server/test/test_client_lib.py](../server/test/test_client_lib.py) for example.
 
 ## Usage
 
-  - See comments for detail on [./luncho_python/api/luncho.py](./luncho_python/api/luncho.py).
+- Since a pypi package is not available yet, use a symlink.
+
+```
+    cd LOCATION
+    git clone https://github.com/HIRANO-Satoshi/luncho.git
+    cd luncho/luncho_python
+
+    cd YOUR_SRC
+    ln -s LOCATION/luncho/luncho_python .
+```
 
 ```
     import luncho_python
@@ -47,6 +56,8 @@
     # or it loads LunchoData one by one and that is very slow.
     self.luncho.all_luncho_data()
 ```
+- See comments for detail on [./luncho_python/api/luncho.py](./luncho_python/api/luncho.py).
+ - Read auto-generated [README.md](./README.md), too.
 
 ## Cached data
 

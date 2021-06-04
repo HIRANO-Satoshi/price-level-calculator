@@ -8,9 +8,16 @@
 
 ## Usage
 
+- Since an npm package is not available yet, use a symlink.
+
 ```
-    cd luncho_typescript-fetch
+    cd LOCATION
+    git clone https://github.com/HIRANO-Satoshi/luncho.git
+    cd luncho/luncho_typescript-fetch
     yarn install
+
+    cd YOUR_SRC
+    ln -s LOCATION/luncho/luncho_typescript-fetch .
 ```
 
 ```
