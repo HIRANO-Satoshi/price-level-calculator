@@ -95,9 +95,9 @@ def load_exchange_rates(use_dummy_data: bool):
             fixer_exchange_rate = json.loads(response.text)
             assert fixer_exchange_rate['base'] == 'EUR'  # always EUR with free plan
             logging.info('Fetched exchange rate')
-            # save it
-            with open(conf.Last_Fixer_Exchange_File, 'w', newline='', encoding="utf_8_sig") as fixer_new_file:
-                fixer_new_file.write(response.text)
+            #XXX save it
+            # with open(conf.Last_Fixer_Exchange_File, 'w', newline='', encoding="utf_8_sig") as fixer_new_file:
+            #     fixer_new_file.write(response.text)
         else:
             # use the last exchange rate data. if not available, use test data
             try:
