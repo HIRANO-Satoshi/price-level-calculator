@@ -2,9 +2,9 @@
 
 - Note that this client library has NOT BEEN TESTED AT ALL. PRs are welcome.
 
-- This client library includes a hand written API core [./src/apis/luncho.ts](./src/apis/luncho.ts), a hand written
+- This client library includes a fast hand-written API core [./src/apis/luncho.ts](./src/apis/luncho.ts), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
-- Use luncho.ts to call the API instead of auto-generated files.
+- Use the fast hand-written [./luncho.ts](./luncho.ts) rather than auto-generated [./LunchoApi.ts](./LunchoApi.ts) to call the API. Because luncho.ts is much faster with caching and it provides functions for data conversion in addition to functions found in auto-generated LunchoApi.ts.
 
 ## Usage
 
@@ -31,26 +31,26 @@
       // luncho.basePath = 'http://localhost:8000';
 
       var countryCode = 'JP';
-      // var countryCode = await this.luncho.getCountryCode();
+      // var countryCode = await this.luncho.get_country_code();
 
       // get a local currency value from a Luncho value
-      local_currency_value: number = await this.luncho.localCurrencyFromLuncho(100.0, countryCode);
+      local_currency_value: number = await this.luncho.get_currency_from_luncho(100.0, countryCode);
 
       // get a dollar value from a Luncho value
-      this.dollar_value = await this.luncho.USDollarFromLuncho(100.0, countryCode);
+      this.dollar_value = await this.luncho.get_US_dollar_from_luncho(100.0, countryCode);
 
       // get a Luncho Data for a country
-      lunchoData: LunchoData = await this.luncho.lunchoData({countryCode: countryCode});
+      lunchoData: LunchoData = await this.luncho.get_luncho_data({countryCode: countryCode});
 
       // Load or get a dict of LunchoDatas for supported countries.  Data size is about 40KB.
       // If you show data of all countries, call this before in order to load all LunchoDatas at once,
       // or it loads LunchoData one by one and that is very slow.
-      await this.luncho.allLunchoData();
+      await this.luncho.get_all_luncho_data();
 
       // calculate local currency values for all countries
       for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
-          this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
-          this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
+          this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
+          this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
       }
 ```
 

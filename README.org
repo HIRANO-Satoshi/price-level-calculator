@@ -26,6 +26,10 @@ In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same
 
 Send PRs if you make client libs for other languages.
 
+*** API change
+
+Now all language bindings use the same method names. See [[https://github.com/HIRANO-Satoshi/luncho/issues/13][github issue #13]] for the detail.
+
 *** Bonus
 
     *Grow your product with Luncho.*

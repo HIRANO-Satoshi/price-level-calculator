@@ -34,47 +34,47 @@ class Test:
         self.luncho: luncho.Luncho                # local API  (Use this in your app!)
         self.lunchoRemote: luncho_api.LunchoApi   # remote API
 
-    def test_luncho_to_currency(self):
+    def test_get_currency_from_luncho(self):
         self.luncho = luncho.Luncho(self.api_client)
-        assert self.luncho.luncho_to_currency(100.0, 'JP') >= 500
-        assert self.luncho.luncho_to_currency(100.0, 'JP') >= 500  # again to test cache
+        assert self.luncho.get_currency_from_luncho(100.0, 'JP') >= 500
+        assert self.luncho.get_currency_from_luncho(100.0, 'JP') >= 500  # again to test cache
 
-    def test_local_currency_to_luncho(self):
+    def test_local_get_luncho_from_currency(self):
         pass
 
-    def test_luncho_to_US_dollar(self):
+    def test_get_US_dollar_from_luncho(self):
         self.luncho = luncho.Luncho(self.api_client)
-        assert self.luncho.luncho_to_US_dollar(100.0, 'JP') > 6.0
-        assert self.luncho.luncho_to_US_dollar(100.0, 'JP') > 6.0  # again to test cache
+        assert self.luncho.get_US_dollar_from_luncho(100.0, 'JP') > 6.0
+        assert self.luncho.get_US_dollar_from_luncho(100.0, 'JP') > 6.0  # again to test cache
 
-    def test_countries(self):
+    def test_get_countries(self):
         self.luncho = luncho.Luncho(self.api_client)
-        assert len(self.luncho.countries()) > 150
-        assert len(self.luncho.countries()) > 150   # again to test cache
+        assert len(self.luncho.get_countries()) > 150
+        assert len(self.luncho.get_countries()) > 150   # again to test cache
 
     def test_countries_luncho_remote(self):
         self.lunchoRemote = luncho_api.LunchoApi(self.api_client)
         assert len(self.lunchoRemote.countries()) > 150
 
-    def test_luncho_data(self):
+    def test_get_luncho_data(self):
         self.luncho = luncho.Luncho(self.api_client)
 
-        Japan_test(self.luncho.luncho_data('JP'))
-        Japan_test(self.luncho.luncho_data('JP'))  # again should use cache
+        Japan_test(self.luncho.get_luncho_data('JP'))
+        Japan_test(self.luncho.get_luncho_data('JP'))  # again should use cache
 
         with pytest.raises(luncho_python.ApiException):
-            lunchoData = self.luncho.luncho_data('NOT EXISTS')
+            lunchoData = self.luncho.get_luncho_data('NOT EXISTS')
 
     def test_luncho_data_luncho_remote(self):
         self.lunchoRemote = luncho_api.LunchoApi(self.api_client)
         Japan_test(self.lunchoRemote.luncho_data('JP'))
 
-    def test_all_luncho_data(self):
+    def test_get_all_luncho_data(self):
         self.luncho = luncho.Luncho(self.api_client)
-        lunchoDatas: Dict[CountryCode, LunchoData] = self.luncho.all_luncho_data()
+        lunchoDatas: Dict[CountryCode, LunchoData] = self.luncho.get_all_luncho_data()
         Japan_test(lunchoDatas['JP'])
 
-        lunchoDatas = self.luncho.all_luncho_data()   # again to test cache
+        lunchoDatas = self.luncho.get_all_luncho_data()   # again to test cache
         Japan_test(lunchoDatas['JP'])
 
     def test_all_luncho_data_luncho_remote(self):

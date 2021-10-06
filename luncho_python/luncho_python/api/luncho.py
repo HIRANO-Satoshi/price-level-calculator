@@ -28,19 +28,20 @@ class Luncho():
         self.lunchoApi = LunchoApi(api_client)             # for delegation
 
         self.lunchoDataCache: Dict[CountryCode, LunchoData] = {}  # Cache {CountryCode: LunchoData}
-        self.allLunchoDatasExpiration: float = 0.0;
+        self.allLunchoDatasExpiration: float = 0.0
         self.countryCache: Dict[CountryCode, str] = {}       # { CountryCode: name }
+        self.countryCodeCache: str
 
 
-    def luncho_to_currency(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
+    def get_currency_from_luncho(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
         '''
           Returns a local currency value from the given Luncho value for the specified country.
         '''
 
-        lunchoData: LunchoData = self.luncho_data(countryCode, **kwargs)
+        lunchoData: LunchoData = self.get_luncho_data(countryCode, **kwargs)
         return lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue
 
-    def currency_to_luncho(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
+    def get_luncho_from_currency(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
         '''
           Returns a Luncho value from a local currency value for the specified country.
         '''
@@ -48,19 +49,18 @@ class Luncho():
         assert False, 'XXX Implement me'
         return 0.0
 
-    def luncho_to_US_dollar(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
+    def get_US_dollar_from_luncho(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
         '''
           Returns a US Dollar value from the given Luncho value for the specified country.
         '''
 
-        lunchoData: LunchoData = self.luncho_data(countryCode, **kwargs)
+        lunchoData: LunchoData = self.get_luncho_data(countryCode, **kwargs)
         if lunchoData.exchange_rate > 0:
-            local_currency_value: float = lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue;
+            local_currency_value: float = lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue
             return local_currency_value / lunchoData.exchange_rate
-        else:
-            return 0.0
+        return 0.0
 
-    def US_dollar_to_luncho(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
+    def get_luncho_from_US_dollar(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
         '''
           Returns a Luncho value from a US Dollar value for the specified country.
         '''
@@ -68,7 +68,7 @@ class Luncho():
         assert False, 'XXX Implement me'
         return 0.0
 
-    def countries(self, **kwargs) -> Dict[CountryCode, str]:
+    def get_countries(self, **kwargs) -> Dict[CountryCode, str]:
         '''
           Returns a dict of supported country codes and country names.
         '''
@@ -79,10 +79,10 @@ class Luncho():
         self.countryCache = self.lunchoApi.countries(**kwargs)
         return self.countryCache
 
-    def luncho_data(self, country_code: CountryCode, **kwargs) -> LunchoData:
+    def get_luncho_data(self, country_code: CountryCode, **kwargs) -> LunchoData:
         '''
            Returns a LunchoData of the specified country code. You don't need to use this method
-           usually. Use localCurrencyFromLuncho() and USDollarFromLuncho().
+           usually. Use localCurrencyFromLuncho() and get_US_dollar_from_luncho().
         '''
         lunchoData: Optional[LunchoData] = self.lunchoDataCache.get(country_code)
         if lunchoData and lunchoData.expiration > time.time():
@@ -92,10 +92,10 @@ class Luncho():
         self.lunchoDataCache[country_code] = lunchoData
         return lunchoData
 
-    def all_luncho_data(self, **kwargs) -> Dict[CountryCode, LunchoData]:
+    def get_all_luncho_data(self, **kwargs) -> Dict[CountryCode, LunchoData]:
         '''
           Returns a dict of LunchoDatas of all countries. You don't need to use this method
-           usually. Use localCurrencyFromLuncho() and USDollarFromLuncho().
+           usually. Use localCurrencyFromLuncho() and get_US_dollar_from_luncho().
         '''
         if self.allLunchoDatasExpiration > time.time():
             return self.lunchoDataCache
@@ -106,6 +106,17 @@ class Luncho():
         self.allLunchoDatasExpiration = self.lunchoDataCache['JP'].expiration
         return self.lunchoDataCache
 
+
+    def get_country_code(self, **kwargs) -> str:
+        '''
+         Returns an estimated country code. Available only if the server supports.
+        '''
+
+        if self.countryCodeCache:
+            return self.countryCodeCache
+
+        self.countryCodeCache = self.lunchoApi.country_code(**kwargs)
+        return self.countryCodeCache
 
     def __getattr__(self, method_name):
         ''' Delegates all other methods to self.lunchoApi. '''

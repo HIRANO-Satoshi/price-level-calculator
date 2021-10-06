@@ -27,8 +27,8 @@ export class Single {
         if (window.origin.indexOf('localhost') >= 0)
             this.countryCode = 'JP';
         else
-            this.countryCode = await this.luncho.getCountryCode();
-        await this.luncho.getCountries(true);
+            this.countryCode = await this.luncho.get_country_code();
+        await this.luncho.get_countries(true);
     }
 
     attached() {
@@ -47,8 +47,8 @@ export class Single {
     }
 
     async convertFromLuncho() {
-        this.lunchoData = await this.luncho.lunchoData({countryCode: this.countryCode});
-        this.local_currency_value = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, this.countryCode);
-        this.dollar_value = await this.luncho.USDollarFromLuncho(this.lunchoValue, this.countryCode);
+        this.lunchoData = await this.luncho.get_luncho_data({countryCode: this.countryCode});
+        this.local_currency_value = await this.luncho.get_currency_from_luncho(this.lunchoValue, this.countryCode);
+        this.dollar_value = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, this.countryCode);
     }
 }

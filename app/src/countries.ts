@@ -29,12 +29,12 @@ export class Countries {
     }
 
     async lunchosForCountries() {
-        await this.luncho.allLunchoData();
+        await this.luncho.get_all_luncho_data();
 
         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
             // destructive, but don't care
-            this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.localCurrencyFromLuncho(this.lunchoValue, countryCode);
-            this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.USDollarFromLuncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
         }
 
         this.lunchoDatas = [];

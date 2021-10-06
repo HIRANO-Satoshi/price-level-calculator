@@ -44,6 +44,10 @@ def test_server_api():
     response = client.get("/v1/luncho-data?dummydata=JP")
     assert response.status_code == 422
 
+def test_server_api_error():
+    pass
+    #XXX add test for Forex fetch error
+
 def Japan_test(lunchoData: LunchoData):
     assert lunchoData['country_code']   == 'JP'
     assert lunchoData['country_name']   == 'Japan'
@@ -52,6 +56,6 @@ def Japan_test(lunchoData: LunchoData):
     assert lunchoData['currency_code']  == 'JPY'
     assert lunchoData['currency_name']  == 'Yen'
     assert lunchoData['exchange_rate']  == 105.40404976166664
-    assert lunchoData['ppp']            == 98.662
+    assert lunchoData['ppp']            == 100.265 #98.662
     assert lunchoData['dollar_per_luncho'] == 0.07139819441152714
     assert lunchoData['expiration']     > time.time() + 60*60 - 2
