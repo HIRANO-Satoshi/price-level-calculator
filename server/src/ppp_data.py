@@ -181,8 +181,9 @@ def update() -> None:
     year: int = datetime.datetime.today().year
     logging.info('ppp_data.update()')
 
-    for country_code, country in Countries.items():  #type: CountryCode, Country
-        country['ppp'] = country['year_ppp'].get(year, 0.0)  # country's ppp of this year
-        country['exchange_rate'] = exchange_rate.exchange_rate_per_USD(country['currency_code'])
-        country['dollar_per_luncho'] = SDR_Per_Luncho / exchange_rate.SDR_Per_Dollar
-        country['expiration'] = exchange_rate.expiration
+    with exchange_rate.global_variable_lock:
+        for country_code, country in Countries.items():  #type: CountryCode, Country
+            country['ppp'] = country['year_ppp'].get(year, 0.0)  # country's ppp of this year
+            country['exchange_rate'] = exchange_rate.exchange_rate_per_USD(country['currency_code'])
+            country['dollar_per_luncho'] = SDR_Per_Luncho / exchange_rate.SDR_Per_Dollar
+            country['expiration'] = exchange_rate.expiration

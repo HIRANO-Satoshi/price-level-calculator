@@ -11,6 +11,13 @@ from typing import List, Dict, Tuple, Union, Any, Optional
 
 Use_Fixer_For_Forex: bool = False          # True to use Fixer.io for exchange rates. Set api_keys.py.
 
+Fixer_URL          = 'http://data.fixer.io/api/'
+Free_Exchangerate_URL   = 'https://api.exchangerate.host/'
+Exchangerate_URL   = Fixer_URL if Use_Fixer_For_Forex else Free_Exchangerate_URL
+
+Dummy_Fixer_Exchange_File = 'data/dummy-fixer-exchange-2020-11-11.json'
+Last_Fixer_Exchange_File  = 'data/exchange-last.json'
+
 # Luncho client library languages
 #  'language': 'option'
 #

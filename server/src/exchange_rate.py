@@ -11,6 +11,7 @@ import json
 import time
 import sys
 import logging
+import threading
 from threading import Thread
 from typing import Type, Optional, List, Dict #, Tuple, Union, Any, Generator, cast
 from typing_extensions import TypedDict
@@ -21,6 +22,11 @@ from src.types import Currency, CurrencyCode, C1000
 import conf
 if conf.Use_Fixer_For_Forex:
     import api_keys
+    fixer_access_key = api_keys.Fixer_Access_Key
+else:
+    fixer_access_key = ''
+
+global_variable_lock = threading.Lock()
 
 # exchange rates based on USD
 Exchange_Rates: Dict[CurrencyCode, float] = {}  # { currencyCode: rate }
@@ -39,7 +45,7 @@ class FixerExchangeRate(TypedDict):
     timestamp: int   # 1605081845
     base: str        # always "EUR"
     date: str        #"2020-11-11",
-    rates: Dict[CurrencyCode, float]   # "AED": 4.337445
+    rates: Dict[CurrencyCode, float]   # EUR based rates, "AED": 4.337445
 
 def convert(source: Currency, currencyCode: CurrencyCode) -> Currency:
     if source.currencyCode == currencyCode:
@@ -63,74 +69,63 @@ def exchange_rate_per_USD(currencyCode: CurrencyCode) -> float:
 
     return Exchange_Rates.get(currencyCode, 0.0)
 
+
 def load_exchange_rates(use_dummy_data: bool):
-    ''' Load exchange rates and SDR from fixer or dummy data file. '''
+    ''' Load exchange rates from fixer or dummy data file. '''
 
-    global SDR_Per_Dollar, Exchange_Rates, last_load, expiration
+    fixer_exchange_rate: FixerExchangeRate
+    new_exchange_rate: Dict[CurrencyCode, float] = {}
 
-    exchange_rate: Optional[Fixer_Exchange_Rate] = get_exchange_rate_on('dummy' if use_dummy_data else 'latest')
-
-    # expires 40 sec after Forex data update time
-    expiration = timeToUpdate() + 40
-
-    if not exchange_rate:
-        return  # keep the previous data. but we advance the expiration
-    Exchange_Rates = exchange_rate
-    last_load = time.time()
-
-    SDR_Per_Dollar = Exchange_Rates['XDR']
-
-    from src import ppp_data
-    ppp_data.update()
-
-
-def exchange_rates_benchmark(use_dummy_data: bool):
-    ''' Calculate the average exchange rates during the following period for each currency.
-
-    - [[file:///Users/hirano/Downloads/stasapp.pdf][World Economic Outlook 2021, STATISTICAL APPENDIX]]
-      - Assumptions
-        - Real effective exchange rates for the advanced economies are assumed to remain constant at
-          their _average levels measured during January 18, 2021–February 15, 2021_. For 2021 and 2022
-          these assumptions imply average US dollar–special drawing right (SDR) conversion rates of
-          1.445 and 1.458,
-    '''
-    pass
-    #XXX
-
-
-def get_exchange_rate_on(date: str) -> Optional[FixerExchangeRate]:
-    ''' Get an exchange rate table including all available currencies
-        on a specified date.
-
-        - **date** 'latest', '2021-05-25'.... 'dummy' for the fixed dummy data.
-    '''
-    global Exchange_Rates, last_load, expiration
-    exchange_rate: FixerExchangeRate
-
-    if date == 'dummy':
-        with open('data/dummy-fixer-exchange-2020-11-11.json', 'r', newline='', encoding="utf_8_sig") as fixer_file:
-            # 168 currencies
-            exchange_rate = json.load(fixer_file)
+    if use_dummy_data:
+        with open(conf.Dummy_Fixer_Exchange_File, 'r', newline='', encoding="utf_8_sig") as fixer_file:
+            fixer_exchange_rate = json.load(fixer_file) # 168 currencies
     else:
-        url: str
-        if conf.Use_Fixer_For_Forex:
-            url = ''.join(('http://data.fixer.io/api/', date, '?access_key=', api_keys.Fixer_Access_Key))
-        else:
-            url = ''.join(('https://api.exchangerate.host/', date))
+        url = ''.join((conf.Exchangerate_URL, 'latest', '?access_key=', fixer_access_key)) # date can be '2021-05-25'
         #XXX fall back?
 
-        response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
-        if not response.ok:   # no retry. will load after one hour.
-            return None
-        exchange_rate = json.loads(response.text)
+        OK: boolean = False
+        err_msg: str = ''
+        try:
+            response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
+            OK = response.ok
+            err_msg = str(response.status_code)
+        except Exception as ex:   #pylint: disable=broad-except
+            err_msg = str(ex)
+        if OK:   # no retry. will load after one hour.
+            fixer_exchange_rate = json.loads(response.text)
+            assert fixer_exchange_rate['base'] == 'EUR'  # always EUR with free plan
+            logging.info('Fetched exchange rate')
+            # save it
+            with open(conf.Last_Fixer_Exchange_File, 'w', newline='', encoding="utf_8_sig") as fixer_new_file:
+                fixer_new_file.write(response.text)
+        else:
+            # use the last exchange rate data. if not available, use test data
+            try:
+                with open(conf.Last_Fixer_Exchange_File, newline='', encoding="utf_8_sig") as fixer_last_file:
+                    fixer_exchange_rate = json.load(fixer_last_file)
+                    logging.error('Fetching exchange rate failed for %s with %s fall down to data last got', conf.Exchangerate_URL, err_msg)
+            except OSError:
+                with open(conf.Dummy_Fixer_Exchange_File, newline='', encoding="utf_8_sig") as fixer_last_file:
+                    fixer_exchange_rate = json.load(fixer_last_file)
+                    logging.error('Fetching exchange rate failed for %s with %s. Fall down to data in %s', conf.Exchangerate_URL, err_msg, conf.Dummy_Fixer_Exchange_File)
 
-    logging.debug('Fetched exchange rate')
-    assert exchange_rate['base'] == 'EUR'  # always EUR with free plan
+    # build Exchange_rates which is USD based rates from fixer_exchange_rate which is EUR based
+    usd: float = fixer_exchange_rate['rates']['USD']  # USD per euro
+    for currecy_code, euro_value in fixer_exchange_rate['rates'].items():  #type: CurrencyCode, float
+        new_exchange_rate[currecy_code] = euro_value / usd   # store in USD
 
-    usd: float = exchange_rate['rates']['USD']  # USD per euro
-    for currecy_code, euro_value in exchange_rate['rates'].items():  #type: CurrencyCode, float
-        exchange_rate[currecy_code] = euro_value / usd   # store in USD
-    return exchange_rate
+    # update globals
+    global Exchange_Rates, SDR_Per_Dollar, last_load, expiration
+
+    with global_variable_lock:
+        Exchange_Rates = new_exchange_rate
+        SDR_Per_Dollar = Exchange_Rates['XDR']
+        last_load = time.time()
+        expiration = timeToUpdate() + 40  # expires 40 sec after Forex data update time
+
+    # update PPP data
+    from src import ppp_data
+    ppp_data.update()
 
 
 def cron(use_dummy_data):
@@ -194,3 +189,16 @@ def timeToUpdate():
         seconds_until_midnight: int = time_until_midnight.seconds
         time_to_update = time.time() + seconds_until_midnight + 6*60
         return time_to_update
+
+def exchange_rates_benchmark(use_dummy_data: bool):
+    ''' Calculate the average exchange rates during the following period for each currency.
+
+    - [[file:///Users/hirano/Downloads/stasapp.pdf][World Economic Outlook 2021, STATISTICAL APPENDIX]]
+      - Assumptions
+        - Real effective exchange rates for the advanced economies are assumed to remain constant at
+          their _average levels measured during January 18, 2021–February 15, 2021_. For 2021 and 2022
+          these assumptions imply average US dollar–special drawing right (SDR) conversion rates of
+          1.445 and 1.458,
+    '''
+    pass
+    #XXX
