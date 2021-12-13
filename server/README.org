@@ -61,6 +61,12 @@
 
 ** Run and build client libraries
 
+   Do the following before you run or deploy the server.
+
+  - Finish Local installation written above.
+  - Install ../luncho_typescript-aurelia
+  - Install ../app
+
 *** Run a local Luncho server
 
   - bin/start-gunicorn.sh
