@@ -25,7 +25,7 @@ handlers:
 - url: /img
   static_dir: img
 
-# index.html and bundle files for web site (the Luncho app)
+# index.html and bundle files for the web site (the Luncho app)
 - url: /index.html
   secure: always
   static_files: app-dist/index.html
@@ -34,6 +34,12 @@ handlers:
   secure: always
   static_files: app-dist/index.html
   upload: app-dist/index.html
+
+# 404 error should load the bundle for pushState
 - url: .*
   secure: always
-  static_dir: app-dist
+  static_files: app-dist/index.html
+  upload: app-dist/index.html
+#- url: .*
+#  secure: always
+#  static_dir: app-dist
