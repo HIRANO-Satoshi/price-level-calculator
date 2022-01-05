@@ -66,13 +66,15 @@ export class App {
     configureRouter(config: RouterConfiguration, router: Router) {
         this.router = router;
         config.title = this.title;
+        config.options.pushState = true;
+        //config.options.root = '/';
 
         //config.addPipelineStep('authorize', AuthorizeStep); // add login
         config.map([
-            { route: ['', 'single'], href: '/single', name: '#/single',
+            { route: ['', 'single'], href: '/single', name: 'single',
               moduleId: PLATFORM.moduleName('./single'),
               auth: true, nav: true, title: 'One country', },
-            { route: 'countries', href: '/countries', name: '#/countries',
+            { route: 'countries', href: '/countries', name: 'countries',
               moduleId: PLATFORM.moduleName('./countries'),
               auth: true, nav: true, title: 'All countries', },
             { route: 'about', href: 'about', name: 'about',

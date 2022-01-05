@@ -27,7 +27,9 @@
       </div>
     </div>
 
-    <h6 class="">Luncho is a common unit of currencies for mitigating the inequality problem and growth.</h6>
+    <section>
+      <h6 class="">Luncho is a common unit of currencies for mitigating the inequality problem and growth.</h6>
+    </section>
 
     <section>
       <h4> Useful for you?</h4>
@@ -148,11 +150,37 @@
     <section>
       <h4>How it works?</h4>
 
-      <b>100 Luncho is 5 <a target="_blank" href="https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR">SDR </a> and
-        a Luncho value in a country is calculated into the local currency of the country using <a target="_blank" href="https://www.imf.org/external/pubs/ft/weo/faq.htm#q4d">implied Purchase Power Parity (PPP)</a>, and exchange rates.</b>
+      <p><b>100 Luncho is 5 <a target="_blank" href="https://www.imf.org/en/About/Factsheets/Sheets/2016/08/01/14/51/Special-Drawing-Right-SDR">SDR </a></b>.</p>
 
       <p>
-      local_currency_value = luncho_value * PPP * (SDR_per_Luncho / SDR_per_Dollar)
+        A Luncho value in a country is calculated into the local currency of the country using <a target="_blank" href="https://www.imf.org/external/pubs/ft/weo/faq.htm#q4d">implied Purchase Power Parity (PPP)</a>, and exchange rates.</b>
+
+      <p>
+        Thus, Luncho reflects the overall price level of each country, <b>not actual lunch prices</b>. It is not for comparing lunch prices.
+      </p>
+
+      <p>
+        A PPP is a theoretical exchange rate that reflects the price level of a country against
+        US Dollar, that is, how expensive goods and services are in the country. Our PPP
+        data uses <a target="_blank" href="https://www.imf.org/en/Publications/WEO/Issues/2021/03/23/world-economic-outlook-april-2021">IMF World Economic Outlook (March 23, 2021)</a> and it is based on <a target="_blank" href="https://www.worldbank.org/en/programs/icp">the
+        latest International Comparison Program (ICP)</a> led by the World Bank. The ICP investigates price levels of <a target="_blank" href="https://openknowledge.worldbank.org/bitstream/handle/10986/33623/9781464815300.pdf">many
+        items such as bread, pork, cheese, sugar, gas, medical services, cars, etc.</a> in each
+        country every five years. The PPP data on IMF World Economic Outlook is adjusted every year using the defrator of each country.
+      </p>
+
+      <p>
+        The exchange rates of SDR (code XDR) is made from a fixed weight of exchange rates of five currencies,
+        US Dollar, Euro, GB Pound, Japanese Yen, and Chinese Yuan. Because Luncho is defined on SDR,
+        it is not very sensitive against the fluctuation of US dollar. The SDR and exchange rate data are
+        updated at 00:06 UTC every day on the Luncho server.
+      </p>
+
+      <p>
+        The ratio between Luncho and SDR must be changed according to the change of overall price levels due to infration and the long term growth of the world economy. In 2021, 100 Luncho is 5 SDR. That may be too small for people in urban areas and enough for people in rural areas.
+      </p>
+
+      <p style="margin-top: 4rem;">
+        local_currency_value = luncho_value * PPP * (SDR_per_Luncho / SDR_per_Dollar)
       </p>
 
       where
@@ -165,21 +193,6 @@
 
       <p>You can see actual calculation <a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/luncho_python/luncho_python/api/luncho.py#L41">here</a> in the client library and <a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/src/ppp_data.py#L187">here</a> in the server code.</p>
 
-      <p>
-        A PPP is a theoretical exchange rate that reflects the price level of a country against
-        US Dollar, that is, how expensive goods and services are in the country. Our PPP
-        data is from <a target="_blank" href="https://www.worldbank.org/en/programs/icp">the
-        latest International Comparison Program (ICP)</a> led by the World Bank. The ICP investigates price levels of <a target="_blank" href="https://openknowledge.worldbank.org/bitstream/handle/10986/33623/9781464815300.pdf">many
-        items such as bread, pork, cheese, sugar, gas, medical services, cars, etc.</a> in each
-        country every five years, so Luncho reflects the overall price levels, <b>not actual lunch prices</b>.
-      </p>
-
-      <p>
-        The exchange rates of SDR (code XDR) is made from a fixed weight of exchange rates of five currencies,
-        US Dollar, Euro, GB Pound, Japanese Yen, and Chinese Yuan. Because Luncho is defined on SDR,
-        it is not very sensitive against the fluctuation of US dollar. The SDR and exchange rate data are
-        updated at 00:06 UTC every day on the Luncho server.
-      </p>
     </section>
 
     <section id="data">
@@ -217,6 +230,9 @@
       <h4>Limitations</h4>
 
       <ul class="browser-default">
+        <li>
+          The Luncho calculation reflects the PPP value of a target country and the daily exchange rate of SDR, but does not the daily exchange rate of the target country. The daily exchange rate of the target country is reflected only once a year when Dr Hirano replaces PPP data with the year's PPP estimation from IMF World Economic Outlook</a>. See <a href="https://github.com/HIRANO-Satoshi/luncho/issues/24" target="_blank">this issue for detail</a>.
+        </li>
         <li>
           Although you can expect to have a simple lunch in restaurants for local residents with 100
           Luncho, restaurants for tourists must be much more expensive.

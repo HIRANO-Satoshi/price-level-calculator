@@ -34,6 +34,14 @@ handlers:
   secure: always
   static_files: app-dist/index.html
   upload: app-dist/index.html
+
+- url: /(.*\.(js|map|gif|png|jpg|ico|css))$
+  secure: always
+  static_files: app-dist/\1
+  upload: app-dist/(.*\.(js|map|gif|png|jpg|ico|css))$
+
+# All other routes to the bundle for pushState
 - url: .*
   secure: always
-  static_dir: app-dist
+  static_files: app-dist/index.html
+  upload: app-dist/index.html

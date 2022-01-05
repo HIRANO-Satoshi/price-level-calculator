@@ -79,8 +79,8 @@
   - Install gcloud SDK
   - Make a project and deploy
     gcloud auth login
-    (gcloud app create --project=my-luncho-server)
-    gcloud config set project my-luncho-server
+    (gcloud app create --project=luncho-hirano    or your project name)
+    gcloud config set project luncho-hirano       (or your project name)
     gcloud app deploy --quiet
 
 *** Docker installation
