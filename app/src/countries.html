@@ -15,6 +15,16 @@
    .filters .col {
      padding-left: 0;
    }
+   tr {
+     position: relative;
+   }
+   .luncho-bar {
+     position: absolute;
+     top: 0;
+     right: 0;
+     height: 90%;
+     backgrond-color: #4466f0;
+   }
   </style>
 
   <div class="container">
@@ -61,6 +71,7 @@
       </thead>
       <tbody>
         <!-- <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]"> -->
+        <!-- <div class="luncho-bar" css="width: ${dollar_value / maxCountryInDollar}"></div> -->
         <tr repeat.for="country_code of $displayData | keys" with.bind="$displayData[country_code]">
           <td>${country_name}</td>
           <td if.bind="showCode">${country_code}</td>

@@ -14,8 +14,8 @@
 
 *** Run on webpack devserver
 
-  - au run --open
-  - http://localhost:8082/
+  - yarn start
+  - [[http://localhost:8080/]]
 
 ** Deployment
 
