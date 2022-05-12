@@ -21,9 +21,9 @@ aurelia-dependency-injection@^1.0.0:
     aurelia-pal "^1.0.0"
 
 aurelia-framework@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/aurelia-framework/-/aurelia-framework-1.3.1.tgz#4b309970936fb487677a3ed3b54bc153d3b24f62"
-  integrity sha512-eKR+JnrVzYQ372pokHjfw+YfiGpFIO6yGOotGHkeLtIVZcVowX4oYe1HEkDe7/VXU3f6cDILoYkNIwrZUBij0g==
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/aurelia-framework/-/aurelia-framework-1.4.1.tgz#76a76dfa555e3315daab4256c776434fb7932f43"
+  integrity sha512-oFnJyqqIDk2Kk7iSy2YNm2MNQMbTVEiPpa9q0oGfDLclqUgv+L05rnkEW9vEpVTUMV8gmOTxIrDidNICrDT7HA==
   dependencies:
     aurelia-binding "^2.0.0"
     aurelia-dependency-injection "^1.0.0"
@@ -31,9 +31,9 @@ aurelia-framework@^1.3.1:
     aurelia-logging "^1.0.0"
     aurelia-metadata "^1.0.0"
     aurelia-pal "^1.0.0"
-    aurelia-path "^1.0.0"
+    aurelia-path "^1.1.7"
     aurelia-task-queue "^1.0.0"
-    aurelia-templating "^1.8.1"
+    aurelia-templating "^1.11.1"
 
 aurelia-http-client@^1.3.0:
   version "1.3.1"
@@ -80,10 +80,10 @@ aurelia-task-queue@^1.0.0, aurelia-task-queue@^1.1.0:
   dependencies:
     aurelia-pal "^1.0.0"
 
-aurelia-templating@^1.8.1:
-  version "1.10.4"
-  resolved "https://registry.yarnpkg.com/aurelia-templating/-/aurelia-templating-1.10.4.tgz#d42f7d07b4c970812e6ee9e9b1bd6b3727583704"
-  integrity sha512-w1AtGneeRRJJPxr7QiGwTyLOsspPSF0xg1bKJnMntVhGC265SrtEAIsF1aKXOuLVTrjhx1Vi+3xPiJ560ilwtw==
+aurelia-templating@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/aurelia-templating/-/aurelia-templating-1.11.1.tgz#661df6d9ff09ec280ccf0fc4a94b702fceff0b24"
+  integrity sha512-7Zrb/yvnIYBIlqGaLXIiBsmWMoFwo3SSoxyoucqWe/M80YpR4LJaTEKoZxhZZI6x9pU+tlFOBkwd/sA1JqPR8w==
   dependencies:
     aurelia-binding "^2.0.0"
     aurelia-dependency-injection "^1.0.0"
@@ -91,7 +91,7 @@ aurelia-templating@^1.8.1:
     aurelia-logging "^1.0.0"
     aurelia-metadata "^1.0.0"
     aurelia-pal "^1.0.0"
-    aurelia-path "^1.0.0"
+    aurelia-path "^1.1.7"
     aurelia-task-queue "^1.1.0"
 
 balanced-match@^1.0.0:
@@ -197,9 +197,9 @@ inherits@2:
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 is-core-module@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.8.1.tgz#f59fdfca701d5879d0a6b100a40aa1560ce27211"
-  integrity sha512-SdNCUs284hr40hFTFP6l0IfZ/RSrMXF3qgoRHd3/79unUTvrFO/JoXwkGm+5J/Oe3E/b5GsnG330uUNgRpu1PA==
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.9.0.tgz#e1c34429cd51c6dd9e09e0799e396e27b19a9c69"
+  integrity sha512-+5FPy5PnwmO3lvfMb0AsoPaBG+5KHUI0wYFXOtYPnVVVspTFUuMZNfNaNVRt3FZadstu2c8x23vykRW/NBoU6A==
   dependencies:
     has "^1.0.3"
 
@@ -217,9 +217,9 @@ isomorphic-fetch@^2.2.1:
     whatwg-fetch ">=0.10.0"
 
 "minimatch@2 || 3", minimatch@^3.0.4:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.5.tgz#4da8f1290ee0f0f8e83d60ca69f8f134068604a3"
-  integrity sha512-tUpxzX0VAzJHjLu0xUfFv1gwVp9ba3IOuRAVH2EGuRW8a5emA2FlACLqiT/lDVtS1W+TGNwqz3sWaNyLgDJWuw==
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
+  integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
 
@@ -286,9 +286,9 @@ supports-preserve-symlinks-flag@^1.0.0:
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
 tslib@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
-  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslint@^3.15.1:
   version "3.15.1"
