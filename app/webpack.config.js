@@ -55,12 +55,6 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       cacheGroups: {
         default: false, // Disable the built-in groups (default and vendors)
         vendors: false,
-        bluebird: {
-          test: /[\\/]node_modules[\\/]bluebird[\\/]/,
-          name: "vendor.bluebird",
-          enforce: true,
-          priority: 100
-        },
         // You can insert additional entries here for jQuery and bootstrap etc. if you need them
         // Break the Aurelia bundle down into smaller chunks, binding and templating are the largest
         aureliaBinding: {
@@ -130,8 +124,6 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       { test: /\.ts$/, loader: "ts-loader", options: {
           onlyCompileBundledFiles: true
       } },
-      // use Bluebird as the global Promise implementation:
-      { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
       { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
@@ -149,7 +141,6 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
     ...when(!karma, new DuplicatePackageCheckerPlugin()),
     new AureliaPlugin(),
     new ProvidePlugin({
-        'Promise': 'bluebird',
       '$': 'jquery',
       'jQuery': 'jquery',
       'window.jQuery': 'jquery'

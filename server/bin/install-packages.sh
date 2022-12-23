@@ -13,7 +13,7 @@ if [ ! -e pypyenv ]; then
 fi
 
 . pypyenv/bin/activate
-pip install -r requirements-pypy.txt
+pip install -U -r requirements-pypy.txt
 
 
 echo installing pyenv with Python 3.9
@@ -27,4 +27,4 @@ if [ ! -e pyenv ]; then
 fi
 
 . pyenv/bin/activate
-pip install -r requirements.txt
+pip install -U -r requirements.txt

@@ -33,7 +33,7 @@ export interface LunchoData {
 
 
 export interface ValidationError {
-  loc: Array<string>;
+  loc: Array<string | number>;
   msg: string;
   type: string;
 }

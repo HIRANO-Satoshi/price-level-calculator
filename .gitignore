@@ -4,6 +4,7 @@ api_keys.py
 *.pyc
 *.bak
 *~
+*~undo-tree~
 #*
 flycheck*
 TAGS

@@ -50,13 +50,15 @@
 *** Local installation
 
   - [[https://www.pypy.org/download.html][Install pypy3]]
-   - (Mac) brew install pypy3
+    - (Mac) brew install pypy3
+    - (Win) ?
+    - (Linux) ?
   - Install Rust that is required to run pip
-   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-   - (restart bash to add rustup to PATH)
-   - rustup install nightly ; rustup default nightly
-  - Run install script
-   - bin/install-packages.sh
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    - (restart bash to add rustup to PATH)
+    - rustup install nightly ; rustup default nightly
+  - Run the install script
+    - bin/install-packages.sh
   - You have pypyenv dir that includes site-packages.
 
 ** Run and build client libraries
@@ -64,8 +66,8 @@
    Do the following before you run or deploy the server.
 
   - Finish Local installation written above.
-  - Install ../luncho_typescript-aurelia
-  - Install ../app
+  - Install in ../luncho_typescript-aurelia
+  - Install in ../app
 
 *** Run a local Luncho server
 
