@@ -10,6 +10,11 @@ import { LunchoApi, LunchoDataRequest } from './apis/LunchoApi';
 import { Configuration } from './runtime';
 
 export type CountryCode = string;
+var basePath: string;
+if (window['origin'].indexOf('localhost') >= 0)
+    basePath = 'http://localhost:8000';
+else
+    basePath = window['origin'];
 
 /**
     Fast Luncho API client by caching.
@@ -32,14 +37,7 @@ export class Luncho extends LunchoApi {
     // localCurrencyNames: {[key: string]: string; } = {}        // {countryCode : currencyName}
 
     constructor() {
-        let basePath: string;
-        if (window.origin.indexOf('localhost') >= 0)
-            basePath = 'http://localhost:8000';
-        else
-            basePath = window.origin;
-        super(new Configuration({
-             basePath: basePath
-         }));
+        super(new Configuration({ basePath: basePath }));
 
         // prepare local name converters
         if ((<any>Intl).DisplayNames) {

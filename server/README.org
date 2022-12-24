@@ -92,11 +92,11 @@
   - run
      docker run luncho-server_app
 
-** (Optional) Generation of client libraries with OpenAPI generator and yarn link
+** (Optional) Generation of client libraries with OpenAPI generator, patch a generated file, yarn install, and yarn link
 
   - build
     pypy3 main.py gen
-    bin/link.sh
+    bin/build.sh
 
 ** Test
 
