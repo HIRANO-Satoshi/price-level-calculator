@@ -49,28 +49,30 @@
 *** Local installation
 
   - [[https://www.pypy.org/download.html][Install pypy3]]
-    - (Mac) brew install pypy3
-    - (Win) ?
-    - (Linux) ?
+
+    (Mac) brew install pypy3
+    (Win) ?
+    (Linux) ?
+
   - Install Rust that is required to run pip
-    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    - (restart bash to add rustup to PATH)
-    - rustup install nightly ; rustup default nightly
-  - Run the install script
-    - bin/install-packages.sh
+
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+       (restart bash to add rustup to PATH)
+    rustup install nightly ; rustup default nightly
+
+  - Run the install script to install pypy3 and so on. Check it before run!
+
+    bin/install-packages.sh
+
   - You have pypyenv dir that includes site-packages.
 
-** Run and build client libraries
+** Build client libraries and the app
 
-   Do the following before you run or deploy the server.
-
-  - Finish Local installation written above.
-  - Install in ../luncho-typescript-fetch
-  - Install in ../app
+   bin/build.sh
 
 *** Run a local Luncho server
 
-  - bin/start-gunicorn.sh
+  bin/start-gunicorn.sh
 
   - Open a browser at [[http://localhost:8000/v1/all-luncho-data]] for test for API access.
   - See [[../app/README.org][../app/README.org]] how to run the Luncho app.
@@ -80,7 +82,7 @@
   - Install gcloud SDK
   - Make a project and deploy
     gcloud auth login
-    (gcloud app create --project=luncho-hirano    or your project name)
+      (gcloud app create --project=luncho-hirano    or your project name)
     gcloud config set project luncho-hirano       (or your project name)
     gcloud app deploy --quiet
 
@@ -91,9 +93,8 @@
   - run
      docker run luncho-server_app
 
-** (Optional) Generation of client libraries with OpenAPI generator, patch a generated file, yarn install, and make a symlink
+** (Optional) Generation of client libraries with OpenAPI generator, patch a generated file and build
 
-  - build
     pypy3 main.py gen
     bin/build.sh
 
@@ -113,8 +114,8 @@
 
 ** Author
 
-   HIRANO Satoshi Ph.D  AIST, University of Tokyo IIS, Peace and Passion
+Dr HIRANO Satoshi, Peace and Passion, University of Tokyo (AIST)
 
 ** [[../LICENSE][MIT License]]
 
-Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
+Copyright 2019-2022 The National Institute of Advanced Industrial Science and Technology (AIST), Japan

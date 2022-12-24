@@ -9,23 +9,28 @@
 
 *** Local installation
 
-  - Install the server part first and generate client libraries as instructed on ../server/README.org
-  - yarn install
+  - To install the server part first and generate client libraries as instructed on ../server/README.org
+
+   yarn install
 
 *** Run on webpack devserver
+  - "yarn start" does "yarn link luncho-typescript-fetch' automatically.
 
-  - yarn start
-  - [[http://localhost:8080/]]
+  yarn start
+
+  open [[http://localhost:8080/]]
 
 ** Deployment
 
-  - build index.html and bundles in /dist dir
+  - To build index.html and bundles in /dist dir
+
     au build --env prod
 
 ** Author
 
-Dr HIRANO Satoshi, AIST
+Dr HIRANO Satoshi, Peace and Passion, University of Tokyo (AIST)
 
 ** MIT License
 
 Copyright 2019-2021 The National Institute of Advanced Industrial Science and Technology (AIST), Japan
+Copyright 2022 Peace and Passion
