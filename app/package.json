@@ -1,7 +1,7 @@
 {
   "name": "luncho-app",
   "description": "A Luncho app",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "repository": {
     "type": "???",
     "url": "???"
@@ -91,7 +91,7 @@
   },
   "scripts": {
     "build": "webpack --env production",
-    "start": "webpack server",
+    "start": "yarn link luncho-typescript-fetch; webpack server",
     "build:dev": "webpack",
     "analyze": "webpack --env production --analyze",
     "test": "au test"

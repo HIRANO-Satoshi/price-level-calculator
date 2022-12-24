@@ -1,7 +1,6 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { App } from './app';
-import { Luncho } from 'luncho-typescript-fetch/luncho';
-import { LunchoData } from 'luncho-typescript-fetch/models';
+import { Luncho, LunchoData } from 'luncho-typescript-fetch';
 
 @autoinject
 export class Countries {
@@ -19,10 +18,10 @@ export class Countries {
         {value: '', keys: ['continent_code']},
     ];
 
-    constructor(app: App, taskQueue: TaskQueue, luncho: Luncho) {
+    constructor(app: App, taskQueue: TaskQueue) {
         this.app = app;
         this.taskQueue = taskQueue;
-        this.luncho = luncho;
+        this.luncho = app.luncho;
     }
 
     attached() {

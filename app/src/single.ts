@@ -1,8 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { App } from './app';
-import { Luncho,  } from 'luncho-typescript-fetch/luncho';
-import { LunchoDataRequest } from 'luncho-typescript-fetch/apis/LunchoApi';
-import { LunchoData } from 'luncho-typescript-fetch/models';
+import { Luncho  } from 'luncho-typescript-fetch';
+import { LunchoData } from 'luncho-typescript-fetch';
 // import { LunchoApi } from 'luncho_typescript-aurelia/LunchoApi';
 //import { LunchoApi, LunchoData } from 'luncho_typescript-aurelia';
 //import { LunchoApi, LunchoData } from './gen-openapi';
@@ -18,9 +17,9 @@ export class Single {
     dollar_value: number;
     decimals: number;
 
-    constructor(app: App, luncho: Luncho) {
-        this.luncho = luncho;
+    constructor(app: App) {
         this.app = app;
+        this.luncho = app.luncho;
     }
 
     async activate() {
