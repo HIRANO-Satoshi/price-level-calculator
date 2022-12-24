@@ -1,7 +1,7 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { App } from './app';
-import { Luncho } from 'luncho_typescript-aurelia/luncho';
-import { LunchoData } from 'luncho_typescript-aurelia/models';
+import { Luncho } from 'luncho-typescript-fetch/luncho';
+import { LunchoData } from 'luncho-typescript-fetch/models';
 
 @autoinject
 export class Countries {

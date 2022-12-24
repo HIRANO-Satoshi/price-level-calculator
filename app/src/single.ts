@@ -1,8 +1,8 @@
 import { autoinject } from 'aurelia-framework';
 import { App } from './app';
-import { Luncho,  } from 'luncho_typescript-aurelia/luncho';
-import { ILunchoDataParams } from 'luncho_typescript-aurelia/LunchoApi';
-import { LunchoData } from 'luncho_typescript-aurelia/models';
+import { Luncho,  } from 'luncho-typescript-fetch/luncho';
+import { LunchoDataRequest } from 'luncho-typescript-fetch/apis/LunchoApi';
+import { LunchoData } from 'luncho-typescript-fetch/models';
 // import { LunchoApi } from 'luncho_typescript-aurelia/LunchoApi';
 //import { LunchoApi, LunchoData } from 'luncho_typescript-aurelia';
 //import { LunchoApi, LunchoData } from './gen-openapi';

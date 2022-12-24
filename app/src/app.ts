@@ -8,7 +8,8 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { PLATFORM } from 'aurelia-pal';
-import { Luncho } from 'luncho_typescript-aurelia/luncho';
+import { Luncho } from 'luncho-typescript-fetch/luncho';
+import { Configuration, ConfigurationParameters } from 'luncho-typescript-fetch/runtime';
 import * as browserLocale from 'browser-locale';
 import * as countryData from 'country-data';
 
@@ -31,16 +32,11 @@ export class App {
     }
 
 
-    constructor(taskQueue: TaskQueue, router: Router, luncho: Luncho) {
-        this.taskQueue = taskQueue;
+    constructor(taskQueue: TaskQueue, router: Router, luncho:Luncho) {
         this.luncho = luncho;
-        if (window.origin.indexOf('localhost') >= 0)
-            this.luncho.basePath = 'http://localhost:8000';
-        else
-            this.luncho.basePath = window.origin;
-
-        App.app = this;
+        this.taskQueue = taskQueue;
         this.router = router;
+        App.app = this;
 
         this.patchCountryData();
     }

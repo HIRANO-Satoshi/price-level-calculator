@@ -11,7 +11,7 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from luncho_python.model_utils import (  # noqa: F401
+from luncho-python.model_utils import (  # noqa: F401
     ApiTypeError,
     ModelComposed,
     ModelNormal,

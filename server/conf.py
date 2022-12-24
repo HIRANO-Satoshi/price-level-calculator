@@ -23,14 +23,11 @@ Last_Fixer_Exchange_File  = 'data/exchange-last.json'
 #
 #  Set some from https://openapi-generator.tech/docs/generators
 #
-#  'typescript-aurelia' is always generated as well.
 Gen_Openapi: Dict[str, str] = {
     # add library=asyncio if needed, otherwise it uses default (library=urllib3)
     'python': 'packageName=luncho_python,projectName=luncho_python',
-
-    #'typescript-aurelia': 'supportsES6=true,npmName=luncho',
-    'typescript-aurelia': 'supportsES6=true,npmName=luncho_typescript-aurelia',
-    'typescript-fetch': 'supportsES6=true,npmName=luncho_typescript-fetch',
+    'typescript-fetch': 'supportsES6=true,npmName=luncho-typescript-fetch,withoutRuntimeChecks=true',
+    #'typescript-aurelia': 'supportsES6=true,npmName=luncho_typescript-aurelia',
 }
 
 

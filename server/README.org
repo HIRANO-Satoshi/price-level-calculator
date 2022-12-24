@@ -73,7 +73,7 @@
 
   - bin/start-gunicorn.sh
 
-  - Open a browser at http://localhost:8000/v1/all-country-data for API access.
+  - Open a browser at [[http://localhost:8000/v1/all-luncho-data]] for test for API access.
   - See [[../app/README.org][../app/README.org]] how to run the Luncho app.
 
 *** Run on Google App Engine
