@@ -16,6 +16,7 @@ export class Single {
     lunchoData: LunchoData;
     local_currency_value: number;
     dollar_value: number;
+    decimals: number;
 
     constructor(app: App, luncho: Luncho) {
         this.luncho = luncho;
@@ -33,22 +34,12 @@ export class Single {
 
     attached() {
         this.convertFromLuncho();
-
-        // var elems = document.querySelectorAll('.autocomplete');
-        // var instances = M.Autocomplete.init(elems, {
-        //     data: // this.luncho.countryCache,
-        //     {
-        //         "Apple": null,
-        //         "Microsoft": null,
-        //         "Google": 'https://placehold.it/250x250'
-        //     },
-        //     minLength: 0,
-        // });
     }
 
     async convertFromLuncho() {
         this.lunchoData = await this.luncho.get_luncho_data({countryCode: this.countryCode});
         this.local_currency_value = await this.luncho.get_currency_from_luncho(this.lunchoValue, this.countryCode);
         this.dollar_value = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, this.countryCode);
+        this.decimals = this.app.countryData.currencies[this.lunchoData.currency_code].decimals;
     }
 }
