@@ -18,7 +18,6 @@ In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same
 *** Usages
 
 - [[./luncho_python/README.markdown][README for Python client library]]
-- [[./luncho_typescript-aurelia/README.markdown][README for TypeScript and Aurelia client library]]
 - [[./luncho_typescript-fetch/README.markdown][README for TypeScript and Fetch client library]]
 
 - [[./server/README.org][README for the Luncho server]]

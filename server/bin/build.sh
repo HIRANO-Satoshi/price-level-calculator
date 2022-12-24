@@ -1,6 +1,8 @@
-# patch generated runtime.ts and yarn install and yarn link
+# patch generated runtime.ts and yarn install and make a symlink
+#
+#
 
-pushd ../luncho-typescript-fetch
+cd ../luncho-typescript-fetch
 # export type FetchAPI = GlobalFetch['fetch'];
 #  ->
 #    export type FetchAPI = typeof fetch;
@@ -9,10 +11,13 @@ if [ ! -e runtime.ts.org ]; then
 fi
 sed -e "s/GlobalFetch\['fetch'\]/typeof fetch/" src/runtime.ts.org >src/runtime.ts
 yarn install
-yarn link
-popd
+#yarn link
 
 
-pushd ../app
-yarn link "luncho-typescript-fetch"
-popd
+cd ../app/src
+#yarn link "luncho-typescript-fetch"
+ln -sf ../../luncho-typescript-fetch/src luncho-typescript-fetch
+cd ..
+yarn install
+
+cd ../server

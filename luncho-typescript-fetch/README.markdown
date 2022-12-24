@@ -1,7 +1,5 @@
 # Luncho client library for TypeScript and Fetch
 
-- Note that this client library has NOT BEEN TESTED AT ALL. PRs are welcome.
-
 - This client library includes a fast hand-written API core [./src/apis/luncho.ts](./src/apis/luncho.ts), a hand written
   README.markdown (this file), and auto-generated files by OpenAPI generator including [README.md](./README.md).
 - Use the fast hand-written [./luncho.ts](./luncho.ts) rather than auto-generated [./LunchoApi.ts](./LunchoApi.ts) to call the API. Because luncho.ts is much faster with caching and it provides functions for data conversion in addition to functions found in auto-generated LunchoApi.ts.

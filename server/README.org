@@ -11,7 +11,7 @@
     - See [[https://www.luncho-index.org/redoc][API documentation]] and [[https://www.luncho-index.org/openapi.json ][schema definition]].
     - However, our client libraries have additional files for the local calculation and caching. See
       README.markdown files.
-      - [[../luncho_typescript-aurelia][luncho_typescript-aurelia]],
+      - [[../luncho-typescript-fetch][luncho-typescript-fetch]],
       - [[../luncho_python][luncho_python]]
 
   - The Luncho server hosts [[../app][the Luncho app]] web site.
@@ -20,8 +20,7 @@
 
   - Client
     - Python
-    - TypeScript and Aurelia
-    - TypeScript and Fetch (not tested)
+    - TypeScript and Fetch
   - Server
     - Python3 or Pypy3
     - FastAPI (Web framework)
@@ -66,7 +65,7 @@
    Do the following before you run or deploy the server.
 
   - Finish Local installation written above.
-  - Install in ../luncho_typescript-aurelia
+  - Install in ../luncho-typescript-fetch
   - Install in ../app
 
 *** Run a local Luncho server
@@ -92,7 +91,7 @@
   - run
      docker run luncho-server_app
 
-** (Optional) Generation of client libraries with OpenAPI generator, patch a generated file, yarn install, and yarn link
+** (Optional) Generation of client libraries with OpenAPI generator, patch a generated file, yarn install, and make a symlink
 
   - build
     pypy3 main.py gen
