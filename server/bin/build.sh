@@ -1,4 +1,4 @@
-# patch generated runtime.ts and yarn install and make a symlink
+# patch generated runtime.ts and yarn install and yarn link
 #
 #
 
