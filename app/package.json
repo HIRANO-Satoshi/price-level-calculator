@@ -12,6 +12,7 @@
     "@types/materialize-css": "^1.0.7",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.4.0",
+    "aurelia-chart": "^0.3.4",
     "aurelia-fetch-client": "^1.8.2",
     "aurelia-http-client": "^1.3.1",
     "aurelia-materialize-bridge": "^1.6.4",
@@ -19,6 +20,7 @@
     "aurelia-typed-observable-plugin": "^0.5.1",
     "aurelia-validation": "^2.0.0-rc2",
     "browser-locale": "^1.0.3",
+    "chart.js": "^4.1.1",
     "country-data": "^0.0.31",
     "jquery": "^3.5.1",
     "materialize-css": "git+https://github.com/Dogfalo/materialize.git",
@@ -143,5 +145,13 @@
       "text",
       "html"
     ]
+  },
+  "aurelia": {
+    "build": {
+      "resources": [
+        "aurelia-chart/elements/chart-element",
+        "aurelia-chart/attributes/chart-attribute"
+      ]
+    }
   }
 }

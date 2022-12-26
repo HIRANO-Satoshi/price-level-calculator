@@ -687,6 +687,11 @@
     aurelia-pal "^1.8.2"
     natives "^1.1.6"
 
+"@kurkle/color@^0.3.0":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@kurkle/color/-/color-0.3.1.tgz#ef72bc8022ccf77cdd2715097f062ee591ec145c"
+  integrity sha512-hW0GwZj06z/ZFUW2Espl7toVDjghJN+EKqyXzPSV8NV89d5BYp5rRMBJoc+aUN0x5OXDMeRQHazejr2Xmqj2tw==
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
@@ -1721,6 +1726,11 @@ aurelia-bootstrapper@^2.4.0:
     aurelia-templating-resources "^1.14.1"
     aurelia-templating-router "^1.5.0"
 
+aurelia-chart@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/aurelia-chart/-/aurelia-chart-0.3.4.tgz#be8766a8768c0c30f657ddbd486344c78dc0fe8d"
+  integrity sha512-Bt9bp/YPbQ9+CEliRoJ9QrxOiRd6DYz12SAje73zRTlFB4NaAC36J2+O6u0u6H+dF5reghrEDQNdEzjJm4ihOg==
+
 aurelia-cli@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/aurelia-cli/-/aurelia-cli-3.0.1.tgz#6ff96a38fb26d363f4ff2e2dd29844c8752bb603"
@@ -2659,6 +2669,13 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
+
+chart.js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.1.1.tgz#9bd96ddaa444205ec55dd103f713f65530e9a2df"
+  integrity sha512-P0pCosNXp+LR8zO/QTkZKT6Hb7p0DPFtypEeVOf+6x06hX13NIb75R0DXUA4Ksx/+48chDQKtCCmRCviQRTqsA==
+  dependencies:
+    "@kurkle/color" "^0.3.0"
 
 chokidar@^2.0.0:
   version "2.1.8"

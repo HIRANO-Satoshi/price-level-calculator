@@ -33,6 +33,8 @@
     <!-- <h5>
          Convert Luncho for all countries
          </h5> -->
+
+    <!-- luncho value -->
     <div class="valign-wrapper">
       <md-input label="Luncho " value.bind="lunchoValue"
                 input.delegate="lunchosForCountries()"
@@ -41,6 +43,7 @@
     </div>
     <div class="vspace"></div>
 
+    <!-- country -->
     <div class="row filters">
       <div class="col s12 m5 l4">
         <!-- XXX fails selection sometimes on mobile -->
@@ -55,6 +58,9 @@
                   placeholder="Country name, Currency" class="form-control"/>
       </div>
     </div>
+
+    <!-- native-options.bind="{ segmentStrokeColor: '#fff', segmentStrokeWidth: 2 }" -->
+    <chart type="bar" data.bind="graphData" ></chart>
 
     <table id="all-table"  class="table table-striped"
            aurelia-table="data.bind: lunchoDatas; display-data.bind: $displayData; filters.bind: filters">

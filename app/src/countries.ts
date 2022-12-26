@@ -18,6 +18,8 @@ export class Countries {
         {value: '', keys: ['continent_code']},
     ];
 
+    graphData: number[];
+
     constructor(app: App, taskQueue: TaskQueue) {
         this.app = app;
         this.taskQueue = taskQueue;
@@ -48,5 +50,12 @@ export class Countries {
         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
             this.lunchoDatas.push(this.luncho.lunchoDataCache[countryCode]);
         }
+
+        // graph
+        this.graphData = [];
+        for (var lunchoData of this.lunchoDatas) {
+            this.graphData.push(lunchoData['dollar_value']);
+        }
+        this.graphData.sort((a, b) => b - a);
     }
 }

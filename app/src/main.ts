@@ -10,7 +10,8 @@ export function configure(aurelia: Aurelia) {
         .standardConfiguration()
         .plugin(PLATFORM.moduleName('aurelia-materialize-bridge'), b => b.useAll())
         .feature(PLATFORM.moduleName('resources/index'))
-        .plugin(PLATFORM.moduleName('@krisdages/aurelia-table'));
+        .plugin(PLATFORM.moduleName('@krisdages/aurelia-table'))
+        .plugin(PLATFORM.moduleName('aurelia-chart'));
 
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin(PLATFORM.moduleName('aurelia-animator-css'));
