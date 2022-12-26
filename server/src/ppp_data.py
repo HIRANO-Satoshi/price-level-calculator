@@ -1,15 +1,21 @@
 '''
   Luncho PPP data
 
+  See for detail:  https://luncho-index.org/about#data
+
   @author HIRANO Satoshi
-  @date  2021/05/13
+  @since  2021/05/13
+
+
 '''
 
 import csv
+import datetime
+import io
+import json
 import logging
 import os
 import re
-import datetime
 from typing import List, Dict, Tuple, Union, Any, Type, Generator, Optional, ClassVar, cast
 from typing_extensions import TypedDict
 import pycountry
@@ -20,6 +26,10 @@ from conf import SDR_Per_Luncho
 #from src import exchange_rate
 from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
 from src.utils import error
+
+PPP_File  = 'data/imf-dm-export-20221225.csv'
+ICP_File  = 'data/Data_Extract_From_ICP_2017_Metadata.csv'
+
 
 Countries: Dict[CountryCode, Country] = {}      # A map of country data
 CountryCode_Names: Dict[CountryCode, str] = {}  # A map of country code and name
@@ -45,31 +55,35 @@ kosovo.name = "Kosovo"
 kosovo.numeric = "383"
 kosovo.official_name = "Kosovo"
 
+
 def init(use_dummy_data: bool) -> None:
     global Country_Metadata, Countries, CountryCode_Names
 
     if not os.getcwd().endswith('server') and not conf.Is_AppEngine:
         os.chdir("server");
 
-    # read country metadata to build Country_Metadata map
-    with open('data/Data_Extract_From_ICP_2017_Metadata.csv', newline='', encoding="utf_8_sig") as metadata_file:
-        metadata_reader  = csv.DictReader(metadata_file)
+    def process_one_country(data):
+        ''' Process a country metadata and put it in Country_Metadata map.
+
+         ICP_File contains for countries and regions as following.
+
+          ITA,Italian Republic,EUR: Euro,Italy,Capital-city only
+          JAM,Jamaica,JMD: Jamaican Dollar,Jamaica,...
+          JPN,Japan,JPY: Yen,Japan,Capital-city only
+
+        '''
+
         country_data: Any
 
-        # 215 countries and regions in the file
-        for data in metadata_reader:
-            country_code3 = data['Code']     # ISO 3 letter code
-            del data['Code']
-            if country_code3 == 'BON': # bonaire, but not found in IMF PPP data
-                country_code3 = 'BES';
-            if country_code3 == 'KSV': # Kosovo is not found in pycountry but in IMF PPP data
-                country_data = kosovo
-            else:
-                country_data: Any = pycountry.countries.get(alpha_3=country_code3)
-                if not country_data:
-                    print("No location information on IP address: " + country_code3)
-                    #error(country_code3, "No location information on IP address")
-                    continue
+        country_code3 = data['Code']     # ISO 3 letter code
+        del data['Code']
+        if country_code3 == 'BON': # bonaire, but not found in IMF PPP data
+            country_code3 = 'BES';
+        if country_code3 == 'KSV': # Kosovo is not found in pycountry but in IMF PPP data
+            country_data = kosovo
+        else:
+            country_data: Any = pycountry.countries.get(alpha_3=country_code3)
+        if country_data:
             try:
                 a = country_data.alpha_2
             except:
@@ -93,36 +107,30 @@ def init(use_dummy_data: bool) -> None:
                 data['coverage'] = coverage
 
             Country_Metadata[country_code] = dict(data)
-        #print(str(Country_Metadata))
+            #print(str(Country_Metadata))
+        else:
+            print("No location information on IP address: " + country_code3)
+            #error(country_code3, "No location information on IP address")
 
-    mapping = {
-        "China, People's Republic of": 'China',
-        "Congo, Dem. Rep. of the": 'Congo, Dem. Rep.',
-        "Congo, Republic of ": 'Congo, Rep.',
-        "Egypt": 'Egypt, Arab Rep.',
-        "Hong Kong SAR": 'Hong Kong SAR, China',
-        "Iran": 'Iran, Islamic Rep.',
-        "Korea, Republic of": 'Korea, Rep.',
-        "Lao P.D.R.": 'Lao PDR',
-        "Macao SAR": 'Macao SAR, China',
-        "Micronesia, Fed. States of": "Micronesia, Fed. Sts.",
-        "North Macedonia ": "North Macedonia",
-        "Saint Kitts and Nevis": "St. Kitts and Nevis",
-        "Saint Lucia": "St. Lucia",
-        "Saint Vincent and the Grenadines": "St. Vincent and the Grenadines",
-        "South Sudan, Republic of": "South Sudan",
-        "Syria": "Syrian Arab Republic",
-        "São Tomé and Príncipe": "São Tomé and Principe",
-        "Taiwan Province of China": "Taiwan, China",
-        "Venezuela": "Venezuela, RB",
-        "Bonaire": "Bonaire, Sint Eustatius and Saba",
-        "Yemen": "Yemen, Rep.",
+    for file in (ICP_File, 'data/Data_Extract_From_ICP_Fix.csv'):
+        with open(file, newline='', encoding="utf_8_sig") as metadata_file:
+            metadata_reader  = csv.DictReader(metadata_file)
 
-    }
+            for data in metadata_reader:
+                process_one_country(data)
+            #breakpoint()
+
+    with open('data/imf-dm-mapping.json') as f:
+        mapping = json.load(f)
 
     # build Countries map from Implied PPP conversion rates (National currency per international dollar)
-    with open('data/imf-dm-export-20210524.csv', newline='', encoding="utf_8_sig") as imf_file:
-        # with open('data/imf-dm-export-20201110.csv', newline='', encoding="utf_8_sig") as imf_file:
+    #
+    # PPP_File
+    #
+    # Antigua and Barbuda,1.296,1.283,1.344,1.36,1.363,1.42,1.505,1.599,1.735,1.746,1.711,1.698,1.701,1.692,1.71,1.716,1.735,1.737,1.754,1.755,1.743,1.731,1.716,1.668,1.651,1.673,1.63,1.647,1.686,1.703,1.709,1.691,1.829,1.854,1.915,2.04,2.06,2.094,2.09,2.057,2.055,2.059,2.054,2.048,2.046,2.047,2.05
+    # Argentina,0,0,0,0,0,0,0,0,0.001,0.016,0.334,0.766,0.851,0.817,0.822,0.831,0.816,0.798,0.776,0.751,0.742,0.718,0.923,1,1.032,1.104,1.219,1.364,1.648,1.887,2.256,2.733,3.218,3.941,5.452,6.867,9.295,10.257,14.024,20.753,29.119,41.198,56.231,70.931,84.788,97.39,108.15
+    #
+    with open(PPP_File, newline='', encoding="utf_8_sig") as imf_file:
         imf_reader  = csv.DictReader(imf_file)
 
         # 193 countries and regions in the file
@@ -146,7 +154,7 @@ def init(use_dummy_data: bool) -> None:
                     continue
                 ppps[year] = float(ppp)
 
-            if country_code == 'TL': # Timor-Leste is in asia.
+            if country_code in ('TL', 'KP'): # Timor-Leste and North Korea are in asia.
                 continent_code = 'AS'
             else:
                 continent_code: Any = pycountry_convert.country_alpha2_to_continent_code(country_code)
@@ -162,14 +170,14 @@ def init(use_dummy_data: bool) -> None:
                                        }
             CountryCode_Names[country_code] = Country_Metadata[country_code]['name']
 
-        Countries['KP'] = Countries.get('KP') or {
-            'year_ppp': {},
-            'country_code': 'KP',
-            'currency_code': 'KPW',
-            'continent_code': 'AS',
-            'currency_name': "North Korean Won",
-            'country_name': "Korea, Democratic People's Republic of"
-        }
+        # Countries['KP'] = Countries.get('KP') or {
+        #     'year_ppp': {},
+        #     'country_code': 'KP',
+        #     'currency_code': 'KPW',
+        #     'continent_code': 'AS',
+        #     'currency_name': "North Korean Won",
+        #     'country_name': "Korea, Democratic People's Republic of"
+        # }
 
         #print(str(Countries))
         #print(CountryCode_Names)

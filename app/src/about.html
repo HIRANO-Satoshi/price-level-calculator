@@ -8,6 +8,9 @@
    section {
      margin-bottom: 4em;
    }
+   li {
+     margin-bottom: 0.6rem;
+   }
   </style>
 
   <div class="container about">
@@ -206,21 +209,23 @@
       <h4><a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/tree/master/server/data">Data</a></h4>
 
       <ul class="browser-default">
-        <li>Implied PPP conversion rate from <a target="_blank" href="https://www.imf.org/en/Publications/WEO/Issues/2021/03/23/world-economic-outlook-april-2021">IMF World Economic Outlook (March 23, 2021)</a>
+        <li><a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/imf-dm-export-20221225.csv">server/data/imf-dm-export-20221225.csv</a>: Implied PPP conversion rate from <a target="_blank" href="https://www.imf.org/en/Publications/WEO/weo-database/2022/October">IMF World Economic Outlook Database (October, 2022)</a>
           <ul class="class="browser-default"">
-            <li>Open <a target="_blank" href="https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD">PPPEX data at IMF database</a> and press "All Data" to download a XLS file. Open the XLS file and save it as a CSV file  (<a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/imf-dm-export-20201110.csv">imf-dm-export-20201110.csv</a>).</li>
-            <li>194 countries and regions</li>
-            <li>Each country name is defined as "Table Name" in the following ICP-2017 metadata.</li>
+            <li>To update, open <a target="_blank" href="https://www.imf.org/external/datamapper/PPPEX@WEO/OEMDC/ADVEC/WEOWORLD">PPPEX data at IMF database</a> and press "All Country Data" to download a XLS file. Open the XLS file and save it as a CSV file.</li>
+            <li>Each country name is defined as "Table Name" in ICP-2017 metadata described below.</li>
           </ul>
         </li>
 
-        <li>ICP-2017 metadata <a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/Data_Extract_From_ICP_2017_Metadata.csv">Data_Extract_From_ICP_2017_Metadata.csv</a>
+        <li><a href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/imf-dm-fix.json">server/data/imf-dm-fix.json</a> includes lacking data for North Macedonia.</li>
+        <li><a href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/imf-dm-mapping.json">server/data/imf-dm-mapping.json</a> includes some mapping of country name contained in imf-dm-export-*.csv to pycountry.</li>
+
+        <li><a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/Data_Extract_From_ICP_2017_Metadata.csv">server/data/Data_Extract_From_ICP_2017_Metadata.csv</a>: ICP-2017 metadata from  <a target="_blank" href="https://databank.worldbank.org/source/icp-2017?preview=on">ICP-2017 database</a>
           <ul class="class="browser-default"">
-            <li>Extracted the following metadata from <a target="_blank" href="https://databank.worldbank.org/source/icp-2017?preview=on">ICP-2017 database</a></li>
-            <li>Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage</li>
+            <li>To update, extracted the following metadata</li>
+            <li style="margin-left: 4rem;">Code,Long Name,Currency Unit,Table Name,Household consumption price survey: Geographical coverage</li>
             <li>
               Examples:
-              <ul>
+              <ul style="margin-left: 4rem;">
                 <li>AFG,Islamic State of Afghanistan,AFN: Afghani,Afghanistan,</li>
                 <li>ALB,Republic of Albania,ALL: Lek,Albania,Urban only</li>
                 <li>DZA,People's Democratic Republic of Algeria,DZD: Algerian Dinar,Algeria,Urban and Rural</li>
@@ -228,7 +233,10 @@
             </li>
           </ul>
         </li>
+        <li><a href="https://github.com/HIRANO-Satoshi/luncho/blob/master/server/data/Data_Extract_From_ICP_Fix.csv">server/data/Data_Extract_From_ICP_Fix.csv</a> includes lacking data for Andorra and North Korea.</li>
         <li>Exchange rates from <a target="_blank" href="https://exchangerate.host">exchangerate.host</a>
+        </li>
+        <li><a target="_blank" href="https://https://github.com/flyingcircusio/pycountry">Pycountry</a> and <a target="_blank" href="https://https://github.com/flyingcircusio/pycountry-convert">Pycountry-convert</a> for conversion of country names and currency codes.
         </li>
       </ul>
     </section>
@@ -237,6 +245,9 @@
       <h4>Limitations</h4>
 
       <ul class="browser-default">
+        <li>Due to the inflation "100 Luncho for 5 SDR" may be a bit obsolete in some countries. We need to fix the definition.</li>
+        <li>PPP conversion rate is updated irregularly and does not reflect monthly inflation
+          data. Sorry for inconvenience.</li>
         <li>
           The Luncho calculation reflects the PPP value of a target country and the daily exchange rate of SDR, but does not the daily exchange rate of the target country. The daily exchange rate of the target country is reflected only once a year when Dr Hirano replaces PPP data with the year's PPP estimation from IMF World Economic Outlook</a>. See <a href="https://github.com/HIRANO-Satoshi/luncho/issues/24" target="_blank">this issue for detail</a>.
         </li>
@@ -258,7 +269,7 @@
       <h4>Author</h4>
 
       <p>
-        HIRANO Satoshi Ph.D.,  &emsp;<a target="_blank" href="https://rq.land/help/">Peace and Passion</a>, <a target="_blank" href="https://www.iis.u-tokyo.ac.jp/en/">University of Tokyo IIS</a>
+        HIRANO Satoshi, Ph.D.  &emsp;<a target="_blank" href="https://rq.land/help/">Peace and Passion</a>, <a target="_blank" href="https://www.iis.u-tokyo.ac.jp/en/">University of Tokyo IIS</a>
         <p>Contact: hirano-s @@@@ peace-and-passion.com        (Issues must be submitted on <a target="_blank" href="https://github.com/HIRANO-Satoshi/luncho/issues">the issues page on Github</a>.)
         </p>
     </section>
