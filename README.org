@@ -12,8 +12,8 @@ In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same
       is equivalent to 17 real ($3.12 US dollar) in Brazil. In USA, 100 Luncho is about $7.21 US
         dollar. All are the same value because everything is just 100 Luncho.
 
-*** [[https://luncho-index.org][Demo on the official Luncho web site]]
-*** [[https://luncho-index.org/#/about][Detail about Luncho, how it works]]
+*** [[https://luncho-api.org][Demo on the official Luncho web site]]
+*** [[https://luncho-api.org/#/about][Detail about Luncho, how it works]]
 
 *** Usages
 

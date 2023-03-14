@@ -6,7 +6,7 @@ env_variables:
 
   # If you use Google Cloud Storage for exchange rate backup, set a bucket name
   # Usually it is the same as the URL of GAE app. If you don't use, don't set it.
-  GCS_BUCKET:      luncho-hirano.appspot.com
+  GCS_BUCKET:      demandic-production.appspot.com
 
   # If you have Fixer API key for exchange rates, set it. Otherwise we use a free API.
   # FIXER_API_KEY:   XXXXXXXX

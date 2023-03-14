@@ -25,7 +25,7 @@
 
     async func() {
       this.luncho = new Luncho();
-      this.luncho.basePath = "https://luncho-index.org"
+      this.luncho.basePath = "https://luncho-api.org"
       // luncho.basePath = 'http://localhost:8000';
 
       var countryCode = 'JP';

@@ -90,7 +90,7 @@
     "yargs-parser": "^21.1.1"
   },
   "scripts": {
-    "build": "yarn link luncho-typescript-fetch; webpack --env production",
+    "build": "yarn link luncho-typescript-fetch; webpack --mode=production --env MODE=production",
     "start": "yarn link luncho-typescript-fetch; webpack server",
     "build:dev": "webpack",
     "analyze": "webpack --env production --analyze",

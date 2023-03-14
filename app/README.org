@@ -24,7 +24,7 @@
 
   - To build index.html and bundles in /dist dir
 
-    au build --env prod
+    au build --env --prod
 
 ** Author
 
