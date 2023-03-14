@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 import os
-import logging
 import time
 from typing import cast
 import pytest
@@ -16,7 +15,7 @@ from fastapi.testclient import TestClient
 import conf
 import main
 from src.ppp_data import Countries, CountryCode_Names
-from src.types import Currency, CurrencyCode, C1000, CountryCode, LunchoData, Country
+from src.types import CountryCode, LunchoData
 
 main.init(use_dummy_data=True)   # use dummy data from files
 client = TestClient(main.app)
