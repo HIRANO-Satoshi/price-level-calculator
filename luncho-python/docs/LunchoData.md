@@ -10,10 +10,10 @@ Name | Type | Description | Notes
 **continent_code** | **str** |  | 
 **currency_code** | **str** |  | 
 **currency_name** | **str** |  | 
-**exchange_rate** | **float** |  | 
-**ppp** | **float** |  | 
-**dollar_per_luncho** | **float** |  | 
-**expiration** | **float** |  | 
+**exchange_rate** | **float** |  | [optional] 
+**ppp** | **float** |  | [optional] 
+**dollar_per_luncho** | **float** |  | [optional] 
+**expiration** | **float** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

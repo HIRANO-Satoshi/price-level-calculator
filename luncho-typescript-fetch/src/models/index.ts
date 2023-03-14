@@ -55,25 +55,25 @@ export interface LunchoData {
      * @type {number}
      * @memberof LunchoData
      */
-    exchange_rate: number;
+    exchange_rate?: number;
     /**
      * 
      * @type {number}
      * @memberof LunchoData
      */
-    ppp: number;
+    ppp?: number;
     /**
      * 
      * @type {number}
      * @memberof LunchoData
      */
-    dollar_per_luncho: number;
+    dollar_per_luncho?: number;
     /**
      * 
      * @type {number}
      * @memberof LunchoData
      */
-    expiration: number;
+    expiration?: number;
 }
 
 /**
@@ -84,10 +84,10 @@ export interface LunchoData {
 export interface ValidationError {
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<string | number>}
      * @memberof ValidationError
      */
-    loc: Array<string>;
+    loc: Array<string | number>;
     /**
      * 
      * @type {string}

@@ -43,7 +43,7 @@ class LunchoApi(object):
         ):
             """All Luncho Data  # noqa: E501
 
-              Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: Dict[CountryCode, LunchoData] A dict of a country code and LunchoData.  # noqa: E501
+            Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: dict[CountryCode, LunchoData] A dict of a country code and LunchoData.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 
@@ -148,7 +148,7 @@ class LunchoApi(object):
         ):
             """Countries  # noqa: E501
 
-              Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: Dict[CountryCode, str] A dict of a country code and country name.  # noqa: E501
+            Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {'JP': 'Japan', 'US': 'United States'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: dict[CountryCode, str] A dict of a country code and country name.  # noqa: E501
             This method makes a synchronous HTTP request by default. To make an
             asynchronous HTTP request, please pass async_req=True
 

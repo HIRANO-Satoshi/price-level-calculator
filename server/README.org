@@ -12,7 +12,7 @@
     - However, our client libraries have additional files for the local calculation and caching. See
       README.markdown files.
       - [[../luncho-typescript-fetch][luncho-typescript-fetch]],
-      - [[../luncho_python][luncho_python]]
+      - [[../luncho-python][luncho-python]]
 
   - The Luncho server hosts [[../app][the Luncho app]] web site.
 

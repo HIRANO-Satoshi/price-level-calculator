@@ -72,7 +72,7 @@ class ValidationError(ModelNormal):
                 and the value is attribute type.
         """
         return {
-            'loc': ([str],),  # noqa: E501
+            'loc': ([object],),  # noqa: E501
             'msg': (str,),  # noqa: E501
             'type': (str,),  # noqa: E501
         }
@@ -104,7 +104,7 @@ class ValidationError(ModelNormal):
         """ValidationError - a model defined in OpenAPI
 
         Args:
-            loc ([str]):
+            loc ([object]):
             msg (str):
             type (str):
 

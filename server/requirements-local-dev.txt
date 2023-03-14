@@ -9,7 +9,7 @@ fastapi-utils
 google-cloud-storage
 gunicorn
 httpx
-../luncho_python
+../luncho-python/luncho_python
 mypy-extensions
 pycountry
 pycountry-convert

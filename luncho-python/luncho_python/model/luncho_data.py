@@ -112,7 +112,7 @@ class LunchoData(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, country_code, country_name, continent_code, currency_code, currency_name, exchange_rate, ppp, dollar_per_luncho, expiration, *args, **kwargs):  # noqa: E501
+    def __init__(self, country_code, country_name, continent_code, currency_code, currency_name, *args, **kwargs):  # noqa: E501
         """LunchoData - a model defined in OpenAPI
 
         Args:
@@ -121,10 +121,6 @@ class LunchoData(ModelNormal):
             continent_code (str):
             currency_code (str):
             currency_name (str):
-            exchange_rate (float):
-            ppp (float):
-            dollar_per_luncho (float):
-            expiration (float):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -157,6 +153,10 @@ class LunchoData(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            exchange_rate (float): [optional]  # noqa: E501
+            ppp (float): [optional]  # noqa: E501
+            dollar_per_luncho (float): [optional]  # noqa: E501
+            expiration (float): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -187,10 +187,6 @@ class LunchoData(ModelNormal):
         self.continent_code = continent_code
         self.currency_code = currency_code
         self.currency_name = currency_name
-        self.exchange_rate = exchange_rate
-        self.ppp = ppp
-        self.dollar_per_luncho = dollar_per_luncho
-        self.expiration = expiration
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

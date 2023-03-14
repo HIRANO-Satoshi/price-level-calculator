@@ -18,10 +18,10 @@
 ```
     cd LOCATION
     git clone https://github.com/HIRANO-Satoshi/luncho.git
-    cd luncho/luncho_python
+    cd luncho/luncho-python
 
     cd YOUR_SRC
-    ln -s LOCATION/luncho/luncho_python .
+    ln -s LOCATION/luncho/luncho-python/luncho_python .
 ```
 
 ```

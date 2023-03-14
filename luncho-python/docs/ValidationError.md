@@ -4,7 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**loc** | **[str]** |  | 
+**loc** | **[object]** |  | 
 **msg** | **str** |  | 
 **type** | **str** |  | 
 

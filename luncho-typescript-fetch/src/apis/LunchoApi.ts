@@ -29,7 +29,7 @@ export interface LunchoDataRequest {
 export class LunchoApi extends runtime.BaseAPI {
 
     /**
-     *   Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: Dict[CountryCode, LunchoData] A dict of a country code and LunchoData.
+     * Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: dict[CountryCode, LunchoData] A dict of a country code and LunchoData.
      * All Luncho Data
      */
     async allLunchoDataRaw(): Promise<runtime.ApiResponse<{ [key: string]: LunchoData; }>> {
@@ -48,7 +48,7 @@ export class LunchoApi extends runtime.BaseAPI {
     }
 
     /**
-     *   Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: Dict[CountryCode, LunchoData] A dict of a country code and LunchoData.
+     * Returns A dict of LunchoDatas for supported countries. Data size is about 40KB. - **return**: dict[CountryCode, LunchoData] A dict of a country code and LunchoData.
      * All Luncho Data
      */
     async allLunchoData(): Promise<{ [key: string]: LunchoData; }> {
@@ -57,7 +57,7 @@ export class LunchoApi extends runtime.BaseAPI {
     }
 
     /**
-     *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: Dict[CountryCode, str] A dict of a country code and country name.
+     * Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: dict[CountryCode, str] A dict of a country code and country name.
      * Countries
      */
     async countriesRaw(): Promise<runtime.ApiResponse<{ [key: string]: string; }>> {
@@ -76,7 +76,7 @@ export class LunchoApi extends runtime.BaseAPI {
     }
 
     /**
-     *   Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: Dict[CountryCode, str] A dict of a country code and country name.
+     * Returns a dict of supported country codes and names so that you can show a dropdown list of countries. Data size is about 3.5KB.    E.g. {\'JP\': \'Japan\', \'US\': \'United States\'...}.     If data for a country is not available, either its ppp or exchange_rate is 0.    - **return**: dict[CountryCode, str] A dict of a country code and country name.
      * Countries
      */
     async countries(): Promise<{ [key: string]: string; }> {
