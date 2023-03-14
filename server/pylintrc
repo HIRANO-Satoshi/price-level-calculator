@@ -1,0 +1,10 @@
+[MAIN]
+init-hook='import os, sys; sys.path.append(os.path.join(os.path.dirname(__file__), "pypyenv/lib/pypy3.9/site-packages"));'
+
+[FORMAT]
+max-line-length=120
+
+[DESIGN]
+max-locals = 20
+min-public-methods=2
+exclude-too-few-public-methods=BaseModel

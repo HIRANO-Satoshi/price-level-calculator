@@ -6,14 +6,16 @@
   Author: HIRANO Satoshi
 '''
 
-from typing import List, Dict, Optional
+from __future__ import annotations
+from typing import Optional
 from pydantic import BaseModel
 
-CountryCode = str               # ISO 3166-1 2 letter code. E.g. 'JP'
-CurrencyCode = str              # ISO 4217   3 letter currency code. E.g. 'AFN'
-ContinentCode = str             # NA, SA, AS, OC, AF
+CountryCode = str     # ISO 3166-1 2 letter code. E.g. 'JP'
+CurrencyCode = str    # ISO 4217   3 letter currency code. E.g. 'AFN'
+ContinentCode = str   # NA, SA, AS, OC, AF
+C1000 = 1000
 
-continents: Dict[ContinentCode, str] = {
+continents: dict[ContinentCode, str] = {
     'NA': 'North America',
     'SA': 'South America',
     'EU': 'Europe',
@@ -22,7 +24,7 @@ continents: Dict[ContinentCode, str] = {
     'AF': 'Africa',
 }
 
-class LunchoData(BaseModel):
+class LunchoData(BaseModel):   #pylint: disable=too-few-public-methods
     ''' Data needed to convert between Luncho and local currency.
         If data for the country is not available, either ppp or exchange_rate is 0.
     '''
@@ -33,17 +35,17 @@ class LunchoData(BaseModel):
 
     currency_code: CurrencyCode     # Currency code
     currency_name: str              # Currency name
-    exchange_rate: float            # Exchange rate per US Dollar. 0 if not available.
+    exchange_rate: Optional[float]  # Exchange rate per US Dollar. 0 if not available.
 
-    ppp: float                      # PPP value. 0 if not available.
-    dollar_per_luncho: float        # dollar/luncho rate
-    expiration: float               # Data expiration in unix time. You need to call APIs after this time.
+    ppp: Optional[float]            # PPP value. 0 if not available.
+    dollar_per_luncho: Optional[float] # dollar/luncho rate
+    expiration: Optional[float]     # Data expiration in unix time. You need to call APIs after this time.
     #dollar_value: float
     #local_currency_value: float
 
-class Country(LunchoData):
+class Country(LunchoData):   #pylint: disable=too-few-public-methods
     ''' Internal data with yearly PPP values. '''
-    year_ppp: Optional[Dict[int, float]]  # { year: ppp }  Optional
+    year_ppp: Optional[dict[int, float]]  # { year: ppp }  Optional
 
 # class CountryCodeName(BaseModel):
 #     ''' Country code and name. '''
@@ -52,17 +54,14 @@ class Country(LunchoData):
 #     country_name: str               # Country name
 
 
-class Currency():
+class Currency():   #pylint: disable=too-few-public-methods
     """
     NOT USED. Currency. Value is multipied by 1000.
 
     """
-
 
     def __init__(self, value=None, code=None, unit=None,):
         super().__init__()
         self.value = value
         self.code = code
         self.unit = unit
-
-C1000 = 1000

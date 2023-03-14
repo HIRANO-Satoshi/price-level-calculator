@@ -6,6 +6,7 @@
   @date  2020/02/28
 '''
 
+from __future__ import annotations
 #import pdb
 #import logging
 import os
@@ -61,7 +62,7 @@ app.add_middleware(
 #app.mount("/static", StaticFiles(directory="static"), name="static")
 
 def init(use_dummy_data=False):
-    ''' Called from gunicorn_config.py '''
+    ''' Called from post_worker_init() in gunicorn_config.py '''
 
     # initialize routes
     app.include_router(api.api_router, prefix=conf.API_V1_STR)
@@ -71,7 +72,7 @@ def init(use_dummy_data=False):
     ppp_data.init(use_dummy_data=use_dummy_data)
     exchange_rate.init(use_dummy_data)
 
-def gen_openapi_schema() -> Dict:
+def gen_openapi_schema() -> dict:
     ''' Callback for generating OpenAPI schema. '''
 
     if app.openapi_schema:

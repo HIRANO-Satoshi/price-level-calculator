@@ -5,10 +5,11 @@
   @date: 2021-5-15
 '''
 
+from __future__ import annotations
 import os
 import logging
 import time
-from typing import List, Dict, Tuple, Callable, Union, Any, Set, ClassVar, Type, Optional, cast
+from typing import cast
 import pytest
 from fastapi.testclient import TestClient
 
@@ -21,13 +22,13 @@ main.init(use_dummy_data=True)   # use dummy data from files
 client = TestClient(main.app)
 
 @pytest.fixture(scope="function", autouse=True)
-def setup_method():
+def setup_method() -> None:
     pass
 
-def test_server_api():
+def test_server_api() -> None:
     response = client.get("/v1/countries")
     assert response.status_code == 200
-    datas: Dict[CountryCode, str] = response.json()
+    datas: dict[CountryCode, str] = response.json()
     assert datas['JP'] == 'Japan'
     assert len(datas) > 150
 
@@ -38,13 +39,13 @@ def test_server_api():
 
     response = client.get("/v1/all-luncho-data")
     assert response.status_code == 200
-    lunchoDatas: Dict[CountryCode, LunchoData] = cast(Dict[CountryCode, LunchoData], response.json())
+    lunchoDatas: dict[CountryCode, LunchoData] = cast(dict[CountryCode, LunchoData], response.json())
     Japan_test(lunchoDatas['JP'])
 
     response = client.get("/v1/luncho-data?dummydata=JP")
     assert response.status_code == 422
 
-def test_server_api_error():
+def test_server_api_error() -> None:
     ''' Test for Forex fetch error. '''
 
     #XXX if os.path.exists(conf.Last_Fixer_Exchange_File):
@@ -64,7 +65,7 @@ def test_server_api_error():
     conf.Exchangerate_URL = 'https://not_exsist_not_exist.com'
     main.init(use_dummy_data=False)
 
-def Japan_test(lunchoData: LunchoData):
+def Japan_test(lunchoData: LunchoData) -> None:
     assert lunchoData['country_code']   == 'JP'
     assert lunchoData['country_name']   == 'Japan'
     assert lunchoData['country_code']   == 'JP'

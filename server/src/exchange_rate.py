@@ -6,30 +6,27 @@
   Author: HIRANO Satoshi
 '''
 
+from __future__ import annotations
 import datetime
+import http
 import json
 import time
-import sys
 import logging
 import threading
+import urllib.request
+import urllib.error
 from threading import Thread
-from typing import Type, Optional, List, Dict #, Tuple, Union, Any, Generator, cast
-from typing_extensions import TypedDict
-import requests
+from typing import TypedDict
 
-from src.utils import error
-from src.types import Currency, CurrencyCode, C1000
+from google.cloud import storage
+
+from src.types import CurrencyCode
 import conf
-if conf.Use_Fixer_For_Forex:
-    import api_keys
-    fixer_access_key = api_keys.Fixer_Access_Key
-else:
-    fixer_access_key = ''
 
 global_variable_lock = threading.Lock()
 
 # exchange rates based on USD
-Exchange_Rates: Dict[CurrencyCode, float] = {}  # { currencyCode: rate }
+Exchange_Rates: dict[CurrencyCode, float] = {}  # { currencyCode: rate }
 
 # Expiration time of Exchange_Rates
 expiration: float = 0.0
@@ -41,29 +38,14 @@ last_load: float = 0
 SDR_Per_Dollar: float = 0   # filled in load_exchange_rates()  1 SDR = $1.4...
 
 class FixerExchangeRate(TypedDict):
+    ''' Exchange rate struct returned by Fixer API. '''
     success: bool    # true if API success
     timestamp: int   # 1605081845
     base: str        # always "EUR"
     date: str        #"2020-11-11",
-    rates: Dict[CurrencyCode, float]   # EUR based rates, "AED": 4.337445
+    rates: dict[CurrencyCode, float]   # EUR based rates, "AED": 4.337445
 
-def convert(source: Currency, currencyCode: CurrencyCode) -> Currency:
-    if source.currencyCode == currencyCode:
-        return source
-
-    source_exchange_rate: Optional[float] = Exchange_Rates.get(source.currencyCode, None)
-    if source_exchange_rate is None or source_exchange_rate == 0:
-        error(source.currencyCode, "Currency code mismatch")
-
-    to_exchange_rate: Optional[float] = Exchange_Rates.get(currencyCode, None)
-    if to_exchange_rate is None:
-        error(currencyCode, "Currency code mismatch")
-
-    value: float = source.value / source_exchange_rate * to_exchange_rate
-    return Currency(code=currencyCode, value=int(value))
-
-
-def exchange_rate_per_USD(currencyCode: CurrencyCode) -> float:
+def exchange_rate_per_USD(currencyCode: CurrencyCode) -> float: #pylint: disable=invalid-name
     ''' Returns exchange rate per USD for the currencyCode.
         None if the currencyCode is not available. '''
 
@@ -71,43 +53,55 @@ def exchange_rate_per_USD(currencyCode: CurrencyCode) -> float:
 
 
 def load_exchange_rates(use_dummy_data: bool):
-    ''' Load exchange rates from fixer or dummy data file. '''
+    ''' Load exchange rates from a forex API or saved rate data from GCS. '''
 
+    global Exchange_Rates, SDR_Per_Dollar, last_load, expiration #pylint: disable=invalid-name,global-variable-not-assigned,global-statement
     fixer_exchange_rate: FixerExchangeRate
-    new_exchange_rate: Dict[CurrencyCode, float] = {}
+    new_exchange_rate: dict[CurrencyCode, float] = {}
+    success: bool = False
+    err_msg: str = ''
 
     if use_dummy_data:
-        with open(conf.Dummy_Fixer_Exchange_File, 'r', newline='', encoding="utf_8_sig") as fixer_file:
+        with open(conf.DUMMY_FIXER_EXCHANGE_FILE, 'r', newline='', encoding="utf_8_sig") as fixer_file:
             fixer_exchange_rate = json.load(fixer_file) # 168 currencies
     else:
-        url = ''.join((conf.Exchangerate_URL, 'latest', '?access_key=', fixer_access_key)) # date can be '2021-05-25'
-        #XXX fall back?
+        # try API URLs that are Fixer compatible
+        for api_url in conf.EXCHANGERATE_URLS:
+            url = api_url + 'latest' + ('?access_key=' + conf.FIXER_API_KEY if conf.FIXER_API_KEY else '')
+            request =  urllib.request.Request(url, headers=conf.Header_To_Fetch('en'))
 
-        OK: boolean = False
-        err_msg: str = ''
-        try:
-            response = requests.get(url, headers=conf.Header_To_Fetch('en'), allow_redirects=True)
-            OK = response.ok
-            err_msg = str(response.status_code)
-        except Exception as ex:   #pylint: disable=broad-except
-            err_msg = str(ex)
-        if OK:   # no retry. will load after one hour.
-            fixer_exchange_rate = json.loads(response.text)
-            assert fixer_exchange_rate['base'] == 'EUR'  # always EUR with free plan
-            logging.info('Fetched exchange rate')
-            #XXX save it
-            # with open(conf.Last_Fixer_Exchange_File, 'w', newline='', encoding="utf_8_sig") as fixer_new_file:
-            #     fixer_new_file.write(response.text)
-        else:
-            # use the last exchange rate data. if not available, use test data
             try:
-                with open(conf.Last_Fixer_Exchange_File, newline='', encoding="utf_8_sig") as fixer_last_file:
-                    fixer_exchange_rate = json.load(fixer_last_file)
-                    logging.error('Fetching exchange rate failed for %s with %s fall down to data last got', conf.Exchangerate_URL, err_msg)
-            except OSError:
-                with open(conf.Dummy_Fixer_Exchange_File, newline='', encoding="utf_8_sig") as fixer_last_file:
-                    fixer_exchange_rate = json.load(fixer_last_file)
-                    logging.error('Fetching exchange rate failed for %s with %s. Fall down to data in %s', conf.Exchangerate_URL, err_msg, conf.Dummy_Fixer_Exchange_File)
+                with urllib.request.urlopen(request) as return_data: #type: http.client.HTTPResponse
+                    fixer_exchange_rate = json.loads(return_data.read())
+
+                    # always EUR with free plan. 160 is for an incident occured in 2023 that lacks many currencies
+                    if fixer_exchange_rate['base'] == 'EUR' and len(fixer_exchange_rate['rates']) > 160:
+                        logging.info('Fetched exchange rate from %s', api_url)
+
+                        # save it for emergency
+                        upload_exchange_rate(fixer_exchange_rate)
+                        success = True
+                        break
+
+            except urllib.error.URLError as ex:
+                err_msg = str(ex)
+
+        if not success:
+            logging.error('Failed to fetch exchange rates from %s, falling down to the last data: %s ',
+                          conf.EXCHANGERATE_URLS, err_msg)
+
+            # reuse existing data if there is
+            if Exchange_Rates:
+                logging.info('Reuse existing exchage rates')
+                return
+
+            # download saved data
+            rates: FixerExchangeRate | None = download_exchange_rate()
+            if rates:
+                fixer_exchange_rate = rates
+                logging.info('Use saved exchage rates')
+            else:
+                raise Exception('Failed to fetch exchange rates either from API and save data') #pylint: disable=broad-exception-raised
 
     # build Exchange_rates which is USD based rates from fixer_exchange_rate which is EUR based
     usd: float = fixer_exchange_rate['rates']['USD']  # USD per euro
@@ -115,16 +109,14 @@ def load_exchange_rates(use_dummy_data: bool):
         new_exchange_rate[currecy_code] = euro_value / usd   # store in USD
 
     # update globals
-    global Exchange_Rates, SDR_Per_Dollar, last_load, expiration
-
     with global_variable_lock:
         Exchange_Rates = new_exchange_rate
         SDR_Per_Dollar = Exchange_Rates['XDR']
         last_load = time.time()
-        expiration = timeToUpdate() + 40  # expires 40 sec after Forex data update time
+        expiration = time_to_update() + 40  # expires 40 sec after Forex data update time
 
     # update PPP data
-    from src import ppp_data
+    from src import ppp_data  #pylint: disable=import-outside-toplevel
     ppp_data.update()
 
 
@@ -136,18 +128,18 @@ def cron(use_dummy_data):
     '''
 
     while True:
-        time.sleep(timeToUpdate() - time.time())
+        time.sleep(time_to_update() - time.time())
         #time.sleep(10)        # test
         load_exchange_rates(use_dummy_data)
 
 
-def init(use_dummy_data):
+def init(use_dummy_data: bool) -> None:
     ''' Initialize exchange rates. '''
 
     # load exchange rates at startup and every one hour
     load_exchange_rates(use_dummy_data)
 
-    if conf.Is_AppEngine:
+    if conf.IS_APPENGINE:
         # we use cron.yaml on GAE
         pass
     else:
@@ -155,11 +147,12 @@ def init(use_dummy_data):
         thread: Thread = Thread(target=cron, args=(use_dummy_data,))
         thread.start()
 
-def timeToUpdate():
+def time_to_update() -> float:
     ''' Returns next update time in POSIX time. '''
+    now: datetime.datetime
 
-    if conf.Use_Fixer_For_Forex:
-        # Fixer update every hour. We update 3 minute every hour. 00:03, 01:03, 02:03...
+    if conf.FIXER_API_KEY:
+        # Fixer updates every hour. We update 3 minute every hour. 00:03, 01:03, 02:03...
         #
         #  now = datetime.datetime(2021, 5, 21, 15, 26, 27, 291409)
         #  next_hour = datetime.datetime(2021, 5, 21, 16, 26, 27, 291409)
@@ -167,30 +160,30 @@ def timeToUpdate():
         #  seconds_until_next_hour = 2012
         #  time_to_update = 1621580600 (2021-05-21 16:03)
         #
-        now: datetime = datetime.datetime.now()
-        next_hour: datetime  = now + datetime.timedelta(hours=1)
+        now = datetime.datetime.now()
+        next_hour: datetime.datetime  = now + datetime.timedelta(hours=1)
         time_until_next_hour: datetime.timedelta = next_hour.replace(minute=0, second=0, microsecond=0) - now
         seconds_until_next_hour: int = time_until_next_hour.seconds
-        time_to_update: float = time.time() + seconds_until_next_hour + 3*60
-        return time_to_update
-    else:
-        # exchangerate.host updates every day at 00:05 https://exchangerate.host/#/#docs"
-        # we update at 00:06 everyday.
-        #
-        #  now = datetime.datetime(2021, 5, 21, 15, 22, 7, 226310)
-        #  tomorrow = datetime.datetime(2021, 5, 22, 15, 22, 7, 226310)
-        #  time_until_midnight = datetime.timedelta(seconds=31072, microseconds=773690)
-        #  seconds_until_midnight = 31072
-        #  time_to_update = 1621609503.573357 (2021-05-22 00:06:00)
-        #
-        now: datetime = datetime.datetime.now()
-        tomorrow: datetime  = now + datetime.timedelta(days=1)
-        time_until_midnight: datetime.timedelta = datetime.datetime.combine(tomorrow, datetime.time.min) - now
-        seconds_until_midnight: int = time_until_midnight.seconds
-        time_to_update = time.time() + seconds_until_midnight + 6*60
-        return time_to_update
+        result_time: float = time.time() + seconds_until_next_hour + 3*60
+        return result_time
 
-def exchange_rates_benchmark(use_dummy_data: bool):
+    # exchangerate.host updates every day at 00:05 https://exchangerate.host/#/#docs"
+    # we update at 00:06 everyday.
+    #
+    #  now = datetime.datetime(2021, 5, 21, 15, 22, 7, 226310)
+    #  tomorrow = datetime.datetime(2021, 5, 22, 15, 22, 7, 226310)
+    #  time_until_midnight = datetime.timedelta(seconds=31072, microseconds=773690)
+    #  seconds_until_midnight = 31072
+    #  time_to_update = 1621609503.573357 (2021-05-22 00:06:00)
+    #
+    now = datetime.datetime.now()
+    tomorrow: datetime.datetime  = now + datetime.timedelta(days=1)
+    time_until_midnight: datetime.timedelta = datetime.datetime.combine(tomorrow, datetime.time.min) - now
+    seconds_until_midnight: int = time_until_midnight.seconds
+    result_time = time.time() + seconds_until_midnight + 6*60
+    return result_time
+
+def exchange_rates_benchmark(_use_dummy_data: bool) -> None:
     ''' Calculate the average exchange rates during the following period for each currency.
 
     - [[file:///Users/hirano/Downloads/stasapp.pdf][World Economic Outlook 2021, STATISTICAL APPENDIX]]
@@ -200,5 +193,44 @@ def exchange_rates_benchmark(use_dummy_data: bool):
           these assumptions imply average US dollar–special drawing right (SDR) conversion rates of
           1.445 and 1.458,
     '''
-    pass
-    #XXX
+
+
+
+def upload_exchange_rate(exchange_rate: FixerExchangeRate) -> None:
+    """ Uploads exchange rate data to GCS."""
+
+    if conf.GCS_BUCKET:
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(conf.GCS_BUCKET)
+        blob = bucket.blob('last-exchange-late.json')
+        blob.upload_from_string(json.dumps(exchange_rate))
+
+def download_exchange_rate() -> FixerExchangeRate | None:
+    """ Downloads exchange rate data from GCS."""
+
+    if conf.GCS_BUCKET:
+        try:
+            storage_client = storage.Client()
+            bucket = storage_client.bucket(conf.GCS_BUCKET)
+            blob = bucket.blob('last-exchange-late.json')
+            return json.loads(blob.download_as_string())
+        except Exception as ex:
+            logging.error('Failed to download saved exchange rate from GCS bucker %s: %s ',
+                          conf.GCS_BUCKET, str(ex))
+            raise
+    return None
+
+# def convert(source: Currency, currencyCode: CurrencyCode) -> Currency:
+#     if source.currencyCode == currencyCode:
+#         return source
+
+#     source_exchange_rate: float | None = Exchange_Rates.get(source.currencyCode, None)
+#     if source_exchange_rate is None or source_exchange_rate == 0:
+#         error(source.currencyCode, "Currency code mismatch")
+
+#     to_exchange_rate: float | None = Exchange_Rates.get(currencyCode, None)
+#     if to_exchange_rate is None:
+#         error(currencyCode, "Currency code mismatch")
+
+#     value: float = source.value / source_exchange_rate * to_exchange_rate
+#     return Currency(code=currencyCode, value=int(value))

@@ -3,16 +3,17 @@
 
   Created on 2021/05/12
 
-  Author: HIRANO Satoshi
+  @author HIRANO Satoshi
 '''
 
 import logging
-from typing import Type, Optional, List, Dict #, Tuple, Union, Any, Generator, cast
-from typing_extensions import TypedDict
-from fastapi import FastAPI, HTTPException
+from typing import Any
+from fastapi import HTTPException
 
-def error(value: any, msg: str) -> None:
-    log_msg = '{msg: ' + msg if msg else ''
+def error(value: Any, msg: str) -> None:
+    ''' log an error and raises HTTP 400 exception. '''
+
+    log_msg: str = '{msg: ' + msg if msg else ''
     log_msg += ', value: ' + str(value) if value else ''
     log_msg += '}'
     logging.warning(log_msg)

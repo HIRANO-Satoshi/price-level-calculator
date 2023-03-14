@@ -6,6 +6,7 @@ aiofiles
 mypy
 fastapi
 fastapi-utils
+google-cloud-storage
 gunicorn
 ../luncho_python
 mypy-extensions
