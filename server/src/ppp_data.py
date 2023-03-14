@@ -119,7 +119,6 @@ def init(use_dummy_data: bool) -> None:  #pylint: disable=too-many-statements,un
 
             for data in metadata_reader:
                 process_one_country(data)
-            #breakpoint()
 
     with open('data/imf-dm-mapping.json', encoding='utf-8') as mapping_file:
         mapping = json.load(mapping_file)

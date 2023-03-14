@@ -53,7 +53,11 @@ def exchange_rate_per_USD(currencyCode: CurrencyCode) -> float: #pylint: disable
 
 
 def load_exchange_rates(use_dummy_data: bool):
-    ''' Load exchange rates from a forex API or saved rate data from GCS. '''
+    ''' Load exchange rates from a forex API or saved rate data from GCS.
+
+      Test:
+        pytest test/test_server.py::test_server_api_error
+    '''
 
     global Exchange_Rates, SDR_Per_Dollar, last_load, expiration #pylint: disable=invalid-name,global-variable-not-assigned,global-statement
     fixer_exchange_rate: FixerExchangeRate
@@ -204,6 +208,9 @@ def upload_exchange_rate(exchange_rate: FixerExchangeRate) -> None:
         bucket = storage_client.bucket(conf.GCS_BUCKET)
         blob = bucket.blob('last-exchange-late.json')
         blob.upload_from_string(json.dumps(exchange_rate))
+    else:
+        with open(conf.LAST_FIXER_EXCHANGE_FILE, 'w', newline='', encoding="utf_8_sig") as fixer_new_file:
+            fixer_new_file.write(json.dumps(exchange_rate))
 
 def download_exchange_rate() -> FixerExchangeRate | None:
     """ Downloads exchange rate data from GCS."""
@@ -218,6 +225,10 @@ def download_exchange_rate() -> FixerExchangeRate | None:
             logging.error('Failed to download saved exchange rate from GCS bucker %s: %s ',
                           conf.GCS_BUCKET, str(ex))
             raise
+    else:
+        with open(conf.LAST_FIXER_EXCHANGE_FILE, newline='', encoding="utf_8_sig") as fixer_last_file:
+            return json.load(fixer_last_file)
+
     return None
 
 # def convert(source: Currency, currencyCode: CurrencyCode) -> Currency:

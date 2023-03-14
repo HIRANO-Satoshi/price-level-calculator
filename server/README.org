@@ -51,10 +51,11 @@
   - Optionally you can use Google Cloud Storage (GCS) for backing up the exchange rates that will be
     used when any of above foreign exchange rate API is unavailable.  Set your bucket name to
     GCS_BUCKET environment variable or write it in app.yaml if you run on Google App Engine. Usually
-    it is the same as the URL of GAE app. If you don't use, don't set it.
+    it is the same as the URL of GAE app.
 
     export GCS_BUCKET=luncho-hirano.appspot.com
 
+    If you don't use, don't set it. The server saves the data in data/exchange-last.json file.
 
 *** Local installation
 

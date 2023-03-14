@@ -8,63 +8,44 @@
 from __future__ import annotations
 import os
 import time
-from typing import cast
+from typing import cast, Any
 import pytest
 from fastapi.testclient import TestClient
 
 import conf
 import main
-from src.ppp_data import Countries, CountryCode_Names
 from src.types import CountryCode, LunchoData
-
-main.init(use_dummy_data=True)   # use dummy data from files
-client = TestClient(main.app)
+from src import exchange_rate
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_method() -> None:
     pass
 
 def test_server_api() -> None:
+    main.init(use_dummy_data=True)   # use dummy data from files
+    client = TestClient(main.app)
+
     response = client.get("/v1/countries")
     assert response.status_code == 200
-    datas: dict[CountryCode, str] = response.json()
-    assert datas['JP'] == 'Japan'
-    assert len(datas) > 150
+    data: dict[CountryCode, str] = response.json()
+    assert data['JP'] == 'Japan'
+    assert len(data) > 150
 
     response = client.get("/v1/luncho-data?country_code=JP")
     assert response.status_code == 200
-    lunchoData: LunchoData = cast(LunchoData, response.json())
+    lunchoData: dict[str, Any] = response.json()
     Japan_test(lunchoData)
 
     response = client.get("/v1/all-luncho-data")
     assert response.status_code == 200
-    lunchoDatas: dict[CountryCode, LunchoData] = cast(dict[CountryCode, LunchoData], response.json())
-    Japan_test(lunchoDatas['JP'])
+    data2: dict[CountryCode, dict[str, Any]] = response.json()
+    Japan_test(data2['JP'])
+    assert len(data2) > 150
 
     response = client.get("/v1/luncho-data?dummydata=JP")
     assert response.status_code == 422
 
-def test_server_api_error() -> None:
-    ''' Test for Forex fetch error. '''
-
-    #XXX if os.path.exists(conf.Last_Fixer_Exchange_File):
-    #    os.remove(conf.Last_Fixer_Exchange_File)
-
-    # do without Last_Fixer_Exchange_File
-    conf.Exchangerate_URL = 'https://not_exsist_not_exist.com'
-    main.init(use_dummy_data=False)
-    #XXX assert not os.path.exists(conf.Last_Fixer_Exchange_File)
-
-    # do normally to make Last_Fixer_Exchange_File
-    conf.Exchangerate_URL = conf.Free_Exchangerate_URL
-    main.init(use_dummy_data=False)
-    assert os.path.exists(conf.Last_Fixer_Exchange_File)
-
-    # do with Last_Fixer_Exchange_File
-    conf.Exchangerate_URL = 'https://not_exsist_not_exist.com'
-    main.init(use_dummy_data=False)
-
-def Japan_test(lunchoData: LunchoData) -> None:
+def Japan_test(lunchoData: dict[str, Any]) -> None:
     assert lunchoData['country_code']   == 'JP'
     assert lunchoData['country_name']   == 'Japan'
     assert lunchoData['country_code']   == 'JP'
@@ -72,6 +53,45 @@ def Japan_test(lunchoData: LunchoData) -> None:
     assert lunchoData['currency_code']  == 'JPY'
     assert lunchoData['currency_name']  == 'Yen'
     assert lunchoData['exchange_rate']  == 105.40404976166664
-    assert lunchoData['ppp']            == 100.265 #98.662
+    assert lunchoData['ppp']            == 87.827   # data/imf-dm-export-20221225.csv
     assert lunchoData['dollar_per_luncho'] == 0.07139819441152714
     assert lunchoData['expiration']     > time.time() + 60*60 - 2
+
+def test_forex_api_down() -> None:
+    ''' Test for Forex fetch error.
+
+      Test:
+        pytest test/test_server.py::test_server_api_error
+    '''
+
+    # no GCS
+    conf.GCS_BUCKET = None
+
+    # do without exchange_rate.Exchange_Rates and LAST_FIXER_EXCHANGE_FILE
+
+    if os.path.exists(conf.LAST_FIXER_EXCHANGE_FILE):
+       os.remove(conf.LAST_FIXER_EXCHANGE_FILE)
+    exchange_rate.Exchange_Rates = {}
+
+    conf.EXCHANGERATE_URLS = ['https://not_exist_not_exist.com']
+    with pytest.raises(Exception):
+        main.init(use_dummy_data=False)
+
+    # do normally to make LAST_FIXER_EXCHANGE_FILE
+    conf.EXCHANGERATE_URLS = conf.FREE_EXCHANGERATE_URLS
+    main.init(use_dummy_data=False)
+    assert os.path.exists(conf.LAST_FIXER_EXCHANGE_FILE)
+
+    # do with LAST_FIXER_EXCHANGE_FILE and without exchange_rate.Exchange_Rates
+    exchange_rate.Exchange_Rates = {}
+    conf.EXCHANGERATE_URLS = ['https://not_exsist_not_exist.com']
+    main.init(use_dummy_data=False)
+
+    # do with LAST_FIXER_EXCHANGE_FILE and with exchange_rate.Exchange_Rates
+    conf.EXCHANGERATE_URLS = ['https://not_exsist_not_exist.com']
+    main.init(use_dummy_data=False)
+
+    # test exchange rate API fallback
+    exchange_rate.Exchange_Rates = {}
+    conf.EXCHANGERATE_URLS = ['https://not_exsist_not_exist.com'] + conf.FREE_EXCHANGERATE_URLS
+    main.init(use_dummy_data=False)

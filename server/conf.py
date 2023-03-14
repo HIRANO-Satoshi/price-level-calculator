@@ -42,3 +42,4 @@ API_V1_STR: str = "/v1"
 IS_APPENGINE   = os.environ.get('GAE_APPLICATION') is not None  # True if running on Google App Engine
 
 Openapi_Schema_File = 'data/openapi_schema.json'
+LAST_FIXER_EXCHANGE_FILE  = 'data/exchange-last.json'
