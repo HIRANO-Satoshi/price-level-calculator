@@ -1,8 +1,10 @@
-** Luncho de Peace: Common value index that you can have simple lunch in every country with 100 Luncho.
+** Luncho de Peace
+
+*** Common value index that you can have simple lunch in every country with 100 Luncho.
 
 Useful for currency conversion on pricing pages and wages for mitigating the inequality problem among countries. It's based on purchase power parity (PPP) and World comparison Program (ICP).
 
-*** With 100 Luncho, you can have simple lunch in every country.
+***
 
 A luncho value shows the same value in any country taking its price levels into account. For example, with
       100 Luncho, you can have simple lunch in India, in Brazil, in USA, in Japan, and in any other
