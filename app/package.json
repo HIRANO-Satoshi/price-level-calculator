@@ -1,5 +1,5 @@
 {
-  "name": "luncho-app",
+  "name": "Luncho de Peace",
   "description": "A Luncho app",
   "version": "0.3.0",
   "repository": {
@@ -19,6 +19,7 @@
     "aurelia-typed-observable-plugin": "^0.5.1",
     "aurelia-validation": "^2.0.0-rc2",
     "browser-locale": "^1.0.3",
+    "chart.js": "^4.2.1",
     "country-data": "^0.0.31",
     "jquery": "^3.5.1",
     "materialize-css": "git+https://github.com/Dogfalo/materialize.git",

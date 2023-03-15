@@ -1,6 +1,7 @@
-import { autoinject, TaskQueue } from 'aurelia-framework';
+import { autoinject, TaskQueue, observable } from 'aurelia-framework';
 import { App, getFlagEmoji } from './app';
 import { Luncho, LunchoData } from 'luncho-typescript-fetch';
+import { Chart, ChartItem } from 'chart.js/auto';
 
 @autoinject
 export class Countries {
@@ -10,6 +11,16 @@ export class Countries {
     lunchoValue: number = 100;
     lunchoDatas: LunchoData[];      // this is the table data.
     maxCountryInDollar: number;
+    graphElem: ChartItem;
+    graph: any;
+    @observable $displayData: LunchoData[];
+    $displayDataChanged() {
+        // sort changed. redraw graph
+        if (this.graph) {
+            this.graph.destroy();
+            this.drawGraph();
+        }
+    }
 
     showCode = false;
 
@@ -25,10 +36,11 @@ export class Countries {
     }
 
     attached() {
-        this.lunchosForCountries();
+        this.lunchosForCountries()
+            .then(() => this.drawGraph());
     }
 
-    async lunchosForCountries() {
+    async lunchosForCountries(): Promise<void> {
         await this.luncho.get_all_luncho_data();
         this.maxCountryInDollar = 0;
 
@@ -49,5 +61,41 @@ export class Countries {
         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
             this.lunchoDatas.push(this.luncho.lunchoDataCache[countryCode]);
         }
+    }
+
+    drawGraph() {
+        Chart.defaults.font.size = 10;
+        Chart.defaults.font.lineHeight = 1.0;
+        this.graph = new Chart(
+            <HTMLCanvasElement>document.getElementById('graph'),
+            {
+                type: 'bar',
+                data: {
+                    labels: this.$displayData.map((lunchoData: LunchoData) => {
+                        return lunchoData['emoji'] + ' ' + lunchoData.country_name
+                    }),
+                    datasets: [
+                        {
+                            label: 'Luncho in $USD',
+                            data: this.$displayData.map((lunchoData: LunchoData) => lunchoData['dollar_value']),
+                            borderColor: '#406090',
+                            backgroundColor: '#406090',
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 15
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
     }
 }

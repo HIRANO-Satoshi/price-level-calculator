@@ -36,7 +36,7 @@ class LunchoData(BaseModel):   #pylint: disable=too-few-public-methods
     currency_code: CurrencyCode     # Currency code
     currency_name: str              # Currency name
     exchange_rate: Optional[float]  # Exchange rate per US Dollar. 0 if not available.
-
+    #dollar_value: float             # US Dollar value of the luncho
     ppp: Optional[float]            # PPP value. 0 if not available.
     dollar_per_luncho: Optional[float] # dollar/luncho rate
     expiration: Optional[float]     # Data expiration in unix time. You need to call APIs after this time.

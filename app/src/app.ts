@@ -14,7 +14,7 @@ import * as countryData from 'country-data';
 
 @autoinject
 export class App {
-    public title: string = 'Luncho: Common Value Index for the economic inequality issue';
+    public title: string = 'Luncho de Peace: Common Value Index for the economic inequality issue';
     public router: Router;
     public static app: App;
     show = false;
@@ -71,12 +71,12 @@ export class App {
 
         //config.addPipelineStep('authorize', AuthorizeStep); // add login
         config.map([
-            { route: ['', 'single'], href: '/single', name: 'single',
-              moduleId: PLATFORM.moduleName('./single'),
-              auth: true, nav: true, title: 'One country', },
-            { route: 'countries', href: '/countries', name: 'countries',
+            { route: ['', 'countries'], href: '/countries', name: 'countries',
               moduleId: PLATFORM.moduleName('./countries'),
               auth: true, nav: true, title: 'All countries', },
+            { route: 'single', href: '/single', name: 'single',
+              moduleId: PLATFORM.moduleName('./single'),
+              auth: true, nav: true, title: 'One country', },
             { route: 'about', href: 'about', name: 'about',
               moduleId: PLATFORM.moduleName('./about'),
               auth: true, nav: false, title: 'About', },
