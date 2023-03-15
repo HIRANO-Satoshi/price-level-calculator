@@ -30,7 +30,7 @@
     from luncho_python.model.luncho_data import LunchoData
 
     configuration = luncho_python.Configuration(
-        host = "http://luncho-api.org"
+        host = "http://luncho-de-peace.org"
         # host = "http://localhost:8000"
     )
 
