@@ -18,6 +18,9 @@
    tr {
      position: relative;
    }
+   td {
+     padding: 2px 5px;
+   }
    .luncho-bar {
      position: absolute;
      top: 0;
@@ -60,6 +63,7 @@
            aurelia-table="data.bind: lunchoDatas; display-data.bind: $displayData; filters.bind: filters">
       <thead>
         <tr>
+          <th></th>
           <th aut-sort="key: country_name">Country</th>
           <th if.bind="showCode"></th>
           <th aut-sort="key: continent_code">Continent</th>
@@ -73,6 +77,7 @@
         <!-- <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]"> -->
         <!-- <div class="luncho-bar" css="width: ${dollar_value / maxCountryInDollar}"></div> -->
         <tr repeat.for="country_code of $displayData | keys" with.bind="$displayData[country_code]">
+          <td style="font-size: 2rem;">${emoji}</td>
           <td>${country_name}</td>
           <td if.bind="showCode">${country_code}</td>
           <td>${app.continents[continent_code]}</td>

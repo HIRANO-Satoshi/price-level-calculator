@@ -1,5 +1,5 @@
 import { autoinject, TaskQueue } from 'aurelia-framework';
-import { App } from './app';
+import { App, getFlagEmoji } from './app';
 import { Luncho, LunchoData } from 'luncho-typescript-fetch';
 
 @autoinject
@@ -42,6 +42,7 @@ export class Countries {
             this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
             if (this.luncho.lunchoDataCache[countryCode]['dollar_value'] > this.maxCountryInDollar)
                 this.maxCountryInDollar = this.luncho.lunchoDataCache[countryCode]['dollar_value'];
+            this.luncho.lunchoDataCache[countryCode]['emoji'] = getFlagEmoji(countryCode);
         }
 
         this.lunchoDatas = [];

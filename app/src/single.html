@@ -20,7 +20,7 @@
 
       <option model.bind="null" disabled>${"Select a country"}</option>
       <option repeat.for="country_code of luncho.countryCache | keys" model.bind="country_code">
-        ${luncho.countryCache[country_code]}</option>
+        ${getFlagEmoji(country_code)}&emsp; ${luncho.countryCache[country_code]}</option>
     </select>
     <div class="vspace" style="padding-top: 2em;"></div>
 

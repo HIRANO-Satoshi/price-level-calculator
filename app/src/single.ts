@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { App } from './app';
+import { App, getFlagEmoji } from './app';
 import { Luncho  } from 'luncho-typescript-fetch';
 import { LunchoData } from 'luncho-typescript-fetch';
 // import { LunchoApi } from 'luncho_typescript-aurelia/LunchoApi';
@@ -41,4 +41,9 @@ export class Single {
         this.dollar_value = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, this.countryCode);
         this.decimals = this.app.countryData.currencies[this.lunchoData.currency_code].decimals;
     }
+
+    getFlagEmoji(countryCode: string) {
+        return getFlagEmoji(countryCode);
+    }
+
 }
