@@ -35,6 +35,7 @@ class Test:
         self.luncho = luncho.Luncho(self.api_client)
         assert self.luncho.get_currency_from_luncho(100.0, 'JP') >= 500
         assert self.luncho.get_currency_from_luncho(100.0, 'JP') >= 500  # again to test cache
+        assert self.luncho.get_currency_from_luncho(100.0, 'JP', factor=0.2) >= 800  # again to test cache
 
     def test_local_get_luncho_from_currency(self) -> None:
         pass

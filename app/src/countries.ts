@@ -89,8 +89,8 @@ export class Countries {
                         type: 'bar',
                         label: 'Luncho in $USD',
                         data: this.$displayData.map((lunchoData: LunchoData) => lunchoData['dollar_value']),
-                        borderColor: '#406090',
-                        backgroundColor: '#406090',
+                        borderColor: '#6080a0',
+                        backgroundColor: '#6080a0',
 
                         // stand out the current country. not work yet, but isn't this good?
                         // backgroundColor: <any>this.$displayData.map((lunchoData: LunchoData) => {
