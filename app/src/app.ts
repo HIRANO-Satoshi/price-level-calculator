@@ -21,6 +21,7 @@ export class App {
     public taskQueue: TaskQueue;
     luncho: Luncho;
     countryData = countryData
+    countryCode: string;
     continents = {
         'NA': 'North America',
         'SA': 'South America',
@@ -38,6 +39,9 @@ export class App {
         else
             basePath = window['origin'];
         this.luncho = new Luncho(new Configuration({ basePath: basePath }));
+        this.luncho.get_country_code()
+            .then((code) => this.countryCode = code);
+
         this.taskQueue = taskQueue;
         this.router = router;
         App.app = this;

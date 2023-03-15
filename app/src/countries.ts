@@ -1,7 +1,7 @@
 import { autoinject, TaskQueue, observable } from 'aurelia-framework';
 import { App, getFlagEmoji } from './app';
 import { Luncho, LunchoData } from 'luncho-typescript-fetch';
-import { Chart, ChartItem } from 'chart.js/auto';
+import { Chart, ChartConfiguration, ChartItem } from 'chart.js/auto';
 
 @autoinject
 export class Countries {
@@ -66,36 +66,39 @@ export class Countries {
     drawGraph() {
         Chart.defaults.font.size = 10;
         Chart.defaults.font.lineHeight = 1.0;
-        this.graph = new Chart(
-            <HTMLCanvasElement>document.getElementById('graph'),
-            {
-                type: 'bar',
-                data: {
-                    labels: this.$displayData.map((lunchoData: LunchoData) => {
-                        return lunchoData['emoji'] + ' ' + lunchoData.country_name
-                    }),
-                    datasets: [
-                        {
-                            label: 'Luncho in $USD',
-                            data: this.$displayData.map((lunchoData: LunchoData) => lunchoData['dollar_value']),
-                            borderColor: '#406090',
-                            backgroundColor: '#406090',
-                        }
-                    ]
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            labels: {
-                                // This more specific font property overrides the global property
-                                font: {
-                                    size: 15
-                                }
+        const opts: ChartConfiguration = {
+            type: 'bar',
+            data: {
+                labels: this.$displayData.map((lunchoData: LunchoData) => {
+                    return lunchoData['emoji'] + ' ' + lunchoData.country_name
+                }),
+                datasets: [
+                    {
+                        label: 'Luncho in $USD',
+                        data: this.$displayData.map((lunchoData: LunchoData) => lunchoData['dollar_value']),
+                        borderColor: '#406090',
+                        backgroundColor: '#406090',
+
+                        // stand out the current country. not work yet, but isn't this good?
+                        // backgroundColor: <any>this.$displayData.map((lunchoData: LunchoData) => {
+                        //     return (lunchoData['country_code'] === this.app.countryCode) ? '#906040' : '#406090';
+                        // }),
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 15    // legent font size
                             }
                         }
                     }
                 }
             }
-        );
+        };
+
+        this.graph = new Chart(<HTMLCanvasElement>document.getElementById('graph'), opts);
     }
 }
