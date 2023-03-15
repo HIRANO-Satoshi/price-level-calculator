@@ -1,6 +1,6 @@
-** Luncho: Common Value Index for the economic inequality problem and growth
+** Luncho de Peace: Common value index that you can have simple lunch in every country with 100 Luncho.
 
-Useful for currency conversion on pricing pages. It's based on purchase power parity (PPP) and World comparison Program (ICP).
+Useful for currency conversion on pricing pages and wages for mitigating the inequality problem among countries. It's based on purchase power parity (PPP) and World comparison Program (ICP).
 
 *** With 100 Luncho, you can have simple lunch in every country.
 
