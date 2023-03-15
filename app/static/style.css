@@ -160,6 +160,10 @@ section {
     margin-start: auto;
 }
 
+.flex-right {
+    display: flex;
+    justify-content: flex-end;
+}
 .flex-center {
     display: -webkit-box;
     display: -webkit-flex;

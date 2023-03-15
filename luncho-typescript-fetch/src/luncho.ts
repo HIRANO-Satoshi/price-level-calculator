@@ -27,8 +27,6 @@ export class Luncho extends LunchoApi {
 
     IntlCountryNames: any;  // Intl.DisplayNames for country names
     IntlCurrencyNames: any; // Intl.DisplayNames for currency names
-    // localCountryNames: {[key: string]: string} = {}         // {countryCode : countryName}
-    // localCurrencyNames: {[key: string]: string; } = {}        // {countryCode : currencyName}
 
     /**
        Initialize Luncho object with the given Configuration.
@@ -53,12 +51,17 @@ export class Luncho extends LunchoApi {
 
        @param lunchoValue A Luncho value to be converted.
        @param countryCode A 2-letter country code. The result is in the primary currency of the country.
-       @return Promise for a value in local currency.
+       @param factor      A number how much the price level considered (reflected).
+                          0 for no consideration and 1.0 for full consideration.
+       @return Promise for a value in local currency for the lunchoValue.
     */
-    async get_currency_from_luncho(lunchoValue: number, countryCode: string): Promise<number> {
+    async get_currency_from_luncho(lunchoValue: number, countryCode: string, factor: number = 1.0): Promise<number> {
         return this.get_luncho_data({countryCode: countryCode})
             .then((lunchoData: LunchoData) => {
-                  return(lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue);
+                const US_value = lunchoData.dollar_per_luncho * lunchoValue;
+                const local_currency_value = US_value * lunchoData.ppp;
+                const local_currency_value_with_factor = US_value - (US_value - local_currency_value) * factor;
+                return local_currency_value_with_factor;
             });
     }
 
@@ -67,7 +70,7 @@ export class Luncho extends LunchoApi {
 
        @param localValue A value in local currency to be converted.
        @param countryCode A 2-letter country code of the country for the localValue.
-       @return Promise for a value in Luncho.
+       @return Promise for a value in Luncho for the localValue.
     */
     async get_luncho_from_currency(localValue: number, countryCode: string): Promise<number> {
         debugger;  // XXX Implement me
@@ -83,14 +86,19 @@ export class Luncho extends LunchoApi {
 
        @param lunchoValue A Luncho value to be converted.
        @param countryCode A 2-letter country code.
-       @return Promise for a value in US dollar.
+       @param factor      A number how much the price level considered (reflected).
+                          0 for no consideration and 1.0 for full consideration.
+       @return Promise for a value in US dollar for the lunchoValue.
     */
-    async get_US_dollar_from_luncho(lunchoValue: number, countryCode: string): Promise<number> {
+    async get_US_dollar_from_luncho(lunchoValue: number, countryCode: string, factor: number = 1.0): Promise<number> {
         return this.get_luncho_data({countryCode: countryCode})
             .then((lunchoData: LunchoData) => {
                 if (lunchoData.exchange_rate > 0) {
-                    const local_currency_value = lunchoData.dollar_per_luncho * lunchoData.ppp * lunchoValue;
-                    return(local_currency_value / lunchoData.exchange_rate);
+                    const US_value = lunchoData.dollar_per_luncho * lunchoValue;
+                    const local_currency_value = US_value * lunchoData.ppp;
+                    const dollar_value = local_currency_value / lunchoData.exchange_rate;
+                    const dollar_value_with_factor = US_value - (US_value - dollar_value) * factor;
+                    return dollar_value_with_factor;
                 } else
                     return 0.0
             });
@@ -101,7 +109,7 @@ export class Luncho extends LunchoApi {
 
        @param dollarValue A value in US dollar to be converted.
        @param countryCode A 2-letter country code of the country.
-       @return Promise for a value in Luncho.
+       @return Promise for a value in Luncho for the dollarValue.
     */
     async get_luncho_from_US_dollar(_dollarValue: number, countryCode: string): Promise<number> {
         debugger;  // XXX Implement me
@@ -121,7 +129,7 @@ export class Luncho extends LunchoApi {
 
        @param param A LunchoDataRequest object.
        @param localName True for country names and currency names in the local lauguage. Ignored if Intl.DisplayNames is not available.
-       @return Promise for LunchoData.
+       @return Promise for LunchoData for param.country_code.
     */
     async get_luncho_data(param: LunchoDataRequest, localName=true): Promise<LunchoData> {
         if (param && param.countryCode) {
@@ -192,7 +200,7 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns an estimated country code. Available only if the server supports.
+       Returns an estimated country code with IP address. Available only if the server supports.
     */
     async get_country_code(): Promise<string> {
         if (this.countryCodeCache) {

@@ -13,11 +13,11 @@ export class Countries {
     maxCountryInDollar: number;
     graphElem: ChartItem;
     graph: any;
+    factor: number = 100;             // Factor value in percent. 0 - 100
     @observable $displayData: LunchoData[];
     $displayDataChanged() {
         // sort changed. redraw graph
         if (this.graph) {
-            this.graph.destroy();
             this.drawGraph();
         }
     }
@@ -40,6 +40,11 @@ export class Countries {
             .then(() => this.drawGraph());
     }
 
+    factorChanged() {
+        this.lunchosForCountries()
+            .then(() => this.drawGraph());
+    }
+
     async lunchosForCountries(): Promise<void> {
         await this.luncho.get_all_luncho_data();
         this.maxCountryInDollar = 0;
@@ -52,8 +57,12 @@ export class Countries {
             // destructive, but don't care
             this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
             this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
-            if (this.luncho.lunchoDataCache[countryCode]['dollar_value'] > this.maxCountryInDollar)
+            if (this.luncho.lunchoDataCache[countryCode]['dollar_value'] > 0.8) {
+                this.luncho.lunchoDataCache[countryCode]['dollar_value_with_factor'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode, this.factor/100.0);
+            }
+            if (this.luncho.lunchoDataCache[countryCode]['dollar_value'] > this.maxCountryInDollar) {
                 this.maxCountryInDollar = this.luncho.lunchoDataCache[countryCode]['dollar_value'];
+            }
             this.luncho.lunchoDataCache[countryCode]['emoji'] = getFlagEmoji(countryCode);
         }
 
@@ -64,8 +73,11 @@ export class Countries {
     }
 
     drawGraph() {
+        this.graph?.destroy();
+
         Chart.defaults.font.size = 10;
         Chart.defaults.font.lineHeight = 1.0;
+
         const opts: ChartConfiguration = {
             type: 'bar',
             data: {
@@ -74,6 +86,7 @@ export class Countries {
                 }),
                 datasets: [
                     {
+                        type: 'bar',
                         label: 'Luncho in $USD',
                         data: this.$displayData.map((lunchoData: LunchoData) => lunchoData['dollar_value']),
                         borderColor: '#406090',
@@ -98,6 +111,17 @@ export class Countries {
                 }
             }
         };
+
+        if (this.factor < 100) {
+            opts.data.datasets.push({
+                type: 'line',
+                label: 'With factor',
+                data: this.$displayData.map((lunchoData: LunchoData) => lunchoData['dollar_value_with_factor']),
+                borderColor: '#a08060',
+                backgroundColor: '#a08060',
+                pointStyle: false,
+            });
+        }
 
         this.graph = new Chart(<HTMLCanvasElement>document.getElementById('graph'), opts);
     }

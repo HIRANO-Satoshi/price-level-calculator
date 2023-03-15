@@ -34,8 +34,14 @@
       // get a local currency value from a Luncho value
       local_currency_value: number = await this.luncho.get_currency_from_luncho(100.0, countryCode);
 
-      // get a dollar value from a Luncho value
-      this.dollar_value = await this.luncho.get_US_dollar_from_luncho(100.0, countryCode);
+      // get a local currency value from a Luncho value with factor 60%
+      local_currency_value: number = await this.luncho.get_currency_from_luncho(100.0, countryCode, 0.6);
+
+      // get a dollar value from a Luncho value with factor 100%
+      this.dollar_value = await this.luncho.get_US_dollar_from_luncho(100, countryCode);
+
+      // get a dollar value from a Luncho value with factor 60%
+      this.dollar_value = await this.luncho.get_US_dollar_from_luncho(100, countryCode, 0.6);
 
       // get a Luncho Data for a country
       lunchoData: LunchoData = await this.luncho.get_luncho_data({countryCode: countryCode});
@@ -48,7 +54,7 @@
       // calculate local currency values for all countries
       for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
           this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
-          this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
+          this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode, 1.0);
       }
 ```
 
