@@ -697,6 +697,11 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@materializecss/materialize@^1.2.1":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@materializecss/materialize/-/materialize-1.2.2.tgz#3308e76806a8f6d14b7838656fbf24e0bf3496c8"
+  integrity sha512-+zp/myqWFywj/F64byUM+H3iiuDmVjKBHZ0lj3b07QiaLVaNoUBCcsS0nkdwB9YsebzFpZLWeASPkmolu3yA+Q==
+
 "@nestjs/common@8.4.4":
   version "8.4.4"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.4.4.tgz#0914c6c0540b5a344c7c8fd6072faa1a49af1158"
@@ -1021,13 +1026,13 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.191.tgz#09511e7f7cba275acd8b419ddac8da9a6a79e2fa"
   integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
 
-"@types/materialize-css@^1.0.7":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@types/materialize-css/-/materialize-css-1.0.11.tgz#3e6c75bf8057161e37f33a52a9437a146e27dab5"
-  integrity sha512-V7/jSwuq6QrWAjzA2dkZhlqzrrcxcjB+RDfwhw8CosNYZgb+FaAJmmB6t7CT7SRFNRRSxG839e6iK32Vq6sZrQ==
+"@types/materializecss__materialize@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/materializecss__materialize/-/materializecss__materialize-1.2.0.tgz#ab9a8a733db85ef829b337ee483fce87c020474c"
+  integrity sha512-hAnPZTkFE5NxHhrAm2TeAdOir0ENFsieVgKyHi1ndScurt+IJ2RZajFFiBlAddRvuHsCPsSIVXI0b8GtdrZ1fw==
   dependencies:
     "@types/jquery" "*"
-    cash-dom "*"
+    cash-dom "^8.1.1"
 
 "@types/mime@*":
   version "3.0.1"
@@ -2622,10 +2627,10 @@ caniuse-lite@^1.0.30001400:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001441.tgz#987437b266260b640a23cd18fbddb509d7f69f3e"
   integrity sha512-OyxRR4Vof59I3yGWXws6i908EtGbMzVUi3ganaZQHmydk1iwDhRnvaPG2WaR0KcqrDFKrxVZHULT396LEPhXfg==
 
-cash-dom@*:
-  version "8.1.2"
-  resolved "https://registry.yarnpkg.com/cash-dom/-/cash-dom-8.1.2.tgz#f5bdc122fb2b4c3b014f4d08e8fef419159157ab"
-  integrity sha512-psFPAgakPmqf7CYeDw58/TcafQtNX+VjZ+8vhSEwiW9KeF8PDHzl1huz7bHasCFyK7j/4NSQSRIOLR2LaKUTcA==
+cash-dom@^8.1.1:
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/cash-dom/-/cash-dom-8.1.4.tgz#445c2a509cffa8b1c99094634418b4b439d57718"
+  integrity sha512-bFLMk+r3lv+sDwxlAFfRlMxpRls7zMnSQePVpNouwnpm9G4MbLYZZtIUG2urUgfmIaKlc/hqG8o7yZg3+nFKRA==
 
 chalk@4.1.2, chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1:
   version "4.1.2"
@@ -6784,10 +6789,6 @@ matchdep@^2.0.0:
     micromatch "^3.0.4"
     resolve "^1.4.0"
     stack-trace "0.0.10"
-
-"materialize-css@git+https://github.com/Dogfalo/materialize.git":
-  version "1.0.0"
-  resolved "git+https://github.com/Dogfalo/materialize.git#824e78248b3de81e383445e76ffb04cc3264fe7d"
 
 math-random@^1.0.1:
   version "1.0.4"

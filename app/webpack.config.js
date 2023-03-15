@@ -38,7 +38,8 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       // https://github.com/aurelia/binding/issues/702
       // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
       // out-of-date dependencies on 3rd party aurelia plugins
-      'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding')
+      'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
+      'materialize-css': path.resolve(__dirname, 'node_modules/@materializecss/materialize'),  //***
     }
   },
   entry: {

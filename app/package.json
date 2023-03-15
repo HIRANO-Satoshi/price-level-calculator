@@ -1,5 +1,5 @@
 {
-  "name": "Luncho de Peace",
+  "name": "Luncho-de-peace",
   "description": "A Luncho app",
   "version": "0.3.0",
   "repository": {
@@ -9,7 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "@krisdages/aurelia-table": "^0.8.0-prerelease",
-    "@types/materialize-css": "^1.0.7",
+    "@materializecss/materialize": "^1.2.1",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.4.0",
     "aurelia-fetch-client": "^1.8.2",
@@ -22,7 +22,6 @@
     "chart.js": "^4.2.1",
     "country-data": "^0.0.31",
     "jquery": "^3.5.1",
-    "materialize-css": "git+https://github.com/Dogfalo/materialize.git",
     "numeral": "^2.0.6",
     "tslib": "^2.3.1"
   },
@@ -31,6 +30,7 @@
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@types/jest": "^29.2.4",
     "@types/lodash": "^4.14.191",
+    "@types/materializecss__materialize": "^1.2.0",
     "@types/node": "^18.11.17",
     "@types/webpack": "^5.28.0",
     "aurelia-cli": "^3.0.1",
