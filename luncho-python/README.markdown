@@ -56,19 +56,17 @@
     # Get a dict of supported county codes and names
     data: Dict[CountryCode, str] = self.luncho.get_countries()
 
-    # Load or get a dict of LunchoDatas for supported countries.  Data size is about 40KB.
-    # If you show data of all countries, call this before in order to load all LunchoDatas at once,
-    # or it loads LunchoData one by one and that is very slow.
+    # load and get a dict of LunchoData of all supported countries.  Data size is about 40KB.
+    # if you use data of all countries, call this before in order to load all LunchoDatas at once.
     self.luncho.get_all_luncho_data()
 ```
+
 - See comments for detail on [./luncho_python/api/luncho.py](./luncho_python/api/luncho.py).
- - Read auto-generated [README.md](./README.md), too.
 
 ## Cached data
 
-  - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
-    reloaded.
-  - These variables are available.
+- The luncho object caches data in these variables. You can use them. But, caution that these data
+    will be gone when expired or reloaded.
 
 ```
         self.luncho.lunchoDataCache: Dict[CountryCode, LunchoData] = {}  # Cache {CountryCode: LunchoData}

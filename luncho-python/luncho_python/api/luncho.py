@@ -105,18 +105,6 @@ class Luncho():
             return dollar_value_with_factor;
         return 0.0
 
-    def get_luncho_from_US_dollar(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
-        '''
-          Returns a Luncho value from a US Dollar value for the specified country.
-
-          @param dollarValue A value in US dollar to be converted.
-          @param countryCode A 2-letter country code of the country.
-          @return Promise for a value in Luncho for the dollarValue.
-        '''
-
-        assert False, 'XXX Implement me'
-        return 0.0
-
     def get_countries(self, **kwargs) -> Dict[CountryCode, str]:
         '''
           Returns a dict of supported country codes and country names.
@@ -148,8 +136,10 @@ class Luncho():
 
     def get_all_luncho_data(self, **kwargs) -> Dict[CountryCode, LunchoData]:
         '''
-          Returns a dict of LunchoDatas of all countries. You don't need to use this method
-           usually. Use localCurrencyFromLuncho() and get_US_dollar_from_luncho().
+        Load and get a dict of LunchoData of all supported countries.  Data size is about 40KB.
+        If you use data of all countries, call this before in order to load all LunchoDatas at once.
+
+        @return Promise for a dict of Luncho data of all countries.
         '''
         if self.allLunchoDatasExpiration > time.time():
             return self.lunchoDataCache

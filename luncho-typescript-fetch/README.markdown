@@ -49,9 +49,8 @@ class Foo {
       // get a Luncho Data for a country
       const lunchoData: LunchoData = await this.luncho.get_luncho_data({countryCode: 'JP'});
 
-      // Load or get a dict of LunchoDatas for supported countries.  Data size is about 40KB.
-      // If you show data of all countries, call this before in order to load all LunchoDatas at once,
-      // or it loads LunchoData one by one and that is very slow.
+      // load and get a dict of LunchoData of all supported countries.  Data size is about 40KB.
+      // if you use data of all countries, call this before in order to load all LunchoDatas at once.
       await this.luncho.get_all_luncho_data();
 
       // calculate local currency values for all countries
@@ -62,14 +61,12 @@ class Foo {
 }
 ```
 
- - See comments for detail on [luncho.ts](./src/apis/luncho.ts).
- - Read auto-generated [README.md](./README.md), too.
+- See comments for detail on [luncho.ts](./src/apis/luncho.ts).
 
 ## Cached data
 
-  - You can use cached data inside self.luncho. Caution that these data will be gone when expired or
-    reloaded.
-  - These variables are available.
+- The luncho object caches data in these variables. You can use them. But, caution that these data
+    will be gone when expired or reloaded.
 
 ```
     this.luncho.lunchoDataCache: { [key: string]: LunchoData} = {};  // Cache {CountryCode: LunchoData}
@@ -80,7 +77,7 @@ class Foo {
 
 ### Locales
 
-  - Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language. It is available in Chrome but not in Safari.
+- Use [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames][Intl.DisplayNames]] to show country names and currency names in your language. It is available in Chrome but not in Safari.
 
 ```
        if (intl.DisplayNames) {

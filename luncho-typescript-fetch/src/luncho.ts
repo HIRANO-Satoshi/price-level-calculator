@@ -127,26 +127,6 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns a Luncho value from the given US Dollar value (not implemented).
-
-       @param dollarValue A value in US dollar to be converted.
-       @param countryCode A 2-letter country code of the country.
-       @return Promise for a value in Luncho for the dollarValue.
-    */
-    async get_luncho_from_US_dollar(_dollarValue: number, countryCode: string): Promise<number> {
-        debugger;  // XXX Implement me
-
-        return this.get_luncho_data({countryCode: countryCode})
-            .then((lunchoData: LunchoData) => {
-                if (lunchoData.exchange_rate > 0) {
-                    return 0.0;
-                } else
-                    return 0.0;
-            });
-    }
-
-
-    /**
        Returns a Luncho data for the given country code.
 
        @param param A LunchoDataRequest object.
@@ -174,10 +154,12 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns a dict of Luncho datas of all countries.
+       Load and get a dict of LunchoData of all supported countries.  Data size is about 40KB.
+
+       If you use data of all countries, call this before in order to load all LunchoDatas at once.
 
        @param localName True for country names and currency names in the local lauguage. Ignored if Intl.DisplayNames is not available.
-       @return Promise for a dict of Luncho datas of all countries.
+       @return Promise for a dict of Luncho data of all countries.
     */
     async get_all_luncho_data(localName=true): Promise<{ [key: string]: LunchoData} > {
         if (this.allLunchoDatasExpiration > Date.now()/1000) {
