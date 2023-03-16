@@ -9,11 +9,8 @@
    }
   </style>
   <div class="container">
-    <!-- <h5>
-         Convert Luncho for a country
-         </h5>
-    -->
-    <!-- <input value.two-way="countryCode" class="country-select autocomplete"/> -->
+    <!-- country selector -->
+
     <select md-select value.two-way="countryCode" class="country-select"
             id="autocomplete-input"
             change.delegate="convertFromLuncho()">
@@ -23,6 +20,9 @@
         ${getFlagEmoji(country_code)}&emsp; ${luncho.countryCache[country_code]}</option>
     </select>
     <div class="vspace" style="padding-top: 2em;"></div>
+
+
+    <!-- luncho and local currency input -->
 
     <div class="row" style="font-size: 160%;">
       <div class="col s12 m5 l4">
@@ -36,7 +36,7 @@
       </div>
 
       <div class="col s12 m7 l8" style="margin-top: -5px;" >
-        <span style="font-size: 160%;">=</span>
+        <span style="font-size: 160%;">=&ensp;</span>
         <span><input value.two-way="local_currency_string"
                      input.delegate="convertFromLocalCurrency()"
                      class=""
@@ -46,6 +46,8 @@
         ${lunchoData.currency_name}
       </div>
     </div>
+
+    <!-- USD -->
     <div class="row">
       <div class="col s12 m5 l4">
       </div>

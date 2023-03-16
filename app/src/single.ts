@@ -1,18 +1,24 @@
+/**
+   Single country.
+
+   @author Hirano Satoshi
+ */
 import { autoinject } from 'aurelia-framework';
 import { App, getFlagEmoji, formatCurrency } from './app';
 import { Luncho, LunchoData  } from 'luncho-typescript-fetch';
 
 @autoinject
 export class Single {
-    app: App;
-    luncho: Luncho;
-    countryCode: string = 'JP';
-    lunchoValue: number = 100;
-    lunchoData: LunchoData;
-    local_currency_string: string;
-    local_currency_value: number;
-    dollar_value: number;
-    decimals: number;
+    app: App;                      // the App
+    luncho: Luncho;                // the Luncho object
+    lunchoData: LunchoData;        // Luncho data got by the Luncho object
+
+    countryCode: string = 'JP';    // country code
+    lunchoValue: number = 100;     // luncho value
+    local_currency_string: string; // local currency string
+    local_currency_value: number;  // local currency value
+    decimals: number;              // decimals of the local currency
+    dollar_value: number;          // USD value
 
     constructor(app: App) {
         this.app = app;
@@ -53,9 +59,4 @@ export class Single {
 
         this.dollar_value = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, this.countryCode);
     }
-
-    getFlagEmoji(countryCode: string) {
-        return getFlagEmoji(countryCode);
-    }
-
 }

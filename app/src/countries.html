@@ -39,38 +39,42 @@
   </style>
 
   <div class="container">
-    <!-- <p><a href="/about"> Explanation</a></p>
-    -->
+    <!-- graph -->
+
     <div style="width: 100%; max-width: 1000px;margin: 0 auto;">
       <canvas id="graph"></canvas>
     </div>
+
+
+    <!-- luncho and USD input -->
+
+    <div class="valign-wrapper">
+      <md-input label="Luncho " value.bind="lunchoValue"
+                input.delegate="recalcCountriesTableFromLuncho(true)"
+                class="width-10em large-input"></md-input>
+      <span style="font-size: 120%;">&emsp; Or &emsp;</span>
+      <md-input label="US Dollar " value.bind="usdString"
+                input.delegate="recalcCountriesTableFromUSD()"
+                class="width-10em large-input"
+                style="display: inline-block;"></md-input>
+    </div>
+    <div class="vspace" style="padding-top: 1rem;"></div>
+
+
+    <!-- factor input -->
 
     <div class="valign-wrapper flex-right">
       Factor &emsp;
       <md-range change.delegate="factorChanged()" value.bind="factor"
                 min="0" max="100"></md-range>
       &emsp;${factor}%
-
-      <!-- <md-input input.delegate="factorChanged()" label="Factor" value.bind="factor"></md-input> -->
     </div>
 
-    <!-- <h5>
-         Convert Luncho for all countries
-         </h5> -->
-    <div class="valign-wrapper">
-      <md-input label="Luncho " value.bind="lunchoValue"
-                input.delegate="lunchosForCountries(true)"
-                class="width-10em large-input"></md-input>
-      <!-- <button md-button click.delegate="lunchosForCountries()">Calc</button> -->
-    </div>
-    Or
-    <md-input label="US Dollar " value.bind="usdString"
-              input.delegate="convertFromUSD()"
-              class="width-10em large-input"></md-input>
-    <div class="vspace"></div>
+
+    <!-- continent filter -->
 
     <div class="row filters">
-      <div class="col s12 m5 l4">
+      <div class="col offset-m6 offset-l6 s6 m3 l3">
         <!-- XXX fails selection sometimes on mobile -->
         <select md-select value.two-way="filters[1].value" class="country-select">
           <option model.bind="null">All continents</option>
@@ -78,11 +82,14 @@
             ${app.continents[continent_code]}</option>
         </select>
       </div>
-      <div class="col s12 m5 l4">
+      <div class="col s6 m3 l3">
         <md-input type="text" value.bind="filters[0].value"
-                  placeholder="Country name, Currency" class="form-control"/>
+                  placeholder="Country, Currency" class="form-control"/>
       </div>
     </div>
+
+
+    <!-- country table -->
 
     <table id="all-table"  class="table table-striped"
            aurelia-table="data.bind: lunchoDatas; display-data.bind: $displayData; filters.bind: filters;">
@@ -99,6 +106,7 @@
           <th show.bind="factor < 100" aut-sort="key: dollar_value_with_factor; default: desc">With factor</th>
         </tr>
       </thead>
+
       <tbody>
         <tr repeat.for="country_code of $displayData | keys" with.bind="$displayData[country_code]">
           <td class="hide-on-small-only" style="font-size: 2rem;">${emoji}</td>
@@ -122,8 +130,9 @@
         </tr>
       </tbody>
     </table>
-
     <div style="height: 3em;"></div>
+
+    <!-- show code switch -->
     <md-checkbox checked.bind="showCode">Show code</md-checkbox>
   </div>
 

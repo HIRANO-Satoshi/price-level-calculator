@@ -1,3 +1,8 @@
+/**
+   Countries.
+
+   @author Hirano Satoshi
+ */
 import { autoinject, TaskQueue, observable } from 'aurelia-framework';
 import { App, getFlagEmoji, formatCurrency } from './app';
 import { Luncho, LunchoData } from 'luncho-typescript-fetch';
@@ -5,29 +10,30 @@ import { Chart, ChartConfiguration, ChartItem } from 'chart.js/auto';
 
 @autoinject
 export class Countries {
-    app: App;
-    luncho: Luncho
+    app: App;                       // the App
+    luncho: Luncho;                 // the Luncho library
     taskQueue: TaskQueue;
-    lunchoValue: number = 100;
+    showCode = false;               // true to show currency codes
+    lunchoValue: number = 100;      // 100 Luncho
+    usdString: string;              // $123.45 in USD
+    factor: number = 100;           // Factor value in percent. 0 - 100
+
     lunchoDatas: LunchoData[];      // this is the table data.
-    usdString: string;
-    graphElem: ChartItem;
-    graph: any;
-    factor: number = 100;             // Factor value in percent. 0 - 100
-    @observable $displayData: LunchoData[];
+    @observable $displayData: LunchoData[];   // table data after sorted by aurelia-table
     $displayDataChanged() {
         // sort changed. redraw graph
         if (this.graph) {
             this.drawGraph();
         }
     }
-
-    showCode = false;
-
-    filters = [
+    filters = [                     // sorter filsters for aurelia-table
         {value: '', keys: ['country_name', 'currency_name']},
         {value: '', keys: ['continent_code']},
     ];
+
+    graphElem: ChartItem;           // graph HTMLElement
+    graph: Chart;                   // graph object
+
 
     constructor(app: App, taskQueue: TaskQueue) {
         this.app = app;
@@ -36,18 +42,15 @@ export class Countries {
     }
 
     attached() {
-        this.lunchosForCountries(true)
+        // show the table and the graph
+        this.recalcCountriesTableFromLuncho(true)
             .then(() => {
                 this.drawGraph();
             });
     }
 
-    factorChanged() {
-        this.lunchosForCountries(false)
-            .then(() => this.drawGraph());
-    }
-
-    async lunchosForCountries(updateUSDString: boolean): Promise<void> {
+    // recalculate countries table from this.lunchoValue and factor
+    async recalcCountriesTableFromLuncho(updateUSDString: boolean): Promise<void> {
         await this.luncho.get_all_luncho_data();
 
         if (updateUSDString) {
@@ -61,11 +64,17 @@ export class Countries {
         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
 
             // destructive, but don't care
-            this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
-            this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
+            this.luncho.lunchoDataCache[countryCode]['local_currency_value'] =
+                await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
+
+            this.luncho.lunchoDataCache[countryCode]['dollar_value'] =
+                await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
+
             if (this.luncho.lunchoDataCache[countryCode]['dollar_value']) {
-                this.luncho.lunchoDataCache[countryCode]['dollar_value_with_factor'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode, this.factor/100.0);
+                this.luncho.lunchoDataCache[countryCode]['dollar_value_with_factor'] =
+                    await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode, this.factor/100.0);
             }
+
             this.luncho.lunchoDataCache[countryCode]['emoji'] = getFlagEmoji(countryCode);
         }
 
@@ -75,11 +84,19 @@ export class Countries {
         }
     }
 
-    async convertFromUSD() {
+    // recalculate countries table from this.usdstring and factor
+    async recalcCountriesTableFromUSD() {
         this.lunchoValue = await this.luncho.get_luncho_from_currency(Number(this.usdString), 'US');
-        this.lunchosForCountries(false);
+        this.recalcCountriesTableFromLuncho(false);
     }
 
+    // factor value changed
+    factorChanged() {
+        this.recalcCountriesTableFromLuncho(false)
+            .then(() => this.drawGraph());
+    }
+
+    // draw the graph
     drawGraph() {
         this.graph?.destroy();
         if (!this.$displayData) return;
