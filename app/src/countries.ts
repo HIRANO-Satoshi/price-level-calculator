@@ -65,7 +65,7 @@ export class Countries {
 
             // destructive, but don't care
             this.luncho.lunchoDataCache[countryCode]['local_currency_value'] =
-                await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
+                await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode, this.factor/100.0);
 
             this.luncho.lunchoDataCache[countryCode]['dollar_value'] =
                 await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);

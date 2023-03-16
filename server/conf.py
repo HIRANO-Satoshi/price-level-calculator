@@ -37,7 +37,7 @@ def Header_To_Fetch(lang: str) -> dict:
 
 # Unconfigurable constants
 
-SDR_PER_LUNCHO: float     = 5.0/100.0      # 100 Luncho is 5 SDR.
+SDR_PER_LUNCHO: float     = 6.0/100.0      # 100 Luncho is 6 SDR.
 API_V1_STR: str = "/v1"
 IS_APPENGINE   = os.environ.get('GAE_APPLICATION') is not None  # True if running on Google App Engine
 
