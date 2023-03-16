@@ -59,10 +59,14 @@
          </h5> -->
     <div class="valign-wrapper">
       <md-input label="Luncho " value.bind="lunchoValue"
-                input.delegate="lunchosForCountries()"
+                input.delegate="lunchosForCountries(true)"
                 class="width-10em large-input"></md-input>
       <!-- <button md-button click.delegate="lunchosForCountries()">Calc</button> -->
     </div>
+    Or
+    <md-input label="US Dollar " value.bind="usdString"
+              input.delegate="convertFromUSD()"
+              class="width-10em large-input"></md-input>
     <div class="vspace"></div>
 
     <div class="row filters">

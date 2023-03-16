@@ -1,7 +1,6 @@
 import { autoinject } from 'aurelia-framework';
-import { App, getFlagEmoji } from './app';
+import { App, getFlagEmoji, formatCurrency } from './app';
 import { Luncho, LunchoData  } from 'luncho-typescript-fetch';
-import * as numeral from 'numeral';
 
 @autoinject
 export class Single {
@@ -39,18 +38,7 @@ export class Single {
         this.decimals = this.app.countryData.currencies[this.lunchoData.currency_code].decimals;
 
         const value = await this.luncho.get_currency_from_luncho(this.lunchoValue, this.countryCode);
-
-        var zeros: string = '0.00';
-        switch (this.decimals) {
-            case 0: zeros = '0'; break;
-            case 1: zeros = '0.0'; break;
-            case 2: zeros = '0.00'; break;
-            case 3: zeros = '0.000'; break;
-        }
-        // console.log('value = ' + value);
-        // console.log('zeros = ' + zeros);
-        this.local_currency_string = numeral(value).format(zeros);
-
+        this.local_currency_string = formatCurrency(value, this.decimals);
         this.dollar_value = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, this.countryCode);
     }
 

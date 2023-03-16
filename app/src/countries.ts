@@ -1,5 +1,5 @@
 import { autoinject, TaskQueue, observable } from 'aurelia-framework';
-import { App, getFlagEmoji } from './app';
+import { App, getFlagEmoji, formatCurrency } from './app';
 import { Luncho, LunchoData } from 'luncho-typescript-fetch';
 import { Chart, ChartConfiguration, ChartItem } from 'chart.js/auto';
 
@@ -10,6 +10,7 @@ export class Countries {
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
     lunchoDatas: LunchoData[];      // this is the table data.
+    usdString: string;
     graphElem: ChartItem;
     graph: any;
     factor: number = 100;             // Factor value in percent. 0 - 100
@@ -35,19 +36,24 @@ export class Countries {
     }
 
     attached() {
-        this.lunchosForCountries()
+        this.lunchosForCountries(true)
             .then(() => {
                 this.drawGraph();
             });
     }
 
     factorChanged() {
-        this.lunchosForCountries()
+        this.lunchosForCountries(false)
             .then(() => this.drawGraph());
     }
 
-    async lunchosForCountries(): Promise<void> {
+    async lunchosForCountries(updateUSDString: boolean): Promise<void> {
         await this.luncho.get_all_luncho_data();
+
+        if (updateUSDString) {
+            const usd: number = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, 'US');
+            this.usdString = formatCurrency(usd, 2);
+        }
 
         // remove Zinbabe
         delete this.luncho.lunchoDataCache['ZW'];
@@ -67,6 +73,11 @@ export class Countries {
         for (var countryCode of Object.keys(this.luncho.lunchoDataCache)) {
             this.lunchoDatas.push(this.luncho.lunchoDataCache[countryCode]);
         }
+    }
+
+    async convertFromUSD() {
+        this.lunchoValue = await this.luncho.get_luncho_from_currency(Number(this.usdString), 'US');
+        this.lunchosForCountries(false);
     }
 
     drawGraph() {

@@ -11,6 +11,7 @@ import { PLATFORM } from 'aurelia-pal';
 import { Luncho, Configuration } from 'luncho-typescript-fetch';
 import * as browserLocale from 'browser-locale';
 import * as countryData from 'country-data';
+import * as numeral from 'numeral';
 
 @autoinject
 export class App {
@@ -91,10 +92,24 @@ export class App {
     }
 }
 
+// get emoji of country flag
 export function getFlagEmoji(countryCode: string) {
   const codePoints = countryCode
     .toUpperCase()
     .split('')
       .map((char: string) =>  127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
+}
+
+// format currency
+export function formatCurrency(value: number, decimals: number): string {
+    var zeros: string = '0.00';
+
+    switch (decimals) {
+        case 0: zeros = '0'; break;
+        case 1: zeros = '0.0'; break;
+        case 2: zeros = '0.00'; break;
+        case 3: zeros = '0.000'; break;
+    }
+    return numeral(value).format(zeros);
 }
