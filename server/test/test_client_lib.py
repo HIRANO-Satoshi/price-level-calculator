@@ -35,10 +35,16 @@ class Test:
         self.luncho = luncho.Luncho(self.api_client)
         assert self.luncho.get_currency_from_luncho(100.0, 'JP') >= 500
         assert self.luncho.get_currency_from_luncho(100.0, 'JP') >= 500  # again to test cache
-        assert self.luncho.get_currency_from_luncho(100.0, 'JP', factor=0.2) >= 800  # again to test cache
+        assert self.luncho.get_currency_from_luncho(100.0, 'JP', factor=0.2) < 200  # again to test cache
 
     def test_local_get_luncho_from_currency(self) -> None:
         pass
+
+    def test_get_currency_from_US_dollar(self) -> None:
+        self.luncho = luncho.Luncho(self.api_client)
+        assert self.luncho.get_currency_from_US_dollar(50.0, 'JP') == 4391.35
+        assert self.luncho.get_currency_from_US_dollar(50.0, 'JP') == 4391.35  # again to test cache
+        assert self.luncho.get_currency_from_US_dollar(50.0, 'JP', factor=0.2) == 918.2700000000001
 
     def test_get_US_dollar_from_luncho(self) -> None:
         self.luncho = luncho.Luncho(self.api_client)

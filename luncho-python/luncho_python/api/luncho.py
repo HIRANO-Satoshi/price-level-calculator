@@ -33,9 +33,10 @@ class Luncho():
         self.countryCodeCache: str
 
 
-    def get_currency_from_luncho(self, lunchoValue: float, countryCode: str, factor: float = 1.0, **kwargs) -> float:
+    def get_currency_from_US_dollar(self, usdValue: float, countryCode: str, factor: float = 1.0, **kwargs) -> float:
         '''
-          Returns a local currency value from the given Luncho value for the specified country.
+          Returns the local currency value of the country from the US dollar value in US, taking the
+          price level of the country into account by factor 0 to 1.0.
 
           @param lunchoValue A Luncho value to be converted.
           @param countryCode A 2-letter country code. The result is in the primary currency of the country.
@@ -46,26 +47,47 @@ class Luncho():
 
         lunchoData: LunchoData = self.get_luncho_data(countryCode, **kwargs)
 
+        local_currency_value = usdValue * lunchoData.ppp
+        local_currency_value_with_factor = usdValue - (usdValue - local_currency_value) * factor
+        return local_currency_value_with_factor
+
+    def get_currency_from_luncho(self, lunchoValue: float, countryCode: str, factor: float = 1.0, **kwargs) -> float:
+        '''
+        Returns the local currency value of the country from the Luncho value, taking the
+        price level of the country into account by factor 0 to 1.0.
+
+          @param lunchoValue A Luncho value to be converted.
+          @param countryCode A 2-letter country code. The result is in the primary currency of the country.
+          @param factor      A number how much the price level be reflected.
+                             0 for no consideration and 1.0 for full consideration.
+          @return A value in local currency for the lunchoValue.
+
+        '''
+
+        lunchoData: LunchoData = self.get_luncho_data(countryCode, **kwargs)
+
         US_value = lunchoData.dollar_per_luncho * lunchoValue
         local_currency_value = US_value * lunchoData.ppp
         local_currency_value_with_factor = US_value - (US_value - local_currency_value) * factor
         return local_currency_value_with_factor
 
-    def get_luncho_from_currency(self, lunchoValue: float, countryCode: str, **kwargs) -> float:
+    def get_luncho_from_currency(self, currencyValue: float, countryCode: str, **kwargs) -> float:
         '''
-          Returns a Luncho value from a local currency value for the specified country.
+          Returns the Luncho value of the country from the local currency value.
 
           @param localValue A value in local currency to be converted.
           @param countryCode A 2-letter country code of the country for the localValue.
           @return A value in Luncho for the localValue.
         '''
 
-        assert False, 'XXX Implement me'
-        return 0.0
+        lunchoData: LunchoData = self.get_luncho_data(countryCode, **kwargs)
+
+        luncho_value = currencyValue / lunchoData.ppp
+        return luncho_value
 
     def get_US_dollar_from_luncho(self, lunchoValue: float, countryCode: str, factor: float = 1.0, **kwargs) -> float:
         '''
-          Returns a US Dollar value from the given Luncho value for the specified country.
+       Returns the US Dollar value of a country from a Luncho value.
 
           @param lunchoValue A Luncho value to be converted.
           @param countryCode A 2-letter country code.

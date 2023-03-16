@@ -10,7 +10,6 @@ export class Countries {
     taskQueue: TaskQueue;
     lunchoValue: number = 100;
     lunchoDatas: LunchoData[];      // this is the table data.
-    maxCountryInDollar: number;
     graphElem: ChartItem;
     graph: any;
     factor: number = 100;             // Factor value in percent. 0 - 100
@@ -37,7 +36,9 @@ export class Countries {
 
     attached() {
         this.lunchosForCountries()
-            .then(() => this.drawGraph());
+            .then(() => {
+                this.drawGraph();
+            });
     }
 
     factorChanged() {
@@ -47,7 +48,6 @@ export class Countries {
 
     async lunchosForCountries(): Promise<void> {
         await this.luncho.get_all_luncho_data();
-        this.maxCountryInDollar = 0;
 
         // remove Zinbabe
         delete this.luncho.lunchoDataCache['ZW'];
@@ -57,11 +57,8 @@ export class Countries {
             // destructive, but don't care
             this.luncho.lunchoDataCache[countryCode]['local_currency_value'] = await this.luncho.get_currency_from_luncho(this.lunchoValue, countryCode);
             this.luncho.lunchoDataCache[countryCode]['dollar_value'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode);
-            if (this.luncho.lunchoDataCache[countryCode]['dollar_value'] > 0.8) {
+            if (this.luncho.lunchoDataCache[countryCode]['dollar_value']) {
                 this.luncho.lunchoDataCache[countryCode]['dollar_value_with_factor'] = await this.luncho.get_US_dollar_from_luncho(this.lunchoValue, countryCode, this.factor/100.0);
-            }
-            if (this.luncho.lunchoDataCache[countryCode]['dollar_value'] > this.maxCountryInDollar) {
-                this.maxCountryInDollar = this.luncho.lunchoDataCache[countryCode]['dollar_value'];
             }
             this.luncho.lunchoDataCache[countryCode]['emoji'] = getFlagEmoji(countryCode);
         }
@@ -74,6 +71,7 @@ export class Countries {
 
     drawGraph() {
         this.graph?.destroy();
+        if (!this.$displayData) return;
 
         Chart.defaults.font.size = 10;
         Chart.defaults.font.lineHeight = 1.0;

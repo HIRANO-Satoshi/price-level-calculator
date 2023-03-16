@@ -96,8 +96,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <tr repeat.for="country_code of luncho.lunchoDataCache | keys" with.bind="luncho.lunchoDataCache[country_code]"> -->
-        <!-- <div class="luncho-bar" css="width: ${dollar_value / maxCountryInDollar}"></div> -->
         <tr repeat.for="country_code of $displayData | keys" with.bind="$displayData[country_code]">
           <td class="hide-on-small-only" style="font-size: 2rem;">${emoji}</td>
           <td>${country_name}</td>
@@ -113,7 +111,7 @@
           <td>${currency_name}</td>
 
           <td if.bind="showCode">${currency_code}</td>
-          <td if.bind="dollar_value > 0.9"> $${dollar_value | numberFormat: '0.00'}</td>
+          <td if.bind="dollar_value"> $${dollar_value | numberFormat: '0.00'}</td>
           <td else></td>
           <td if.bind="factor < 100 && dollar_value_with_factor" > $${dollar_value_with_factor | numberFormat: '0.00'}</td>
 

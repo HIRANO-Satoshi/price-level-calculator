@@ -47,7 +47,28 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns a local currency value from the given Luncho value.
+        Returns the local currency value of the country from the US dollar value in US, taking the
+        price level of the country into account by factor 0 to 1.0.
+
+          @param lunchoValue A Luncho value to be converted.
+          @param countryCode A 2-letter country code. The result is in the primary currency of the country.
+          @param factor      A number how much the price level considered (reflected).
+                             0 for no consideration and 1.0 for full consideration.
+          @return A value in local currency for the lunchoValue.
+    */
+    async get_currency_from_US_dollar(usdValue: number, countryCode: string, factor: number = 1.0): Promise<number> {
+
+        return this.get_luncho_data({countryCode: countryCode})
+            .then((lunchoData: LunchoData) => {
+                const local_currency_value = usdValue * lunchoData.ppp;
+                const local_currency_value_with_factor = usdValue - (usdValue - local_currency_value) * factor;
+                return local_currency_value_with_factor;
+            });
+    }
+
+    /**
+        Returns the local currency value of the country from the Luncho value, taking the
+        price level of the country into account by factor 0 to 1.0.
 
        @param lunchoValue A Luncho value to be converted.
        @param countryCode A 2-letter country code. The result is in the primary currency of the country.
@@ -66,23 +87,24 @@ export class Luncho extends LunchoApi {
     }
 
     /**
-       Returns a Luncho value from the given local currency value (not implemented).
+       Returns the Luncho value of the country from the local currency value.
 
        @param localValue A value in local currency to be converted.
        @param countryCode A 2-letter country code of the country for the localValue.
        @return Promise for a value in Luncho for the localValue.
     */
     async get_luncho_from_currency(localValue: number, countryCode: string): Promise<number> {
-        debugger;  // XXX Implement me
-
         return this.get_luncho_data({countryCode: countryCode})
-            .then((_lunchoData: LunchoData) => {
-                  return(0.0);
+            .then((lunchoData: LunchoData) => {
+                const luncho_value = (localValue / lunchoData.ppp) / lunchoData.dollar_per_luncho;
+                //const luncho_value = (localValue / lunchoData.ppp) / lunchoData.dollar_per_luncho;
+                return luncho_value;
             });
     }
 
     /**
-       Returns a US Dollar value from the given Luncho value using cache.
+       Returns the US Dollar value of the country from the Luncho value, taking the
+        price level of the country into account by factor 0 to 1.0.
 
        @param lunchoValue A Luncho value to be converted.
        @param countryCode A 2-letter country code.

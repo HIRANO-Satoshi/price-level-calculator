@@ -10,6 +10,7 @@
   "dependencies": {
     "@krisdages/aurelia-table": "^0.8.0-prerelease",
     "@materializecss/materialize": "^1.2.1",
+    "@types/numeral": "^2.0.2",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.4.0",
     "aurelia-fetch-client": "^1.8.2",
