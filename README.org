@@ -14,7 +14,7 @@ In India 100 Luncho is equivalent to 160 rupee ($2.19 US dollar), while the same
       is equivalent to 17 real ($3.12 US dollar) in Brazil. In USA, 100 Luncho is about $7.21 US
         dollar. All are the same value because everything is just 100 Luncho.
 
-*** [[https://luncho-de-peace.org][Demo on the official Luncho web site]]
+*** [[https://luncho-de-peace.org][Demo on the official Luncho de Peace web site]]
 *** [[https://luncho-de-peace.org/#/about][Detail about Luncho, how it works]]
 
 *** Usages
@@ -29,12 +29,17 @@ Send PRs if you make client libs for other languages.
 
 *** API change
 
-Now all language bindings use the same method names. See [[https://github.com/HIRANO-Satoshi/luncho/issues/13][github issue #13]] for the detail.
+- Added get_luncho_from_currency() and get_currency_from_US_dollar().
+- 100 Luncho is 6 SDR since 16th March, 2023.
 
 *** Bonus
 
-    *Grow your product with Luncho.*
+*Grow your product with Luncho.*
 
-        Once you use Luncho in your pricing page, people in developing countries who are not able to
-      buy your digital service will become to afford to buy it. Luncho will accelerate growth of
-      your user base and your revenue beyond the current ones without Luncho.
+Once you use Luncho in your pricing page, people in developing countries who are not able to
+buy your digital service will become to afford to buy it. Luncho will accelerate growth of
+your user base and your revenue beyond the current ones without Luncho.
+
+*** Note
+
+Luncho de Peace is a derived work of AIST Luncho.
