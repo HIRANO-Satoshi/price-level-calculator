@@ -1,4 +1,4 @@
-** Luncho de Peace
+** Deprecated. Visit [[https://github.com/Peace-and-Passion/luncho][Luncho de Peace at https://github.com/Peace-and-Passion/luncho]] for a new version.
 
 *** Common value index that you can have simple lunch in every country with 100 Luncho.
 
