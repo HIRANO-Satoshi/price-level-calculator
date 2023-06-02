@@ -1,2 +1,3 @@
-** Deprecated. Visit [[https://github.com/Peace-and-Passion/luncho][Luncho de Peace at https://github.com/Peace-and-Passion/luncho]] for a new version.
+** Price level calculator: Pricing calculator that respects price levels of countries using Purchase Power Parity (PPP)
+*** Moved. Visit [[https://github.com/Peace-and-Passion/luncho][Luncho de Peace at https://github.com/Peace-and-Passion/luncho]] for a new version.
 
